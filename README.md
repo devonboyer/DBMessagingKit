@@ -24,7 +24,7 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Implement the optional methods in the MessagingCollectionViewDelegateFlowLayout protocol.
 
 #####Message Input View#####
-- You must register a message input view with the MessagingViewController that conforms to <MessageInputUtility>
+- You must register a message input view with the MessagingViewController that conforms to MessageInputUtility
 - You may use the provided MessageInputView that is modelled after iMessage.
 
 #####Message Bubbles#####
