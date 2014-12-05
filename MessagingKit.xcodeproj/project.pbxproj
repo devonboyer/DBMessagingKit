@@ -9,11 +9,36 @@
 /* Begin PBXBuildFile section */
 		678048281A312954001E4DC7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 678048271A312954001E4DC7 /* main.m */; };
 		6780482B1A312954001E4DC7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780482A1A312954001E4DC7 /* AppDelegate.m */; };
-		6780482E1A312954001E4DC7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780482D1A312954001E4DC7 /* ViewController.m */; };
-		678048311A312954001E4DC7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6780482F1A312954001E4DC7 /* Main.storyboard */; };
 		678048331A312954001E4DC7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678048321A312954001E4DC7 /* Images.xcassets */; };
 		678048361A312954001E4DC7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 678048341A312954001E4DC7 /* LaunchScreen.xib */; };
 		678048421A312954001E4DC7 /* MessagingKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 678048411A312954001E4DC7 /* MessagingKitTests.m */; };
+		678049431A313106001E4DC7 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049031A313106001E4DC7 /* Message.m */; };
+		678049441A313106001E4DC7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049051A313106001E4DC7 /* ViewController.m */; };
+		678049451A313106001E4DC7 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049091A313106001E4DC7 /* NSAttributedString+Messaging.m */; };
+		678049461A313106001E4DC7 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780490B1A313106001E4DC7 /* UIColor+Messaging.m */; };
+		678049471A313106001E4DC7 /* UIImage+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780490D1A313106001E4DC7 /* UIImage+Messaging.m */; };
+		678049481A313106001E4DC7 /* InteractiveKeyboardController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049101A313106001E4DC7 /* InteractiveKeyboardController.m */; };
+		678049491A313106001E4DC7 /* MessageBubbleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049121A313106001E4DC7 /* MessageBubbleController.m */; };
+		6780494A1A313106001E4DC7 /* MessagingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049141A313106001E4DC7 /* MessagingViewController.m */; };
+		6780494B1A313106001E4DC7 /* SystemSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049161A313106001E4DC7 /* SystemSoundPlayer.m */; };
+		6780494C1A313106001E4DC7 /* MessageBubbleFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049191A313106001E4DC7 /* MessageBubbleFactory.m */; };
+		6780494D1A313106001E4DC7 /* MessagingTimestampFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780491B1A313106001E4DC7 /* MessagingTimestampFormatter.m */; };
+		6780494E1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780491E1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.m */; };
+		6780494F1A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049201A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.m */; };
+		678049501A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049221A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.m */; };
+		678049511A313106001E4DC7 /* camera_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6780492B1A313106001E4DC7 /* camera_button.png */; };
+		678049521A313106001E4DC7 /* camera_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6780492C1A313106001E4DC7 /* camera_button@2x.png */; };
+		678049531A313106001E4DC7 /* camera_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6780492D1A313106001E4DC7 /* camera_button@3x.png */; };
+		678049541A313106001E4DC7 /* MessageInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049301A313106001E4DC7 /* MessageInputView.m */; };
+		678049551A313106001E4DC7 /* MessagingCellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049321A313106001E4DC7 /* MessagingCellTextView.m */; };
+		678049561A313106001E4DC7 /* MessagingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049341A313106001E4DC7 /* MessagingCollectionView.m */; };
+		678049571A313106001E4DC7 /* MessagingInputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049361A313106001E4DC7 /* MessagingInputTextView.m */; };
+		678049581A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049381A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m */; };
+		678049591A313106001E4DC7 /* MessagingParentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780493A1A313106001E4DC7 /* MessagingParentCell.m */; };
+		6780495A1A313106001E4DC7 /* MessagingPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780493C1A313106001E4DC7 /* MessagingPhotoCell.m */; };
+		6780495B1A313106001E4DC7 /* MessagingTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780493E1A313106001E4DC7 /* MessagingTextCell.m */; };
+		6780495C1A313106001E4DC7 /* MessagingTimestampSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */; };
+		6780495D1A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +57,67 @@
 		678048271A312954001E4DC7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		678048291A312954001E4DC7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6780482A1A312954001E4DC7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6780482C1A312954001E4DC7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6780482D1A312954001E4DC7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		678048301A312954001E4DC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		678048321A312954001E4DC7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		678048351A312954001E4DC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6780483B1A312954001E4DC7 /* MessagingKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessagingKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		678048401A312954001E4DC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		678048411A312954001E4DC7 /* MessagingKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessagingKitTests.m; sourceTree = "<group>"; };
+		678049021A313106001E4DC7 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		678049031A313106001E4DC7 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		678049041A313106001E4DC7 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		678049051A313106001E4DC7 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		678049081A313106001E4DC7 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
+		678049091A313106001E4DC7 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
+		6780490A1A313106001E4DC7 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
+		6780490B1A313106001E4DC7 /* UIColor+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Messaging.m"; sourceTree = "<group>"; };
+		6780490C1A313106001E4DC7 /* UIImage+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Messaging.h"; sourceTree = "<group>"; };
+		6780490D1A313106001E4DC7 /* UIImage+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Messaging.m"; sourceTree = "<group>"; };
+		6780490F1A313106001E4DC7 /* InteractiveKeyboardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveKeyboardController.h; sourceTree = "<group>"; };
+		678049101A313106001E4DC7 /* InteractiveKeyboardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveKeyboardController.m; sourceTree = "<group>"; };
+		678049111A313106001E4DC7 /* MessageBubbleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBubbleController.h; sourceTree = "<group>"; };
+		678049121A313106001E4DC7 /* MessageBubbleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBubbleController.m; sourceTree = "<group>"; };
+		678049131A313106001E4DC7 /* MessagingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingViewController.h; sourceTree = "<group>"; };
+		678049141A313106001E4DC7 /* MessagingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingViewController.m; sourceTree = "<group>"; };
+		678049151A313106001E4DC7 /* SystemSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemSoundPlayer.h; sourceTree = "<group>"; };
+		678049161A313106001E4DC7 /* SystemSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemSoundPlayer.m; sourceTree = "<group>"; };
+		678049181A313106001E4DC7 /* MessageBubbleFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBubbleFactory.h; sourceTree = "<group>"; };
+		678049191A313106001E4DC7 /* MessageBubbleFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBubbleFactory.m; sourceTree = "<group>"; };
+		6780491A1A313106001E4DC7 /* MessagingTimestampFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingTimestampFormatter.h; sourceTree = "<group>"; };
+		6780491B1A313106001E4DC7 /* MessagingTimestampFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingTimestampFormatter.m; sourceTree = "<group>"; };
+		6780491D1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		6780491E1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		6780491F1A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCollectionViewFlowLayoutInvalidationContext.h; sourceTree = "<group>"; };
+		678049201A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingCollectionViewFlowLayoutInvalidationContext.m; sourceTree = "<group>"; };
+		678049211A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
+		678049221A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
+		678049231A313106001E4DC7 /* MessagingKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingKit.h; sourceTree = "<group>"; };
+		678049251A313106001E4DC7 /* MessagingCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCollectionViewDataSource.h; sourceTree = "<group>"; };
+		678049261A313106001E4DC7 /* MessagingCollectionViewDelegateFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCollectionViewDelegateFlowLayout.h; sourceTree = "<group>"; };
+		678049271A313106001E4DC7 /* MessagingInputUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingInputUtility.h; sourceTree = "<group>"; };
+		6780492B1A313106001E4DC7 /* camera_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_button.png; sourceTree = "<group>"; };
+		6780492C1A313106001E4DC7 /* camera_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_button@2x.png"; sourceTree = "<group>"; };
+		6780492D1A313106001E4DC7 /* camera_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_button@3x.png"; sourceTree = "<group>"; };
+		6780492F1A313106001E4DC7 /* MessageInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageInputView.h; sourceTree = "<group>"; };
+		678049301A313106001E4DC7 /* MessageInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageInputView.m; sourceTree = "<group>"; };
+		678049311A313106001E4DC7 /* MessagingCellTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCellTextView.h; sourceTree = "<group>"; };
+		678049321A313106001E4DC7 /* MessagingCellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingCellTextView.m; sourceTree = "<group>"; };
+		678049331A313106001E4DC7 /* MessagingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingCollectionView.h; sourceTree = "<group>"; };
+		678049341A313106001E4DC7 /* MessagingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingCollectionView.m; sourceTree = "<group>"; };
+		678049351A313106001E4DC7 /* MessagingInputTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingInputTextView.h; sourceTree = "<group>"; };
+		678049361A313106001E4DC7 /* MessagingInputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingInputTextView.m; sourceTree = "<group>"; };
+		678049371A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingLoadEarlierMessagesHeaderView.h; sourceTree = "<group>"; };
+		678049381A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingLoadEarlierMessagesHeaderView.m; sourceTree = "<group>"; };
+		678049391A313106001E4DC7 /* MessagingParentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingParentCell.h; sourceTree = "<group>"; };
+		6780493A1A313106001E4DC7 /* MessagingParentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingParentCell.m; sourceTree = "<group>"; };
+		6780493B1A313106001E4DC7 /* MessagingPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingPhotoCell.h; sourceTree = "<group>"; };
+		6780493C1A313106001E4DC7 /* MessagingPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingPhotoCell.m; sourceTree = "<group>"; };
+		6780493D1A313106001E4DC7 /* MessagingTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingTextCell.h; sourceTree = "<group>"; };
+		6780493E1A313106001E4DC7 /* MessagingTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingTextCell.m; sourceTree = "<group>"; };
+		6780493F1A313106001E4DC7 /* MessagingTimestampSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingTimestampSupplementaryView.h; sourceTree = "<group>"; };
+		678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingTimestampSupplementaryView.m; sourceTree = "<group>"; };
+		678049411A313106001E4DC7 /* MessagingTypingIndicatorFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingTypingIndicatorFooterView.h; sourceTree = "<group>"; };
+		678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingTypingIndicatorFooterView.m; sourceTree = "<group>"; };
+		678049701A31325C001E4DC7 /* MessagingKitConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingKitConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,9 +161,8 @@
 			children = (
 				678048291A312954001E4DC7 /* AppDelegate.h */,
 				6780482A1A312954001E4DC7 /* AppDelegate.m */,
-				6780482C1A312954001E4DC7 /* ViewController.h */,
-				6780482D1A312954001E4DC7 /* ViewController.m */,
-				6780482F1A312954001E4DC7 /* Main.storyboard */,
+				678049001A313106001E4DC7 /* Demo */,
+				678049061A313106001E4DC7 /* Classes */,
 				678048321A312954001E4DC7 /* Images.xcassets */,
 				678048341A312954001E4DC7 /* LaunchScreen.xib */,
 				678048251A312954001E4DC7 /* Supporting Files */,
@@ -117,6 +194,148 @@
 				678048401A312954001E4DC7 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		678049001A313106001E4DC7 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				678049011A313106001E4DC7 /* Model */,
+				678049041A313106001E4DC7 /* ViewController.h */,
+				678049051A313106001E4DC7 /* ViewController.m */,
+			);
+			path = Demo;
+			sourceTree = SOURCE_ROOT;
+		};
+		678049011A313106001E4DC7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				678049021A313106001E4DC7 /* Message.h */,
+				678049031A313106001E4DC7 /* Message.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		678049061A313106001E4DC7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				678049231A313106001E4DC7 /* MessagingKit.h */,
+				678049701A31325C001E4DC7 /* MessagingKitConstants.h */,
+				678049071A313106001E4DC7 /* Categories */,
+				6780490E1A313106001E4DC7 /* Controllers */,
+				678049171A313106001E4DC7 /* Factories */,
+				6780491C1A313106001E4DC7 /* Layout */,
+				678049241A313106001E4DC7 /* Protocols */,
+				678049291A313106001E4DC7 /* Resources */,
+				6780492E1A313106001E4DC7 /* Views */,
+			);
+			path = Classes;
+			sourceTree = SOURCE_ROOT;
+		};
+		678049071A313106001E4DC7 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				678049081A313106001E4DC7 /* NSAttributedString+Messaging.h */,
+				678049091A313106001E4DC7 /* NSAttributedString+Messaging.m */,
+				6780490A1A313106001E4DC7 /* UIColor+Messaging.h */,
+				6780490B1A313106001E4DC7 /* UIColor+Messaging.m */,
+				6780490C1A313106001E4DC7 /* UIImage+Messaging.h */,
+				6780490D1A313106001E4DC7 /* UIImage+Messaging.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		6780490E1A313106001E4DC7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6780490F1A313106001E4DC7 /* InteractiveKeyboardController.h */,
+				678049101A313106001E4DC7 /* InteractiveKeyboardController.m */,
+				678049111A313106001E4DC7 /* MessageBubbleController.h */,
+				678049121A313106001E4DC7 /* MessageBubbleController.m */,
+				678049131A313106001E4DC7 /* MessagingViewController.h */,
+				678049141A313106001E4DC7 /* MessagingViewController.m */,
+				678049151A313106001E4DC7 /* SystemSoundPlayer.h */,
+				678049161A313106001E4DC7 /* SystemSoundPlayer.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		678049171A313106001E4DC7 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				678049181A313106001E4DC7 /* MessageBubbleFactory.h */,
+				678049191A313106001E4DC7 /* MessageBubbleFactory.m */,
+				6780491A1A313106001E4DC7 /* MessagingTimestampFormatter.h */,
+				6780491B1A313106001E4DC7 /* MessagingTimestampFormatter.m */,
+			);
+			path = Factories;
+			sourceTree = "<group>";
+		};
+		6780491C1A313106001E4DC7 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				6780491D1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.h */,
+				6780491E1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.m */,
+				6780491F1A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.h */,
+				678049201A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.m */,
+				678049211A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.h */,
+				678049221A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.m */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		678049241A313106001E4DC7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				678049251A313106001E4DC7 /* MessagingCollectionViewDataSource.h */,
+				678049261A313106001E4DC7 /* MessagingCollectionViewDelegateFlowLayout.h */,
+				678049271A313106001E4DC7 /* MessagingInputUtility.h */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		678049291A313106001E4DC7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6780492A1A313106001E4DC7 /* Images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6780492A1A313106001E4DC7 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				6780492B1A313106001E4DC7 /* camera_button.png */,
+				6780492C1A313106001E4DC7 /* camera_button@2x.png */,
+				6780492D1A313106001E4DC7 /* camera_button@3x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		6780492E1A313106001E4DC7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6780492F1A313106001E4DC7 /* MessageInputView.h */,
+				678049301A313106001E4DC7 /* MessageInputView.m */,
+				678049311A313106001E4DC7 /* MessagingCellTextView.h */,
+				678049321A313106001E4DC7 /* MessagingCellTextView.m */,
+				678049331A313106001E4DC7 /* MessagingCollectionView.h */,
+				678049341A313106001E4DC7 /* MessagingCollectionView.m */,
+				678049351A313106001E4DC7 /* MessagingInputTextView.h */,
+				678049361A313106001E4DC7 /* MessagingInputTextView.m */,
+				678049371A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.h */,
+				678049381A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m */,
+				678049391A313106001E4DC7 /* MessagingParentCell.h */,
+				6780493A1A313106001E4DC7 /* MessagingParentCell.m */,
+				6780493B1A313106001E4DC7 /* MessagingPhotoCell.h */,
+				6780493C1A313106001E4DC7 /* MessagingPhotoCell.m */,
+				6780493D1A313106001E4DC7 /* MessagingTextCell.h */,
+				6780493E1A313106001E4DC7 /* MessagingTextCell.m */,
+				6780493F1A313106001E4DC7 /* MessagingTimestampSupplementaryView.h */,
+				678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */,
+				678049411A313106001E4DC7 /* MessagingTypingIndicatorFooterView.h */,
+				678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,9 +418,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				678048311A312954001E4DC7 /* Main.storyboard in Resources */,
+				678049531A313106001E4DC7 /* camera_button@3x.png in Resources */,
 				678048361A312954001E4DC7 /* LaunchScreen.xib in Resources */,
+				678049521A313106001E4DC7 /* camera_button@2x.png in Resources */,
 				678048331A312954001E4DC7 /* Images.xcassets in Resources */,
+				678049511A313106001E4DC7 /* camera_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,9 +440,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6780482E1A312954001E4DC7 /* ViewController.m in Sources */,
+				678049541A313106001E4DC7 /* MessageInputView.m in Sources */,
+				6780495B1A313106001E4DC7 /* MessagingTextCell.m in Sources */,
 				6780482B1A312954001E4DC7 /* AppDelegate.m in Sources */,
+				6780494F1A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.m in Sources */,
+				6780494B1A313106001E4DC7 /* SystemSoundPlayer.m in Sources */,
+				678049551A313106001E4DC7 /* MessagingCellTextView.m in Sources */,
+				6780495A1A313106001E4DC7 /* MessagingPhotoCell.m in Sources */,
+				678049571A313106001E4DC7 /* MessagingInputTextView.m in Sources */,
+				6780495C1A313106001E4DC7 /* MessagingTimestampSupplementaryView.m in Sources */,
+				678049451A313106001E4DC7 /* NSAttributedString+Messaging.m in Sources */,
+				678049581A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m in Sources */,
+				678049591A313106001E4DC7 /* MessagingParentCell.m in Sources */,
+				6780494D1A313106001E4DC7 /* MessagingTimestampFormatter.m in Sources */,
+				678049431A313106001E4DC7 /* Message.m in Sources */,
+				678049441A313106001E4DC7 /* ViewController.m in Sources */,
+				678049471A313106001E4DC7 /* UIImage+Messaging.m in Sources */,
+				6780494C1A313106001E4DC7 /* MessageBubbleFactory.m in Sources */,
+				6780494A1A313106001E4DC7 /* MessagingViewController.m in Sources */,
+				678049481A313106001E4DC7 /* InteractiveKeyboardController.m in Sources */,
+				678049561A313106001E4DC7 /* MessagingCollectionView.m in Sources */,
+				678049461A313106001E4DC7 /* UIColor+Messaging.m in Sources */,
 				678048281A312954001E4DC7 /* main.m in Sources */,
+				678049491A313106001E4DC7 /* MessageBubbleController.m in Sources */,
+				678049501A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.m in Sources */,
+				6780494E1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.m in Sources */,
+				6780495D1A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,14 +488,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		6780482F1A312954001E4DC7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				678048301A312954001E4DC7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		678048341A312954001E4DC7 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -412,6 +648,7 @@
 				678048471A312954001E4DC7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		678048481A312954001E4DC7 /* Build configuration list for PBXNativeTarget "MessagingKitTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +657,7 @@
 				6780484A1A312954001E4DC7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
