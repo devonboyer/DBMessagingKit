@@ -1,9 +1,9 @@
 //
-//  IGMessage.h
-//  IGMessagingKit
+//  Message.h
+//  MessagingKit
 //
 //  Created by Devon Boyer on 2014-09-17.
-//  Copyright (c) 2014 Inner Geek. All rights reserved.
+//  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

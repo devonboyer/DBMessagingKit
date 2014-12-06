@@ -337,11 +337,11 @@
     NSString *cellIdentifier;
     switch ([self collectionView:collectionView MIMETypeForMessageAtIndexPath:indexPath]) {
         case MIMETypeText: {
-            cellIdentifier = kChatTextCellIdentifier;
+            cellIdentifier = kMessagingTextCellIdentifier;
             break;
         }
         case MIMETypeImage: {
-            cellIdentifier = kChatPhotoCellIdentifier;
+            cellIdentifier = kMessagingPhotoCellIdentifier;
             break;
         }
         default:
@@ -396,7 +396,7 @@
     else if (_showLoadMoreMessages && [kind isEqualToString:UICollectionElementKindSectionHeader]) {
         return [collectionView dequeueLoadMoreHeaderViewForIndexPath:indexPath];
     }
-    else if ([kind isEqualToString:IGMessagingCollectionElementKindTimestamp]) {
+    else if ([kind isEqualToString:MessagingCollectionElementKindTimestamp]) {
         MessagingTimestampSupplementaryView *supplementaryView = (MessagingTimestampSupplementaryView *)[collectionView dequeueTimestampSupplementaryViewForIndexPath:indexPath];
         
         NSString *sentByUserID = [self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath];

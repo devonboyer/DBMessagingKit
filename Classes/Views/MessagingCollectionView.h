@@ -20,13 +20,13 @@
 @class MessagingTimestampSupplementaryView;
 
 // Cells
-extern NSString * const kChatTextCellIdentifier;
-extern NSString * const kChatPhotoCellIdentifier;
+extern NSString * const kMessagingTextCellIdentifier;
+extern NSString * const kMessagingPhotoCellIdentifier;
 
 // Supplementary Views
-extern NSString * const kChatTimestampSupplementaryViewIdentifier;
-extern NSString * const kChatTypingIndicatorFooterViewIdentifier;
-extern NSString * const kChatLoadMoreHeaderViewIdentifier;
+extern NSString * const kMessagingimestampSupplementaryViewIdentifier;
+extern NSString * const kMessagingTypingIndicatorFooterViewIdentifier;
+extern NSString * const kMessagingLoadMoreHeaderViewIdentifier;
 
 @interface MessagingCollectionView : UICollectionView <MessagingPhotoCellDelegate, MessagingTextCell>
 

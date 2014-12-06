@@ -14,7 +14,7 @@
 #import "NSAttributedString+Messaging.h"
 #import "MessagingTimestampSupplementaryView.h"
 
-NSString *const IGMessagingCollectionElementKindTimestamp = @"IGChatCollectionElementKindTimestamp";
+NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElementKindTimestamp";
 
 @interface MessagingCollectionViewFlowLayout ()
 {
@@ -192,7 +192,7 @@ NSString *const IGMessagingCollectionElementKindTimestamp = @"IGChatCollectionEl
     // Add supplementary views to specfic index paths
     for (UICollectionViewLayoutAttributes *attributes in superAttrributes)
     {
-        [attributesInRect addObject:[self layoutAttributesForSupplementaryViewOfKind:IGMessagingCollectionElementKindTimestamp atIndexPath:attributes.indexPath]];
+        [attributesInRect addObject:[self layoutAttributesForSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp atIndexPath:attributes.indexPath]];
     }
     
     // Always cache all visible attributes so we can use them later when computing final/initial animated attributes
@@ -215,7 +215,7 @@ NSString *const IGMessagingCollectionElementKindTimestamp = @"IGChatCollectionEl
         
         if (_tappedIndexPath) {
             if ([_tappedIndexPath compare:layoutAttributes.indexPath] == NSOrderedAscending) {
-                layoutAttributes.frame = [self _adjustedFrameForAttributes:layoutAttributes forElementKind:IGMessagingCollectionElementKindTimestamp];
+                layoutAttributes.frame = [self _adjustedFrameForAttributes:layoutAttributes forElementKind:MessagingCollectionElementKindTimestamp];
             }
         }
     }];
@@ -249,7 +249,7 @@ NSString *const IGMessagingCollectionElementKindTimestamp = @"IGChatCollectionEl
         //get the attributes for the related cell at this index path
         UICollectionViewLayoutAttributes *cellAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
         
-        if ([elementKind isEqualToString:IGMessagingCollectionElementKindTimestamp]) {
+        if ([elementKind isEqualToString:MessagingCollectionElementKindTimestamp]) {
             layoutAttributes.incomingAvatarViewSize = self.incomingAvatarViewSize;
             layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
             layoutAttributes.messageBubbleTextViewTextContainerInsets = self.messageBubbleTextViewTextContainerInsets;
@@ -598,7 +598,7 @@ NSString *const IGMessagingCollectionElementKindTimestamp = @"IGChatCollectionEl
 - (CGRect)_adjustedFrameForAttributes:(UICollectionViewLayoutAttributes *)attributes forElementKind:(NSString *)elementKind
 {
     CGRect frame = attributes.frame;
-    if ([elementKind isEqualToString:IGMessagingCollectionElementKindTimestamp]) {
+    if ([elementKind isEqualToString:MessagingCollectionElementKindTimestamp]) {
         frame.origin.y += [self _timestampSupplementaryViewHeightForIndexPath:attributes.indexPath];
     }
     

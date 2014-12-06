@@ -14,12 +14,12 @@
 #import "MessagingLoadEarlierMessagesHeaderView.h"
 #import "MessagingTypingIndicatorFooterView.h"
 
-NSString * const kChatTextCellIdentifier = @"kChatTextCellIdentifier";
-NSString * const kChatPhotoCellIdentifier = @"kChatPhotoCellIdentifier";
+NSString * const kMessagingTextCellIdentifier = @"kChatTextCellIdentifier";
+NSString * const kMessagingPhotoCellIdentifier = @"kChatPhotoCellIdentifier";
 
-NSString * const kChatTimestampSupplementaryViewIdentifier = @"kChatTimestampSupplementaryViewIdentifier";
-NSString * const kChatTypingIndicatorFooterViewIdentifier = @"kChatTypingIndicatorFooterViewIdentifier";
-NSString * const kChatLoadMoreHeaderViewIdentifier = @"kChatLoadMoreHeaderViewIdentifier";
+NSString * const kMessagingimestampSupplementaryViewIdentifier = @"kChatTimestampSupplementaryViewIdentifier";
+NSString * const kMessagingTypingIndicatorFooterViewIdentifier = @"kChatTypingIndicatorFooterViewIdentifier";
+NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kChatLoadMoreHeaderViewIdentifier";
 
 @implementation MessagingCollectionView
 
@@ -50,19 +50,19 @@ NSString * const kChatLoadMoreHeaderViewIdentifier = @"kChatLoadMoreHeaderViewId
 - (void)registerViews
 {
     // Cells
-    [self registerClass:[MessagingTextCell class] forCellWithReuseIdentifier:kChatTextCellIdentifier];
-    [self registerClass:[MessagingPhotoCell class] forCellWithReuseIdentifier:kChatPhotoCellIdentifier];
+    [self registerClass:[MessagingTextCell class] forCellWithReuseIdentifier:kMessagingTextCellIdentifier];
+    [self registerClass:[MessagingPhotoCell class] forCellWithReuseIdentifier:kMessagingPhotoCellIdentifier];
     
     // Supplementary Views
-    [self registerClass:[MessagingTimestampSupplementaryView class] forSupplementaryViewOfKind:IGMessagingCollectionElementKindTimestamp withReuseIdentifier:kChatTimestampSupplementaryViewIdentifier];
-    [self registerClass:[MessagingTypingIndicatorFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kChatTypingIndicatorFooterViewIdentifier];
-    [self registerClass:[MessagingLoadEarlierMessagesHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kChatLoadMoreHeaderViewIdentifier];
+    [self registerClass:[MessagingTimestampSupplementaryView class] forSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp withReuseIdentifier:kMessagingimestampSupplementaryViewIdentifier];
+    [self registerClass:[MessagingTypingIndicatorFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kMessagingTypingIndicatorFooterViewIdentifier];
+    [self registerClass:[MessagingLoadEarlierMessagesHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kMessagingLoadMoreHeaderViewIdentifier];
 }
 
 - (UICollectionReusableView *)dequeueLoadMoreHeaderViewForIndexPath:(NSIndexPath *)indexPath
 {
     MessagingLoadEarlierMessagesHeaderView *loadMoreHeaderView = [super dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                             withReuseIdentifier:kChatLoadMoreHeaderViewIdentifier
+                                                                             withReuseIdentifier:kMessagingLoadMoreHeaderViewIdentifier
                                                                                     forIndexPath:indexPath];
     self.loadMoreHeaderView = loadMoreHeaderView;
     return loadMoreHeaderView;
@@ -71,7 +71,7 @@ NSString * const kChatLoadMoreHeaderViewIdentifier = @"kChatLoadMoreHeaderViewId
 - (UICollectionReusableView *)dequeueTypingIndicatorFooterViewForIndexPath:(NSIndexPath *)indexPath
 {
     MessagingTypingIndicatorFooterView *typingIndicatorFooterView = [super dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                                               withReuseIdentifier:kChatTypingIndicatorFooterViewIdentifier
+                                                               withReuseIdentifier:kMessagingTypingIndicatorFooterViewIdentifier
                                                                       forIndexPath:indexPath];
     self.typingIndicatorFooterView = typingIndicatorFooterView;
     return typingIndicatorFooterView;
@@ -79,7 +79,7 @@ NSString * const kChatLoadMoreHeaderViewIdentifier = @"kChatLoadMoreHeaderViewId
 
 - (UICollectionReusableView *)dequeueTimestampSupplementaryViewForIndexPath:(NSIndexPath *)indexPath
 {
-    MessagingTimestampSupplementaryView *timestampSupplementaryView = [self dequeueReusableSupplementaryViewOfKind:IGMessagingCollectionElementKindTimestamp withReuseIdentifier:kChatTimestampSupplementaryViewIdentifier forIndexPath:indexPath];
+    MessagingTimestampSupplementaryView *timestampSupplementaryView = [self dequeueReusableSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp withReuseIdentifier:kMessagingimestampSupplementaryViewIdentifier forIndexPath:indexPath];
     return timestampSupplementaryView;
 }
 

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const IGMessagingCollectionElementKindTimestamp;
+extern NSString * const MessagingCollectionElementKindTimestamp;
 
 @class MessagingCollectionView;
 
