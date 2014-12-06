@@ -2,12 +2,20 @@
 //  MessagingCollectionViewDelegateFlowLayout.h
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-10-12.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  The 'MessagingCollectionViewDelegateFlowLayout' protocol defines methods that allow you to
+ *  manage additional layout information for the collection view and respond to additional actions on its items.
+ *  The methods of this protocol are all optional.
+ */
 @protocol MessagingCollectionViewDelegateFlowLayout <UICollectionViewDelegateFlowLayout>
 
 @optional

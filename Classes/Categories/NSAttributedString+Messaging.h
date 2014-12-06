@@ -2,6 +2,9 @@
 //  NSAttributedString+Messaging.h
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-09-23.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
@@ -10,6 +13,15 @@
 
 @interface NSAttributedString (Messaging)
 
+/**
+ *  Calculates and returns the size of the bounding box of an attributed string that fits the 
+ *  speficied maxWidth.
+ *
+ *  @param attributedString The attributed string.
+ *  @param maxWidth The maximum width for the bounding box that contains with attributed string.
+ *
+ *  @return The size of the bounding box that fits the specified maxWidth.
+ */
 + (CGSize)boundingBoxForAttributedString:(NSAttributedString *)attributedString maxWidth:(CGFloat)maxWidth;
 
 @end

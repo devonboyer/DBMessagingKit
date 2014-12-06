@@ -2,6 +2,9 @@
 //  MessagingCollectionViewDataSource.h
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-10-12.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
@@ -12,6 +15,11 @@
 
 @class MessagingCollectionView;
 
+/**
+ *  An object that adopts the 'MessagingCollectionViewDataSource' protocol is responsible for providing the data and views
+ *  required by a 'MessagingCollectionView'. The data source object represents your app’s messaging data model
+ *  and vends information to the collection view as needed.
+ */
 @protocol MessagingCollectionViewDataSource <UICollectionViewDataSource>
 
 @required
@@ -62,14 +70,14 @@
  *  @param collectionView The object representing the collection view requesting this information.
  *  @param indexPath      The index path that specifies the location of the item.
  *
- *  @discussion It is recommended that you utilize 'IGMessageBubbleController' to return valid imageViews, however you may
+ *  @discussion It is recommended that you utilize 'MessageBubbleController' to return valid imageViews, however you may
  *  provide your own.
  *
  *  @return A configured image. You may return 'nil' from this method if you do not want the specified item to display a 
  *  message bubble image.
  *
- *  @see 'IGMessageBubbleController'
- *  @see 'IGMessagingCollectionViewFlowLayout'.
+ *  @see 'MessageBubbleController'
+ *  @see 'MessagingCollectionViewFlowLayout'.
  */
 - (UIImageView *)collectionView:(UICollectionView *)collectionView messageBubbleForItemAtIndexPath:(NSIndexPath *)indexPath;
 
@@ -87,7 +95,7 @@
  *
  *  @discussion The 'messageTopLabel' is typically used to display the sender's name.
  *
- *  @see 'IGChatCollectionViewCell'.
+ *  @see 'MessagingParentCell'.
  */
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath;
 
@@ -103,7 +111,7 @@
  *
  *  @discussion The 'cellTopLabel' is typically used to display formatted timestamps.
  *
- *  @see 'IGChatCollectionViewCell'.
+ *  @see 'MessagingParentCell'.
  */
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath;
 
@@ -119,7 +127,7 @@
  *
  *  @discussion The 'cellBottomLabel' is typically used to display delivery status.
  *
- *  @see 'IGChatCollectionViewCell'.
+ *  @see 'MessagingParentCell'.
  */
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellBottomLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath;
 

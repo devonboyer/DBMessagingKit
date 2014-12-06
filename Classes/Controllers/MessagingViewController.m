@@ -2,13 +2,15 @@
 //  MessagingViewController.m
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-10-12.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
 #import "MessagingViewController.h"
 
-// Controllers
 #import "InteractiveKeyboardController.h"
 #import "MessageBubbleController.h"
 #import "MessagingInputTextView.h"
@@ -426,7 +428,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [_collectionView.collectionViewLayout sizeForCellAtIndexPath:indexPath];
+    return [_collectionView.collectionViewLayout sizeForItemAtIndexPath:indexPath];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView

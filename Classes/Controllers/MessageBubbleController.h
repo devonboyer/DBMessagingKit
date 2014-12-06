@@ -2,6 +2,9 @@
 //  MessageBubbleController.h
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-10-14.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
@@ -10,14 +13,30 @@
 
 @class MessagingCollectionView;
 
+/**
+ *  A 'MessageBubbleController' instance creates message bubbles from template images and manages the 
+ *  message bubble that should be used for the appropriate position in a consecutuve group of messages
+ *  with the same sentByUserID.
+ */
 @interface MessageBubbleController : NSObject
 
+/**
+ *  The messaging collection view object currently using this message bubble controller.
+ */
 @property (weak, nonatomic, readonly) MessagingCollectionView *collectionView;
+
+/**
+ * Returns the color for incoming message bubbles.
+ */
 @property (strong, nonatomic) UIColor *incomingMessageBubbleColor;
+
+/**
+ * Returns the color for outgoing message bubbles.
+ */
 @property (strong, nonatomic) UIColor *outgoingMessageBubbleColor;
 
 /**
- *  Initializes a 'MessageBubbleController' with the default chat bubble colors and the passed chat collection view that will utilize the message bubble controller. The 'MessagingCollectionView' utilizes the 'MessagingCollectionView' instance in order to access the appropriate dataSource and
+ *  Initializes a 'MessageBubbleController' with the default message bubble colors and the passed 'MessagingCollectionView' that will utilize the message bubble controller. The 'MessagingCollectionView' utilizes the 'MessagingCollectionView' instance in order to access the appropriate dataSource and
  *  delegate methods needed to determine the appropriate message bubbles returned by messageBubbleForIndexPath:.
  *
  *  @param collectionView The messaging collection view that will utilize the 'MessageBubbleController'.
@@ -31,7 +50,7 @@
 - (instancetype)initWithCollectionView:(MessagingCollectionView *)collectionView;
 
 /**
- *  Initializes a 'MessageBubbleController' with the default chat bubble colors and the passed chat collection view that will utilize the message bubble controller. The 'MessagingCollectionView' utilizes the 'MessagingCollectionView' instance in order to access the appropriate dataSource and
+ *  Initializes a 'MessageBubbleController' with the default message bubble colors and the passed 'MessagingCollectionView' that will utilize the message bubble controller. The 'MessagingCollectionView' utilizes the 'MessagingCollectionView' instance in order to access the appropriate dataSource and
  *  delegate methods needed to determine the appropriate message bubbles returned by messageBubbleForIndexPath:
  *
  *  @param collectionView The messaging collection view that will utilize the 'MessageBubbleController'.
@@ -48,7 +67,7 @@
 
 /**
  *  Creates and configures a message bubble that will be used for the bottom message in a consecutive group
- *  of messages sent by the same person.
+ *  of messages with the same sentByUserID.
  *
  *  @param templateImage The image to use as a template.
  *
@@ -60,7 +79,7 @@
 
 /**
  *  Creates and configures a message bubble that will be used for messages in the middle of a consecutive group
- *  of messages sent by the same person.
+ *  of messages with the same sentByUserID.
  *
  *  @param templateImage The image to use as a template .
  *
@@ -72,7 +91,7 @@
 
 /**
  *  Creates and configures a message bubble that will be used for the top message in a consecutive group
- *  of messages sent by the same person.
+ *  of messages with the same sentByUserID.
  *
  *  @param templateImage The image to use as a template .
  *
@@ -99,9 +118,7 @@
  *
  *  @param indexPath The index path that specifies the location of the item.
  *
- *  @discussion Message bubbles for incoming and outgoing messages are handled internally.
- *
- *  @return A configured message bubble
+ *  @return A configured message bubble for the given indexPath.
  */
 - (UIImageView *)messageBubbleForIndexPath:(NSIndexPath *)indexPath;
 

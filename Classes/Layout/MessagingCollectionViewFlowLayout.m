@@ -2,6 +2,9 @@
 //  MessagingCollectionViewFlowLayout.m
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-09-19.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
@@ -14,7 +17,7 @@
 #import "NSAttributedString+Messaging.h"
 #import "MessagingTimestampSupplementaryView.h"
 
-NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElementKindTimestamp";
+NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionElementKindTimestamp";
 
 @interface MessagingCollectionViewFlowLayout ()
 {
@@ -99,7 +102,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
     // Defaults
     self.messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f);
     self.messageBubbleFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-    self.scrollResistanceFactor = 1000.0;
+    self.springResistanceFactor = 1000.0;
     self.messageBubbleLeftRightMargin = 50.0f;
     self.incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
     self.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
@@ -114,7 +117,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
     self.cellBottomLabelPadding = 5.0;
     self.timestampSupplementaryViewPadding = 10.0;
     
-    self.springinessEnabled = NO;
+    self.dynamicsEnabled = NO;
     
     self.sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
     [self setMinimumLineSpacing:2.0];
@@ -147,7 +150,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
         [self.cachedSupplementaryAttributesByKind setObject:cachedAttribByPath forKey:kind];
     }];
     
-    if (self.springinessEnabled) {
+    if (self.dynamicsEnabled) {
         
         // pad rect to avoid flickering
         CGRect originalRect = (CGRect){.origin = self.collectionView.bounds.origin, .size = self.collectionView.frame.size};
@@ -167,7 +170,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
     NSArray *superAttrributes = [super layoutAttributesForElementsInRect:rect];
     NSMutableArray *attributesInRect = [superAttrributes mutableCopy];
     
-    if (self.springinessEnabled) {
+    if (self.dynamicsEnabled) {
         NSMutableArray *attributesInRectCopy = [attributesInRect mutableCopy];
         NSArray *dynamicAttributes = [self.dynamicAnimator itemsInRect:rect];
         
@@ -227,7 +230,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
 {
     MessagingCollectionViewLayoutAttributes *layoutAttributes = (MessagingCollectionViewLayoutAttributes *)[super layoutAttributesForItemAtIndexPath:indexPath];
     
-    if (self.springinessEnabled) {
+    if (self.dynamicsEnabled) {
         if ([_dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath]) {
             layoutAttributes = (MessagingCollectionViewLayoutAttributes *)[_dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath];
         }
@@ -268,7 +271,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    if (self.springinessEnabled) {
+    if (self.dynamicsEnabled) {
         UIScrollView *scrollView = self.collectionView;
         
         CGFloat delta;
@@ -284,8 +287,8 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
                 CGFloat distanceFromTouch = fabsf(touchLocation.y - springBehaviour.anchorPoint.y);
                 
                 CGFloat scrollResistance;
-                if (self.scrollResistanceFactor) scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
-                else scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
+                if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
+                else scrollResistance = distanceFromTouch / self.springResistanceFactor;
                 
                 UICollectionViewLayoutAttributes *item = [springBehaviour.items firstObject];
                 CGPoint center = item.center;
@@ -299,8 +302,8 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
                 CGFloat distanceFromTouch = fabsf(touchLocation.x - springBehaviour.anchorPoint.x);
                 
                 CGFloat scrollResistance;
-                if (self.scrollResistanceFactor) scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
-                else scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
+                if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
+                else scrollResistance = distanceFromTouch / self.springResistanceFactor;
                 
                 UICollectionViewLayoutAttributes *item = [springBehaviour.items firstObject];
                 CGPoint center = item.center;
@@ -334,7 +337,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
         }
     }];
 
-    if (self.springinessEnabled) {
+    if (self.dynamicsEnabled) {
         [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger idx, BOOL *stop) {
             if (updateItem.updateAction == UICollectionUpdateActionInsert) {
                 if([self.dynamicAnimator layoutAttributesForCellAtIndexPath:updateItem.indexPathAfterUpdate])
@@ -387,9 +390,9 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
 
 #pragma mark - Setters
 
-- (void)setSpringinessEnabled:(BOOL)springinessEnabled
+- (void)setDynamicsEnabled:(BOOL)springinessEnabled
 {
-    _springinessEnabled = springinessEnabled;
+    _dynamicsEnabled = springinessEnabled;
     
     if (!springinessEnabled) {
         [_dynamicAnimator removeAllBehaviors];
@@ -783,7 +786,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
 
 #pragma mark - Public
 
-- (CGSize)sizeForCellAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat itemHeight = [self _messageBubbleSizeForItemAtIndexPath:indexPath].height;
     CGFloat itemWidth = self.itemWidth;
@@ -872,8 +875,8 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
             CGFloat distanceFromTouch = fabsf(touchLocation.y - springBehavior.anchorPoint.y);
             
             CGFloat scrollResistance;
-            if (self.scrollResistanceFactor) scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
-            else scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
+            if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
+            else scrollResistance = distanceFromTouch / self.springResistanceFactor;
             
             if (self.latestDelta < 0) center.y += MAX(self.latestDelta, self.latestDelta*scrollResistance);
             else center.y += MIN(self.latestDelta, self.latestDelta*scrollResistance);
@@ -884,8 +887,8 @@ NSString *const MessagingCollectionElementKindTimestamp = @"IGChatCollectionElem
             CGFloat distanceFromTouch = fabsf(touchLocation.x - springBehavior.anchorPoint.x);
             
             CGFloat scrollResistance;
-            if (self.scrollResistanceFactor) scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
-            else scrollResistance = distanceFromTouch / self.scrollResistanceFactor;
+            if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
+            else scrollResistance = distanceFromTouch / self.springResistanceFactor;
             
             if (self.latestDelta < 0) center.x += MAX(self.latestDelta, self.latestDelta*scrollResistance);
             else center.x += MIN(self.latestDelta, self.latestDelta*scrollResistance);

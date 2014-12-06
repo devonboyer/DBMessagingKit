@@ -2,6 +2,9 @@
 //  MessagingViewController.h
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-10-12.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
@@ -17,46 +20,59 @@
 @class MessageInputView;
 @class InteractiveKeyboardController;
 
+/**
+ *  The 'MessagingViewController' class is an abstract class that represents a view controller whose content consists of
+ *  a 'MessagingCollectionView' and 'UIView<MessagingInputUtility>' and is specialized to display a messaging interface.
+ *
+ *  @warning This class is intended to be subclassed. You should not use it directly.
+ */
 @interface MessagingViewController : UIViewController <MessagingCollectionViewDataSource, MessagingCollectionViewDelegateFlowLayout>
 
+/**
+ *  Returns the collection view object managed by this view controller.
+ *  This view controller is the collection view's data source and delegate.
+ */
 @property (strong, nonatomic, readonly) MessagingCollectionView *collectionView;
+
+/**
+ *  The keyboard controller object for the 'MessagingViewController
+ */
 @property (strong, nonatomic, readonly) InteractiveKeyboardController *keyboardController;
+
+/**
+ *  Returns the messaging input view for the 'MessagingViewController'
+ */
 @property (strong, nonatomic, readonly) UIView<MessagingInputUtility> *messageInputView;
 
 /**
- *  Specifies the class from which to instantiate the chat input view. The class will be instantiated via alloc/initWithFrame:
- *  The initial size for the chat input view is the {collectionView.frame.size.width, 50.0}. To specify a different initial size for the
- *  chatInputView use registerClassForChatInputView:withInitialSize: instead. 
+ *  Specifies the class from which to instantiate the messaging input view. The class will be instantiated via alloc/
+ *  initWithFrame:. The initial size for the messaging input view is '50.0'. To specify a different initial size for the
+ *  messaging input view use registerClassForMessageInputView:withInitialHeight: instead.
  *
- *  This is the recommended initial size for the 'IGChatiMessageInputView'.
+ *  @discussion This is the recommended registration method for the 'MessagingInputView'.
  *
- *  @param viewClass   The class from which to instantiate the chatInputView.
+ *  @param viewClass The class from which to instantiate the chatInputView.
  *
- *  @warning The registered chatInputView must conform to 'IGChatInputUtility' and be a subclass of 'UIView'.
- *  DO NOT set your 'IGChatManagerViewController' subclass as the delegate of the textView unless you would like to handle
- *  resizing behaviour yourself.
+ *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
  *
- *  @see 'IGChatInputUtility'
+ *  @see 'MessagingInputUtility'
  */
 - (void)registerClassForMessageInputView:(Class)viewClass;
 
 /**
- *  Specifies the class from which to instantiate the chat input view. The class will be instantiated via alloc/initWithFrame: with the
- *  given initial size.
+ *  Specifies the class from which to instantiate the chat input view. The class will be instantiated via alloc/initWithFrame: 
+ *  with the given initial size.
  *
  *  It is recommended that you register a custom chat input view if you would like to specify a custom initial size.
  *
  *  @param viewClass      The class from which to instantiate the chatInputView.
  *  @param initialSize    The initial size for the chat input view.
  *
- *  @warning The registered chatInputView must conform to 'IGChatInputUtility' and be a subclass of 'UIView'.
- *  DO NOT set your 'IGChatManagerViewController' subclass as the delegate of the textView unless you would like to handle
- *  resizing behaviour yourself.
+ *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
  *
- *  @see 'IGChatInputUtility'
+ *  @see 'MessagingInputUtility'
  */
 - (void)registerClassForMessageInputView:(Class)viewClass withInitialHeight:(CGFloat)initialHeight;
-
 
 /**
  *  Specifies whether or not to accept any auto-correct suggestions before sending a message.
@@ -151,6 +167,8 @@
  *  @param animated Pass 'YES' if you want to animate scrolling, 'NO' if it should be immediate.
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
+
+
 
 - (void)updateCollectionViewInsets;
 - (void)updateKeyboardTriggerPoint;

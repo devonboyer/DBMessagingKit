@@ -2,6 +2,9 @@
 //  InteractiveKeyboardController.m
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-10-05.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //

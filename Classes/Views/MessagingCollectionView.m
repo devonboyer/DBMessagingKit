@@ -2,6 +2,9 @@
 //  MessagingCollectionView.m
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-09-21.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
@@ -14,12 +17,12 @@
 #import "MessagingLoadEarlierMessagesHeaderView.h"
 #import "MessagingTypingIndicatorFooterView.h"
 
-NSString * const kMessagingTextCellIdentifier = @"kChatTextCellIdentifier";
-NSString * const kMessagingPhotoCellIdentifier = @"kChatPhotoCellIdentifier";
+NSString * const kMessagingTextCellIdentifier = @"kMessagingTextCellIdentifier";
+NSString * const kMessagingPhotoCellIdentifier = @"kMessagingPhotoCellIdentifier";
 
-NSString * const kMessagingimestampSupplementaryViewIdentifier = @"kChatTimestampSupplementaryViewIdentifier";
-NSString * const kMessagingTypingIndicatorFooterViewIdentifier = @"kChatTypingIndicatorFooterViewIdentifier";
-NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kChatLoadMoreHeaderViewIdentifier";
+NSString * const kMessagingimestampSupplementaryViewIdentifier = @"kMessagingimestampSupplementaryViewIdentifier";
+NSString * const kMessagingTypingIndicatorFooterViewIdentifier = @"kMessagingTypingIndicatorFooterViewIdentifier";
+NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHeaderViewIdentifier";
 
 @implementation MessagingCollectionView
 

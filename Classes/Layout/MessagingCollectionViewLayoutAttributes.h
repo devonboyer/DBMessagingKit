@@ -2,12 +2,19 @@
 //  MessagingCollectionViewLayoutAttributes.h
 //  MessagingKit
 //
+//  GitHub
+//  https://github.com/DevonBoyer/MessagingKit
+//
 //  Created by Devon Boyer on 2014-09-22.
 //  Copyright (c) 2014 Devon Boyer . All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  A 'MessagingCollectionViewLayoutAttributes' object manages the layout-related attributes
+ *  for a given 'MessagingParentCell' in a 'MessagingCollectionView'.
+ */
 @interface MessagingCollectionViewLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
 /**
