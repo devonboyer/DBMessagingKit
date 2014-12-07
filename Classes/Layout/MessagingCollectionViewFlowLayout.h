@@ -104,6 +104,8 @@ extern NSString * const MessagingCollectionElementKindTimestamp;
 @property (assign, nonatomic) CGSize outgoingAvatarViewSize;
 @property (assign, nonatomic) CGSize incomingPhotoImageSize;
 @property (assign, nonatomic) CGSize outgoingPhotoImageSize;
+@property (assign, nonatomic) CGSize incomingLocationMapSize;
+@property (assign, nonatomic) CGSize outgoingLocationMapSize;
 @property (assign, nonatomic) CGFloat messageBubbleLeftRightMargin;
 @property (assign, nonatomic) CGFloat incomingMessageBubbleAvatarSpacing;
 @property (assign, nonatomic) CGFloat outgoingMessageBubbleAvatarSpacing;

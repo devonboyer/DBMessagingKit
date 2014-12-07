@@ -33,7 +33,6 @@
 
 // Views
 #import "MessageInputView.h"
-
 #import "MessagingCollectionView.h"
 #import "MessagingTextCell.h"
 #import "MessagingPhotoCell.h"

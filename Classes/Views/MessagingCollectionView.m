@@ -11,14 +11,17 @@
 
 #import "MessagingCollectionView.h"
 
-
-
 #import "MessagingTimestampSupplementaryView.h"
 #import "MessagingLoadEarlierMessagesHeaderView.h"
 #import "MessagingTypingIndicatorFooterView.h"
 
+#import "MessagingCollectionViewDataSource.h"
+#import "MessagingCollectionViewDelegateFlowLayout.h"
+#import "MessagingCollectionViewFlowLayout.h"
+
 NSString * const kMessagingTextCellIdentifier = @"kMessagingTextCellIdentifier";
 NSString * const kMessagingPhotoCellIdentifier = @"kMessagingPhotoCellIdentifier";
+NSString * const kMessagingLocationCellIdentifier = @"kMessagingLocationCellIdentifier";
 
 NSString * const kMessagingimestampSupplementaryViewIdentifier = @"kMessagingimestampSupplementaryViewIdentifier";
 NSString * const kMessagingTypingIndicatorFooterViewIdentifier = @"kMessagingTypingIndicatorFooterViewIdentifier";
@@ -55,7 +58,8 @@ NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHe
     // Cells
     [self registerClass:[MessagingTextCell class] forCellWithReuseIdentifier:kMessagingTextCellIdentifier];
     [self registerClass:[MessagingPhotoCell class] forCellWithReuseIdentifier:kMessagingPhotoCellIdentifier];
-    
+    [self registerClass:[MessagingLocationCell class] forCellWithReuseIdentifier:kMessagingLocationCellIdentifier];
+
     // Supplementary Views
     [self registerClass:[MessagingTimestampSupplementaryView class] forSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp withReuseIdentifier:kMessagingimestampSupplementaryViewIdentifier];
     [self registerClass:[MessagingTypingIndicatorFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kMessagingTypingIndicatorFooterViewIdentifier];

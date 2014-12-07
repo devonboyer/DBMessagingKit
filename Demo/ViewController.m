@@ -33,7 +33,8 @@
     [_messages addObject:[Message messageWithText:@"There is no dependency on model objects." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"Oh, we can't forget data detectors for phone numbers 123-456-7890 and websites https://github.com/DevonBoyer and more." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    
+    [_messages addObject:[Message messageWithLocation:[[CLLocation alloc] initWithLatitude:42.9837 longitude:81.2497] sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+
     // Configure a message bubble controller with template images
     _messageBubbleController = [[MessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
     [_messageBubbleController setTopTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleTop"]];
@@ -110,11 +111,6 @@
     return _messages.count;
 }
 
-- (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath {
-    Message *message = [_messages objectAtIndex:indexPath.row];
-    return message.data;
-}
-
 - (NSString *)collectionView:(UICollectionView *)collectionView sentByUserIDForMessageAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
     return message.sentByUserID;
@@ -125,10 +121,20 @@
     return message.MIMEType;
 }
 
+- (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath {
+    Message *message = [_messages objectAtIndex:indexPath.row];
+    return message.data;
+}
+
+- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath {
+    Message *message = [_messages objectAtIndex:indexPath.row];
+    return message.location;
+}
+
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
     
-    // Add some logic to displaying sender's names
+    // Add some logic to displaying sender's name
     
     NSString *sentByUserID = [self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath];
     
@@ -176,7 +182,7 @@
     
 }
 
-- (void)collectionView:(MessagingCollectionView *)collectionView wantsPhotoForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(MessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
     UIImage *photo = [UIImage imageWithData:message.data];
     imageView.image = photo;

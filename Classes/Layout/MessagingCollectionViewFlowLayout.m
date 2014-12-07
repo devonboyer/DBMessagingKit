@@ -25,7 +25,6 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     CGFloat _outgoingMessageBubbleAvatarSpacing;
 }
 
-@property (strong, nonatomic) NSMutableDictionary *messageBubbleSizes;
 @property (strong, nonatomic) NSCache *messageBubbleCache;
 
 // Tiling and Springs
@@ -90,13 +89,12 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     
     _dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
     _visibleIndexPaths = [[NSMutableSet alloc] init];
-    _messageBubbleSizes = [[NSMutableDictionary alloc] init];
     _visibleHeaderFooterIndexPaths = [[NSMutableSet alloc] init];
     _insertedIndexPaths = [[NSMutableArray alloc] init];
     
     // Cache
     _messageBubbleCache = [[NSCache alloc] init];
-    _messageBubbleCache.name = @"com.swervechat.swerve.messageBubbleCache";
+    _messageBubbleCache.name = @"com.MessagingKit.messageBubbleCache";
     _messageBubbleCache.countLimit = 200.0;
     
     // Defaults
@@ -108,6 +106,8 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     self.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
     self.incomingPhotoImageSize = CGSizeMake(220.0, 300.0);
     self.outgoingPhotoImageSize = CGSizeMake(220.0, 300.0);
+    self.incomingLocationMapSize = CGSizeMake(180.0, 100.0);
+    self.outgoingLocationMapSize = CGSizeMake(180.0, 100.0);
     self.incomingMessageBubbleAvatarSpacing = 5.0;
     self.outgoingMessageBubbleAvatarSpacing = 5.0;
     self.inOutMessageBubbleInteritemSpacing = 10.0;
@@ -390,11 +390,11 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 
 #pragma mark - Setters
 
-- (void)setDynamicsEnabled:(BOOL)springinessEnabled
+- (void)setDynamicsEnabled:(BOOL)dynamicsEnabled
 {
-    _dynamicsEnabled = springinessEnabled;
+    _dynamicsEnabled = dynamicsEnabled;
     
-    if (!springinessEnabled) {
+    if (!dynamicsEnabled) {
         [_dynamicAnimator removeAllBehaviors];
         [_visibleIndexPaths removeAllObjects];
     }
@@ -435,6 +435,16 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 - (void)setOutgoingPhotoImageSize:(CGSize)outgoingPhotoImageSize
 {
     _outgoingPhotoImageSize = outgoingPhotoImageSize;
+    [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
+}
+
+- (void)setIncomingLocationMapSize:(CGSize)incomingLocationMapSize {
+    _incomingLocationMapSize = incomingLocationMapSize;
+    [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
+}
+
+- (void)setOutgoingLocationMapSize:(CGSize)outgoingLocationMapSize {
+    _outgoingLocationMapSize = outgoingLocationMapSize;
     [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
@@ -488,7 +498,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
                                       animated:YES
                                 scrollPosition:UICollectionViewScrollPositionNone];
     
-    // Animate the timestamp visible
+    // Animate the timestamp to become visible
     [self.collectionView performBatchUpdates:^{
     } completion:^(BOOL finished) {
         if (finished) {
@@ -581,6 +591,10 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     
     layoutAttributes.outgoingPhotoImageSize = self.outgoingPhotoImageSize;
     
+    layoutAttributes.incomingLocationMapSize = self.incomingLocationMapSize;
+    
+    layoutAttributes.outgoingLocationMapSize = self.outgoingLocationMapSize;
+    
     layoutAttributes.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     
     layoutAttributes.outgoingMessageBubbleAvatarSpacing = self.outgoingMessageBubbleAvatarSpacing;
@@ -612,7 +626,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 {
     NSData *data = [self.collectionView.dataSource collectionView:self.collectionView dataForMessageAtIndexPath:indexPath];
     
-    NSValue *cachedSize = [_messageBubbleSizes objectForKey:indexPath]; // [_messageBubbleCache objectForKey:@(data.hash)];
+    NSValue *cachedSize = [_messageBubbleCache objectForKey:@(indexPath.hash)];
     if (cachedSize) {
         return [cachedSize CGSizeValue];
     }
@@ -642,17 +656,20 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
             finalSize = CGRectIntegral(stringRect).size;
             break;
         }
-        case MIMETypeImage:{
+        case MIMETypeImage: {
             CGSize photoSize = [self _photoSizeForIndexPath:indexPath];
             CGSize imageSize = [[UIImage alloc] initWithData:data].size;
             finalSize.height = MIN(imageSize.height / (imageSize.width / photoSize.width), photoSize.height);
             break;
         }
+        case MIMETypeLocation: {
+            finalSize = [self _locationMapSizeForIndexPath:indexPath];
+        }
         default:
             break;
     }
     
-    // Account for the size of avatars here....
+    // Account for the size of avatars, an avatar should never be larger than the size of the smallest message bubble.
     CGFloat minimumHeight = avatarSize.height;
     
     // HACK: Add extra 2 points of space because 'boundingRectWithSize:' slighly off, not sure why.
@@ -669,9 +686,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     
     finalSize = CGSizeMake(finalSize.width, MAX(minimumHeight, messageBubbleHeight));
     
-    [self.messageBubbleSizes setObject:[NSValue valueWithCGSize:finalSize] forKey:indexPath];
-    
-   // [_messageBubbleCache setObject:[NSValue valueWithCGSize:finalSize] forKey:@(data.hash)];
+    [_messageBubbleCache setObject:[NSValue valueWithCGSize:finalSize] forKey:@(indexPath.hash)];
     
     return finalSize;
 }
@@ -683,6 +698,14 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     }
     
     return self.incomingAvatarViewSize;
+}
+
+- (CGSize)_locationMapSizeForIndexPath:(NSIndexPath *)indexPath {
+    if ([self _isOutgoingMessageAtIndexPath:indexPath]) {
+        return self.outgoingLocationMapSize;
+    }
+    
+    return self.incomingLocationMapSize;
 }
 
 - (CGSize)_photoSizeForIndexPath:(NSIndexPath *)indexPath

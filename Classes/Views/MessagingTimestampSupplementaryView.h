@@ -15,6 +15,6 @@
 @interface MessagingTimestampSupplementaryView : UICollectionReusableView
 
 @property (strong, nonatomic, readonly) UILabel *timestampLabel;
-@property (assign, nonatomic) IGChatMessageBubbleType type;
+@property (assign, nonatomic) MessageBubbleType type;
 
 @end

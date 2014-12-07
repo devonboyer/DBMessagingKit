@@ -41,11 +41,11 @@
     [super layoutSubviews];
     
     switch (self.type) {
-        case IGChatMessageBubbleTypeIncoming: {
+        case MessageBubbleTypeIncoming: {
             [_timestampLabel setFrame:CGRectMake(self.incomingAvatarSize.width + self.messageBubbleTextContainerInsets.right + self.messageBubbleTextContainerInsets.left, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
             break;
         }
-        case IGChatMessageBubbleTypeOutgoing: {
+        case MessageBubbleTypeOutgoing: {
             [_timestampLabel setFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - self.outgoingAvatarSize.width - self.messageBubbleTextContainerInsets.right - self.messageBubbleTextContainerInsets.left, CGRectGetHeight(self.bounds))];
             break;
         }
@@ -73,16 +73,16 @@
 
 #pragma mark - Setters
 
-- (void)setType:(IGChatMessageBubbleType)type
+- (void)setType:(MessageBubbleType)type
 {
     _type = type;
     
     switch (type) {
-        case IGChatMessageBubbleTypeIncoming: {
+        case MessageBubbleTypeIncoming: {
             [self.timestampLabel setTextAlignment:NSTextAlignmentLeft];
             break;
         }
-        case IGChatMessageBubbleTypeOutgoing: {
+        case MessageBubbleTypeOutgoing: {
             [self.timestampLabel setTextAlignment:NSTextAlignmentRight];
             break;
         }

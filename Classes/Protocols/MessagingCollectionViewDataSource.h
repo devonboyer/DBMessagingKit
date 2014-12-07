@@ -9,15 +9,16 @@
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "MessagingKitConstants.h"
+
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 @class MessagingCollectionView;
 
 /**
- *  An object that adopts the 'MessagingCollectionViewDataSource' protocol is responsible for providing the data and views
- *  required by a 'MessagingCollectionView'. The data source object represents your app’s messaging data model
+ *  An object that conforms to the 'MessagingCollectionViewDataSource' protocol is responsible for providing the data 
+ *  and views required by a 'MessagingCollectionView'. The data source object represents your app’s messaging data model
  *  and vends information to the collection view as needed.
  */
 @protocol MessagingCollectionViewDataSource <UICollectionViewDataSource>
@@ -56,12 +57,27 @@
 /**
  *  Asks the data source for the data to be embedded in the message at the  specified indexPath in the collectionView.
  *
+ *  @discussion Returning 'nil' from this method will trigger the data source to call
+ *  collectionView:wantsPhotoForImageView:atIndexPath or collectionView:wantsMessageLocationData:atIndexPath
+ *  where the data can then be downloaded from the server if required.
+ *
  *  @param collectionView The object representing the collection view requesting this information.
  *  @param indexPath      The index path that specifies the location of the item.
  *
  *  @return The data to be embedded in the message.
  */
 - (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Asks the data source to set the photo to display in the imageView for the the specified
+ *  message data item at indexPath in the collectionView.
+ *
+ *  @param collectionView   The object representing the collection view requesting this information.
+ *  @param indexPath        The index path that specifies the location of the item.
+ *
+ *  @return The location that represents the message.
+ */
+- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Asks the data source for the bubble image that corresponds to the specified
@@ -163,9 +179,9 @@
  *  @param imageView      The imageView that the will display the photo.
  *  @param indexPath      The index path that specifies the location of the item.
  *
- *  @discussion This method will be called if the message data is 'nil' in order to then download the image from
- *  the server from a URL if necessary.
+ *  @discussion This method will be called if the message data is 'nil' and the MIMEType is MIMETypeImage or MIMETypeVideo in 
+ *  order to then download the image or video from the server if required.
  */
-- (void)collectionView:(MessagingCollectionView *)collectionView wantsPhotoForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(MessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
 
 @end

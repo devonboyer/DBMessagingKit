@@ -106,19 +106,19 @@
 
 #pragma mark - Setters
 
-- (void)setType:(IGChatMessageBubbleType)type
+- (void)setType:(MessageBubbleType)type
 {
     [super setType:type];
     
     switch (self.type) {
-        case IGChatMessageBubbleTypeIncoming: {
+        case MessageBubbleTypeIncoming: {
             [self.messageTextView setTextColor:[UIColor blackColor]];
             [_messageTextView setLinkTextAttributes:@{
                 NSForegroundColorAttributeName : [UIColor blackColor],
                 NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid)}];
             break;
         }
-        case IGChatMessageBubbleTypeOutgoing: {
+        case MessageBubbleTypeOutgoing: {
             [self.messageTextView setTextColor:[UIColor whiteColor]];
             [_messageTextView setLinkTextAttributes:@{
                 NSForegroundColorAttributeName : [UIColor whiteColor],

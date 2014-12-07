@@ -39,6 +39,8 @@
 		6780495B1A313106001E4DC7 /* MessagingTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780493E1A313106001E4DC7 /* MessagingTextCell.m */; };
 		6780495C1A313106001E4DC7 /* MessagingTimestampSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */; };
 		6780495D1A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */; };
+		678049781A33D047001E4DC7 /* MessagingVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049771A33D047001E4DC7 /* MessagingVideoCell.m */; };
+		6780497B1A33D064001E4DC7 /* MessagingLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +120,10 @@
 		678049411A313106001E4DC7 /* MessagingTypingIndicatorFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingTypingIndicatorFooterView.h; sourceTree = "<group>"; };
 		678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingTypingIndicatorFooterView.m; sourceTree = "<group>"; };
 		678049701A31325C001E4DC7 /* MessagingKitConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingKitConstants.h; sourceTree = "<group>"; };
+		678049761A33D047001E4DC7 /* MessagingVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingVideoCell.h; sourceTree = "<group>"; };
+		678049771A33D047001E4DC7 /* MessagingVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingVideoCell.m; sourceTree = "<group>"; };
+		678049791A33D064001E4DC7 /* MessagingLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingLocationCell.h; sourceTree = "<group>"; };
+		6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingLocationCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,10 +332,14 @@
 				678049381A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m */,
 				678049391A313106001E4DC7 /* MessagingParentCell.h */,
 				6780493A1A313106001E4DC7 /* MessagingParentCell.m */,
-				6780493B1A313106001E4DC7 /* MessagingPhotoCell.h */,
-				6780493C1A313106001E4DC7 /* MessagingPhotoCell.m */,
 				6780493D1A313106001E4DC7 /* MessagingTextCell.h */,
 				6780493E1A313106001E4DC7 /* MessagingTextCell.m */,
+				6780493B1A313106001E4DC7 /* MessagingPhotoCell.h */,
+				6780493C1A313106001E4DC7 /* MessagingPhotoCell.m */,
+				678049761A33D047001E4DC7 /* MessagingVideoCell.h */,
+				678049771A33D047001E4DC7 /* MessagingVideoCell.m */,
+				678049791A33D064001E4DC7 /* MessagingLocationCell.h */,
+				6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */,
 				6780493F1A313106001E4DC7 /* MessagingTimestampSupplementaryView.h */,
 				678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */,
 				678049411A313106001E4DC7 /* MessagingTypingIndicatorFooterView.h */,
@@ -460,7 +470,9 @@
 				6780494A1A313106001E4DC7 /* MessagingViewController.m in Sources */,
 				678049481A313106001E4DC7 /* InteractiveKeyboardController.m in Sources */,
 				678049561A313106001E4DC7 /* MessagingCollectionView.m in Sources */,
+				678049781A33D047001E4DC7 /* MessagingVideoCell.m in Sources */,
 				678049461A313106001E4DC7 /* UIColor+Messaging.m in Sources */,
+				6780497B1A33D064001E4DC7 /* MessagingLocationCell.m in Sources */,
 				678048281A312954001E4DC7 /* main.m in Sources */,
 				678049491A313106001E4DC7 /* MessageBubbleController.m in Sources */,
 				678049501A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.m in Sources */,

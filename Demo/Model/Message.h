@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "MessagingKitConstants.h"
 
@@ -16,11 +17,16 @@
 @property (strong, nonatomic) NSDate *sentAt;
 @property (assign, nonatomic) MIMEType MIMEType;
 @property (strong, nonatomic) NSData *data;
+@property (strong, nonatomic) CLLocation *location;
 
 + (instancetype)messageWithData:(NSData *)data
                        MIMEType:(MIMEType)MIMEType
                    sentByUserID:(NSString *)sentByUserID
                          sentAt:(NSDate *)sentAt;
+
++ (instancetype)messageWithLocation:(CLLocation *)location
+                       sentByUserID:(NSString *)sentByUserID
+                             sentAt:(NSDate *)sentAt;
 
 + (instancetype)messageWithText:(NSString *)text
                    sentByUserID:(NSString *)sentByUserID

@@ -71,7 +71,6 @@
  *  The amount of spacing inbetween the avatar and message bubble for outgoing messages.
  *
  *  @discussion The spacing will be set to 0.0 if outgoingAvatarSize.width is set to 0.0.
- *
  */
 @property (assign, nonatomic) CGFloat outgoingMessageBubbleAvatarSpacing;
 
@@ -86,7 +85,6 @@
  *
  *  @discussion The width value is used to determine the height that will maintain the same aspect ratio.
  *  The height value will be used as the maximum height.
- *
  */
 @property (assign, nonatomic) CGSize incomingPhotoImageSize;
 
@@ -97,6 +95,16 @@
  *  The height value will be used as the maximum height.
  */
 @property (assign, nonatomic) CGSize outgoingPhotoImageSize;
+
+/**
+ *  The size of the map view for incoming location messages.
+ */
+@property (assign, nonatomic) CGSize incomingLocationMapSize;
+
+/**
+ *  The size of the map view for outgoing location messages.
+ */
+@property (assign, nonatomic) CGSize outgoingLocationMapSize;
 
 /**
  *  The interitem spacing between an incoming and outgoing message.

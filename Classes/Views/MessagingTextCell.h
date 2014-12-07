@@ -11,7 +11,7 @@
 
 #import "MessagingParentCell.h"
 
-@protocol MessagingTextCell <MessagingParentCellDelegate>
+@protocol MessagingTextCellDelegate <MessagingParentCellDelegate>
 
 @optional
 - (void)messageCellDidTapMessageBubble:(MessagingParentCell *)cell;
@@ -20,7 +20,7 @@
 
 @interface MessagingTextCell : MessagingParentCell
 
-@property (weak, nonatomic) id <MessagingTextCell> delegate;
+@property (weak, nonatomic) id <MessagingTextCellDelegate> delegate;
 
 @property (strong, nonatomic, readonly) UITextView *messageTextView;
 

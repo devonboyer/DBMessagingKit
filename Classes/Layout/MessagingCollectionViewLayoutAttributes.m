@@ -71,6 +71,16 @@
     _outgoingPhotoImageSize = CGSizeMake(ceil(outgoingPhotoImageSize.width), ceilf(outgoingPhotoImageSize.height));
 }
 
+- (void)setIncomingLocationMapSize:(CGSize)incomingLocationMapSize {
+    NSParameterAssert(incomingLocationMapSize.width >= 0.0f && incomingLocationMapSize.height >= 0.0f);
+    _incomingLocationMapSize = CGSizeMake(ceil(incomingLocationMapSize.width), ceilf(incomingLocationMapSize.height));
+}
+
+-(void)setOutgoingLocationMapSize:(CGSize)outgoingLocationMapSize {
+    NSParameterAssert(outgoingLocationMapSize.width >= 0.0f && outgoingLocationMapSize.height >= 0.0f);
+    _outgoingLocationMapSize = CGSizeMake(ceil(outgoingLocationMapSize.width), ceilf(outgoingLocationMapSize.height));
+}
+
 - (void)setIncomingMessageBubbleAvatarSpacing:(CGFloat)incomingMessageBubbleAvatarSpacing
 {
     NSParameterAssert(incomingMessageBubbleAvatarSpacing >= 0.0f);
@@ -109,6 +119,8 @@
     copy.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
     copy.incomingPhotoImageSize = self.incomingPhotoImageSize;
     copy.outgoingPhotoImageSize = self.outgoingPhotoImageSize;
+    copy.incomingLocationMapSize = self.incomingLocationMapSize;
+    copy.outgoingLocationMapSize = self.outgoingLocationMapSize;
     copy.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     copy.outgoingMessageBubbleAvatarSpacing = self.outgoingMessageBubbleAvatarSpacing;
     copy.inOutMessageBubbleInteritemSpacing = self.inOutMessageBubbleInteritemSpacing;

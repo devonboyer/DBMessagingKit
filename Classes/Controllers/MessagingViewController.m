@@ -19,6 +19,7 @@
 #import "MessagingCollectionViewFlowLayoutInvalidationContext.h"
 #import "MessagingTextCell.h"
 #import "MessagingPhotoCell.h"
+#import "MessagingLocationCell.h"
 #import "MessagingTimestampSupplementaryView.h"
 #import "MessagingLoadEarlierMessagesHeaderView.h"
 #import "MessagingTypingIndicatorFooterView.h"
@@ -277,16 +278,21 @@
     return nil;
 }
 
+- (MIMEType)collectionView:(UICollectionView *)collectionView MIMETypeForMessageAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
+    return 0;
+}
+
 - (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath
 {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
 }
 
-- (MIMEType)collectionView:(UICollectionView *)collectionView MIMETypeForMessageAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
-    return 0;
+    return nil;
 }
 
 - (NSString *)collectionView:(UICollectionView *)collectionView sentByUserIDForMessageAtIndexPath:(NSIndexPath *)indexPath
@@ -318,7 +324,7 @@
 
 - (void)collectionView:(MessagingCollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
 
-- (void)collectionView:(MessagingCollectionView *)collectionView wantsPhotoForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
+- (void)collectionView:(MessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
 
 #pragma mark - UICollectionViewDataSource
 
@@ -346,6 +352,10 @@
             cellIdentifier = kMessagingPhotoCellIdentifier;
             break;
         }
+        case MIMETypeLocation: {
+            cellIdentifier = kMessagingLocationCellIdentifier;
+            break;
+        }
         default:
             break;
     }
@@ -353,7 +363,7 @@
     MessagingParentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.delegate = collectionView;
     cell.collectionView = collectionView;
-    cell.type = (isOutgoingMessage) ? IGChatMessageBubbleTypeOutgoing : IGChatMessageBubbleTypeIncoming;
+    cell.type = (isOutgoingMessage) ? MessageBubbleTypeOutgoing : MessageBubbleTypeIncoming;
     
     cell.cellTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView cellTopLabelAttributedTextForItemAtIndexPath:indexPath];
     cell.cellBottomLabel.attributedText = [collectionView.dataSource collectionView:collectionView cellBottomLabelAttributedTextForItemAtIndexPath:indexPath];
@@ -374,11 +384,17 @@
             MessagingPhotoCell *photoCell = (MessagingPhotoCell *)cell;
             UIImage *image = [[UIImage alloc] initWithData:[self collectionView:collectionView dataForMessageAtIndexPath:indexPath]];
             if (!image) {
-                [collectionView.dataSource collectionView:collectionView wantsPhotoForImageView:photoCell.photoImageView atIndexPath:indexPath];
+                [collectionView.dataSource collectionView:collectionView wantsImageForImageView:photoCell.photoImageView atIndexPath:indexPath];
             }
             else {
                 photoCell.photoImageView.image = image;
             }
+            break;
+        }
+        case MIMETypeLocation: {
+            MessagingLocationCell *locationCell = (MessagingLocationCell *)cell;
+            CLLocation *location = [collectionView.dataSource collectionView:collectionView locationForMessageAtIndexPath:indexPath];
+            [locationCell setLocation:location];
             break;
         }
         default:
@@ -404,7 +420,7 @@
         NSString *sentByUserID = [self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath];
         
         supplementaryView.timestampLabel.attributedText = [collectionView.dataSource collectionView:collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:indexPath];
-        supplementaryView.type = ([sentByUserID isEqualToString:[self senderUserID]]) ? IGChatMessageBubbleTypeOutgoing : IGChatMessageBubbleTypeIncoming;
+        supplementaryView.type = ([sentByUserID isEqualToString:[self senderUserID]]) ? MessageBubbleTypeOutgoing : MessageBubbleTypeIncoming;
         
         return supplementaryView;
     }

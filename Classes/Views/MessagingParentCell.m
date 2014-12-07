@@ -85,7 +85,7 @@
                                            self.cellTopLabelHeight)];
     
     switch (self.type) {
-        case IGChatMessageBubbleTypeIncoming: {
+        case MessageBubbleTypeIncoming: {
             
             [self.messageTopLabel setTextAlignment:NSTextAlignmentLeft];
             [self.cellBottomLabel setTextAlignment:NSTextAlignmentLeft];
@@ -111,7 +111,7 @@
             [_accessoryImageView setFrame:CGRectMake(CGRectGetMaxX(self.avatarImageView.frame) - accessoryImageSize.width / 1.2, CGRectGetMaxY(self.avatarImageView.frame) - accessoryImageSize.height / 1.2, accessoryImageSize.width, accessoryImageSize.height)];
             break;
         }
-        case IGChatMessageBubbleTypeOutgoing: {
+        case MessageBubbleTypeOutgoing: {
             
             [self.messageTopLabel setTextAlignment:NSTextAlignmentRight];
             [self.cellBottomLabel setTextAlignment:NSTextAlignmentRight];

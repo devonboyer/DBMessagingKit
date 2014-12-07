@@ -14,9 +14,9 @@
 @class MessagingParentCell;
 @class MessagingCollectionView;
 
-typedef NS_ENUM(NSInteger, IGChatMessageBubbleType) {
-    IGChatMessageBubbleTypeOutgoing,
-    IGChatMessageBubbleTypeIncoming
+typedef NS_ENUM(NSInteger, MessageBubbleType) {
+    MessageBubbleTypeOutgoing,
+    MessageBubbleTypeIncoming
 };
 
 @protocol MessagingParentCellDelegate <NSObject>
@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, IGChatMessageBubbleType) {
 @property (strong, nonatomic) UIImageView *avatarImageView;
 @property (strong, nonatomic) UIImageView *accessoryImageView;
 @property (strong, nonatomic) UIImageView *messageBubbleImageView;
-@property (assign, nonatomic) IGChatMessageBubbleType type;
+@property (assign, nonatomic) MessageBubbleType type;
 @property (assign, nonatomic) BOOL hideAvatar;
 
 @property (assign, nonatomic) CGSize incomingAvatarSize;

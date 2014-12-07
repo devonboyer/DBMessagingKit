@@ -17,58 +17,67 @@
     return [[self alloc] initWithData:data MIMEType:MIMEType sentByUserID:sentByUserID sentAt:sentAt];
 }
 
-+ (instancetype)messageWithText:(NSString *)text sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt {
++ (instancetype)messageWithLocation:(CLLocation *)location
+                       sentByUserID:(NSString *)sentByUserID
+                             sentAt:(NSDate *)sentAt {
+    return [[self alloc] initWithLocation:location sentByUserID:sentByUserID sentAt:sentAt];
+}
+
++ (instancetype)messageWithText:(NSString *)text
+                   sentByUserID:(NSString *)sentByUserID
+                         sentAt:(NSDate *)sentAt {
     return [[self alloc] initWithText:text sentByUserID:sentByUserID sentAt:sentAt];
 }
 
-+ (instancetype)messageWithImage:(UIImage *)image sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt {
++ (instancetype)messageWithImage:(UIImage *)image
+                    sentByUserID:(NSString *)sentByUserID
+                          sentAt:(NSDate *)sentAt {
     return [[self alloc] initWithImage:image sentByUserID:sentByUserID sentAt:sentAt];
 }
 
-- (instancetype)initWithData:(NSData *)data MIMEType:(MIMEType)MIMEType sentByUserID:(NSString *)senderId sentAt:(NSDate *)date
+- (instancetype)initWithLocation:(CLLocation *)location sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt
 {
-    self = [self init];
+    self = [self initWithMIMEType:MIMETypeLocation sentByUserID:sentByUserID sentAt:sentAt];
     if (self) {
-        _data = data;
-        _sentByUserID = senderId;
-        _sentAt = date;
-        _MIMEType = MIMEType;
+        _location = location;
     }
     return self;
 }
 
-- (instancetype)initWithText:(NSString *)text sentByUserID:(NSString *)senderId sentAt:(NSDate *)date
+- (instancetype)initWithData:(NSData *)data MIMEType:(MIMEType)MIMEType sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt
 {
-    self = [self init];
+    self = [self initWithMIMEType:MIMEType sentByUserID:sentByUserID sentAt:sentAt];
+    if (self) {
+        _data = data;
+    }
+    return self;
+}
+
+- (instancetype)initWithText:(NSString *)text sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt
+{
+    self = [self initWithMIMEType:MIMETypeText sentByUserID:sentByUserID sentAt:sentAt];
     if (self) {
         _data = [text dataUsingEncoding:NSUTF8StringEncoding];
-        _sentByUserID = senderId;
-        _sentAt = date;
-        _MIMEType = MIMETypeText;
     }
     return self;
 }
 
 - (instancetype)initWithImage:(UIImage *)image sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt
 {
-    self = [self init];
+    self = [self initWithMIMEType:MIMETypeImage sentByUserID:sentByUserID sentAt:sentAt];
     if (self) {
         _data = [[NSData alloc] initWithData:UIImagePNGRepresentation(image)];
-        _sentByUserID = sentByUserID;
-        _sentAt = sentAt;
-        _MIMEType = MIMETypeImage;
     }
     return self;
 }
 
-- (instancetype)init
+- (instancetype)initWithMIMEType:(MIMEType)MIMEType sentByUserID:(NSString *)sentByUserID sentAt:(NSDate *)sentAt
 {
-    self = [super init];
+    self = [self init];
     if (self) {
-        _data = nil;
-        _sentByUserID = @"Unknown";
-        _sentAt = [NSDate date];
-        _MIMEType = MIMETypeText;
+        _sentByUserID = sentByUserID;
+        _sentAt = sentAt;
+        _MIMEType = MIMEType;
     }
     return self;
 }

@@ -10,8 +10,8 @@
 //
 
 #import "MessagingPhotoCell.h"
-
 #import "MessagingCollectionViewLayoutAttributes.h"
+#import "UIColor+Messaging.h"
 
 @interface MaskedImageView : UIImageView
 
@@ -68,6 +68,8 @@
         [self.photoImageView setUserInteractionEnabled:YES];
         [self.photoImageView setFrame:self.messageBubbleImageView.frame];
         [self.photoImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self.photoImageView setBackgroundColor:[UIColor iMessageGrayColor]];
+        [self.photoImageView setImage:nil]; // create an initial mask
         [self.messageBubbleImageView addSubview:self.photoImageView];
         
         UITapGestureRecognizer *photoTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePhotoTap:)];
@@ -90,7 +92,7 @@
     [super layoutSubviews];
     
     switch (self.type) {
-        case IGChatMessageBubbleTypeIncoming: {
+        case MessageBubbleTypeIncoming: {
             
             CGFloat photoWidth = self.incomingPhotoImageSize.width;
             
@@ -100,7 +102,7 @@
                                                              CGRectGetHeight(self.frame) - self.cellTopLabelHeight - self.messageTopLabelHeight - self.cellBottomLabelHeight)];
             break;
         }
-        case IGChatMessageBubbleTypeOutgoing: {
+        case MessageBubbleTypeOutgoing: {
             
             CGFloat photoWidth = self.outgoingPhotoImageSize.width;
             
