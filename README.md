@@ -9,8 +9,11 @@ MessagingKit
 An open-source messaging UI framework for iOS, built with simplicity and customization in mind.
 
 ####Supports####
-- Text Messages
-- Photo Messages
+ Supports the following MIME types (Internet Media Type):
+ - Text
+ - Image
+
+####Features####
 - Individual Message Timestamps
 - Interactive Keyboard Dismiss
 - Springy Bubbles (similar to iMessage)
