@@ -17,6 +17,8 @@
 
 @interface MessageBubbleController ()
 
+@property (strong, nonatomic) NSMutableArray *messageGroupIndexPaths;
+
 @property (weak, nonatomic) MessagingCollectionView *collectionView;
 
 @property (strong, nonatomic) UIImageView *incomingTopMessageBubble;
@@ -101,10 +103,13 @@
                                                                                template:templateImage];
 }
 
+#pragma mark - Public
+
 - (UIImageView *)messageBubbleForIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSAssert(self.outgoingDefaultMessageBubble && self.incomingDefaultMessageBubble, @"Error: default chat bubble needs to be set");
+    NSAssert(self.outgoingDefaultMessageBubble &&
+            self.incomingDefaultMessageBubble, @"Error: default message bubble cannot be nil");
     
     NSIndexPath *beforeIndexPath = [NSIndexPath indexPathForItem:indexPath.row - 1 inSection:indexPath.section];
     NSIndexPath *afterIndexPath = [NSIndexPath indexPathForItem:indexPath.row + 1 inSection:indexPath.section];
@@ -190,13 +195,13 @@
                 return isOutgoing ? self.outgoingDefaultMessageBubble : self.incomingDefaultMessageBubble;
             }
         }
-        
-        if (![afterSentByUserID isEqualToString:sentByUserID] && ![beforeSentByUserID isEqualToString:sentByUserID]) {
-            return isOutgoing ? self.outgoingDefaultMessageBubble : self.incomingDefaultMessageBubble;
-        }
     }
     
-    return nil;
+    return isOutgoing ? self.outgoingDefaultMessageBubble : self.incomingDefaultMessageBubble;
+}
+
+- (void)beginMessageGroupAtIndexPath:(NSIndexPath *)indexPath {
+    [_messageGroupIndexPaths addObject:indexPath];
 }
 
 @end

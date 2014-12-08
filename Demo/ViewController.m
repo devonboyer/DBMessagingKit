@@ -34,6 +34,10 @@
     [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"Oh, we can't forget data detectors for phone numbers 123-456-7890 and websites https://github.com/DevonBoyer and more." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithLocation:[[CLLocation alloc] initWithLatitude:42.9837 longitude:81.2497] sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"PingTransition" ofType: @"gif"];
+    NSData *GIFData = [[NSData alloc] initWithContentsOfFile:filePath];
+    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
 
     // Configure a message bubble controller with template images
     _messageBubbleController = [[MessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
@@ -157,7 +161,8 @@
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
 
-    if (indexPath.row %3 == 0) {
+    if (indexPath.row % 3 == 0) {
+        [_messageBubbleController beginMessageGroupAtIndexPath:indexPath];
         return [[MessagingTimestampFormatter sharedFormatter] attributedTimestampForDate:message.sentAt];
     }
     
@@ -194,12 +199,27 @@
     NSLog(@"Avatar Tapped");
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView atIndexPath:(NSIndexPath *)indexPath {
+    
     NSLog(@"Message Tapped");
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didTapPhotoImageView:(UIImageView *)photoImageView atIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Photo Tapped");
+- (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+    Message *message = [_messages objectAtIndex:indexPath.row];
+    
+    switch (message.MIMEType) {
+        case MIMETypeImage:
+            NSLog(@"Image Tapped");
+            break;
+        case MIMETypeLocation:
+            NSLog(@"Location Tapped");
+            break;
+        case MIMETypeGIF:
+            NSLog(@"GIF Tapped");
+            break;
+        default:
+            break;
+    }
 }
 
 @end

@@ -6,19 +6,12 @@
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
-#import "MessagingPhotoCell.h"
+#import "MessagingImageCell.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@protocol MessagingLocationCellDelegate <MessagingParentCellDelegate>
-
-@optional
-- (void)messageCell:(MessagingParentCell *)cell didTapMapImageView:(UIImageView *)mapView withLocation:(CLLocation *)location coordinateRegion:(MKCoordinateRegion)coordinateRegion;
-
-@end
-
-@interface MessagingLocationCell : MessagingPhotoCell
+@interface MessagingLocationCell : MessagingImageCell
 
 @property (strong, nonatomic) CLLocation *location;
 

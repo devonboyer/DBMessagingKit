@@ -9,7 +9,7 @@
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
-#import "MessagingPhotoCell.h"
+#import "MessagingImageCell.h"
 #import "MessagingCollectionViewLayoutAttributes.h"
 #import "UIColor+Messaging.h"
 
@@ -47,34 +47,34 @@
 
 @end
 
-@interface MessagingPhotoCell () <UIGestureRecognizerDelegate>
+@interface MessagingImageCell () <UIGestureRecognizerDelegate>
 
-@property (strong, nonatomic) MaskedImageView *photoImageView;
+@property (strong, nonatomic) MaskedImageView *imageView;
 
 @property (assign, nonatomic) CGSize incomingPhotoImageSize;
 @property (assign, nonatomic) CGSize outgoingPhotoImageSize;
 
 @end
 
-@implementation MessagingPhotoCell
+@implementation MessagingImageCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.photoImageView = [[MaskedImageView alloc] init];
-        [self.photoImageView setContentMode:UIViewContentModeScaleAspectFill];
-        [self.photoImageView setClipsToBounds:YES];
-        [self.photoImageView setUserInteractionEnabled:YES];
-        [self.photoImageView setFrame:self.messageBubbleImageView.frame];
-        [self.photoImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        [self.photoImageView setBackgroundColor:[UIColor iMessageGrayColor]];
-        [self.photoImageView setImage:nil]; // create an initial mask
-        [self.messageBubbleImageView addSubview:self.photoImageView];
+        self.imageView = [[MaskedImageView alloc] init];
+        [self.imageView setContentMode:UIViewContentModeScaleAspectFill];
+        [self.imageView setClipsToBounds:YES];
+        [self.imageView setUserInteractionEnabled:YES];
+        [self.imageView setFrame:self.messageBubbleImageView.frame];
+        [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self.imageView setBackgroundColor:[UIColor iMessageGrayColor]];
+        [self.imageView setImage:nil]; // create an initial mask
+        [self.messageBubbleImageView addSubview:self.imageView];
         
-        UITapGestureRecognizer *photoTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePhotoTap:)];
-        [photoTap setDelegate:self];
-        [self.photoImageView addGestureRecognizer:photoTap];
+        UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTap:)];
+        [imageTap setDelegate:self];
+        [self.imageView addGestureRecognizer:imageTap];
     }
     return self;
 }
@@ -83,8 +83,8 @@
 {
     [super applyLayoutAttributes:layoutAttributes];
     
-    self.incomingPhotoImageSize = layoutAttributes.incomingPhotoImageSize;
-    self.outgoingPhotoImageSize = layoutAttributes.outgoingPhotoImageSize;
+    self.incomingPhotoImageSize = layoutAttributes.incomingImageSize;
+    self.outgoingPhotoImageSize = layoutAttributes.outgoingImageSize;
 }
 
 - (void)layoutSubviews
@@ -119,10 +119,10 @@
 
 #pragma mark - Actions
 
-- (void)handlePhotoTap:(UITapGestureRecognizer *)tap
+- (void)handleImageTap:(UITapGestureRecognizer *)tap
 {
-    if ([self.delegate respondsToSelector:@selector(messageCell:didTapPhotoImageView:)]) {
-        [self.delegate messageCell:self didTapPhotoImageView:self.photoImageView];
+    if ([self.delegate respondsToSelector:@selector(messageCell:didTapImageView:)]) {
+        [self.delegate messageCell:self didTapImageView:self.imageView];
     }
 }
 
@@ -131,27 +131,6 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
-}
-
-
-
-// TODO: Remove this when confident that MaskedImageView is working properly
-#pragma mark - Utility
-
-- (void)applyMask
-{
-    UIImageView *imageView = self.photoImageView;
-    
-    CALayer *mask = [CALayer layer];
-    mask.contents = (id)[self.messageBubbleImageView.image CGImage];
-    mask.frame = imageView.layer.bounds;
-    mask.contentsScale = [UIScreen mainScreen].scale;
-    mask.contentsCenter = CGRectMake(imageView.center.x/imageView.layer.bounds.size.width,
-                                     imageView.center.y/imageView.layer.bounds.size.height,
-                                     1.0/imageView.layer.bounds.size.width,
-                                     1.0/imageView.layer.bounds.size.height);
-    
-    self.messageBubbleImageView.layer.mask = mask;
 }
 
 @end

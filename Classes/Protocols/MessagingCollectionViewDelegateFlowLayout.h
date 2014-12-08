@@ -30,24 +30,24 @@
 - (void)collectionView:(UICollectionView *)collectionView didTapAvatarImageView:(UIImageView *)avatarImageView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  Notifies the delegate that the photo image view at the specified indexPath did receive a tap event.
+ *  Notifies the delegate that the image view at the specified indexPath did receive a tap event.
  *
  *  @param collectionView  The collection view object that is notifying the delegate of the tap event.
- *  @param photoImageView  The photo image view that was tapped.
+ *  @param imageView  The image view that was tapped.
  *  @param indexPath       The index path of the item for which the photo was tapped.
  */
-- (void)collectionView:(UICollectionView *)collectionView didTapPhotoImageView:(UIImageView *)photoImageView atIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Notifies the delegate that the message bubble at the specified indexPath did receive a tap event.
  *
- *  @param collectionView The collection view object that is notifying the delegate of the tap event.
- *  @param indexPath      The index path of the item for which the message bubble was tapped.
+ *  @param collectionView          The collection view object that is notifying the delegate of the tap event.
+ *  @param messageBubbleImageView  The message bubble image view that was tapped.
+ *  @param indexPath               The index path of the item for which the message bubble was tapped.
  *
  *  @discussion A tap event for a message bubble will either mean that a timestamp is being displayed, or just ended
  *  being displayed.
  */
-- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleAtIndexPath:(NSIndexPath *)indexPath;
-
+- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView atIndexPath:(NSIndexPath *)indexPath;
 
 @end

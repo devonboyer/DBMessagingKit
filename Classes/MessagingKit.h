@@ -35,7 +35,7 @@
 #import "MessageInputView.h"
 #import "MessagingCollectionView.h"
 #import "MessagingTextCell.h"
-#import "MessagingPhotoCell.h"
+#import "MessagingImageCell.h"
 #import "MessagingInputTextView.h"
 #import "MessagingTimestampSupplementaryView.h"
 #import "MessagingLoadEarlierMessagesHeaderView.h"
@@ -43,8 +43,9 @@
 
 // Categories
 #import "NSAttributedString+Messaging.h"
-#import "UIImage+Messaging.h"
 #import "UIColor+Messaging.h"
+#import "UIImage+Messaging.h"
+#import "UIImage+AnimatedGIF.h"
 
 // Classes
 #import "InteractiveKeyboardController.h"

@@ -104,8 +104,8 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     self.messageBubbleLeftRightMargin = 50.0f;
     self.incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
     self.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
-    self.incomingPhotoImageSize = CGSizeMake(220.0, 300.0);
-    self.outgoingPhotoImageSize = CGSizeMake(220.0, 300.0);
+    self.incomingImageSize = CGSizeMake(220.0, 240.0);
+    self.outgoingImageSize = CGSizeMake(220.0, 240.0);
     self.incomingLocationMapSize = CGSizeMake(180.0, 100.0);
     self.outgoingLocationMapSize = CGSizeMake(180.0, 100.0);
     self.incomingMessageBubbleAvatarSpacing = 5.0;
@@ -426,15 +426,15 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setIncomingPhotoImageSize:(CGSize)incomingPhotoImageSize
+- (void)setIncomingImageSize:(CGSize)incomingImageSize
 {
-    _incomingPhotoImageSize = incomingPhotoImageSize;
+    _incomingImageSize = incomingImageSize;
     [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setOutgoingPhotoImageSize:(CGSize)outgoingPhotoImageSize
+- (void)setOutgoingImageSize:(CGSize)outgoingImageSize
 {
-    _outgoingPhotoImageSize = outgoingPhotoImageSize;
+    _outgoingImageSize = outgoingImageSize;
     [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
@@ -587,9 +587,9 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     
     layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
     
-    layoutAttributes.incomingPhotoImageSize = self.incomingPhotoImageSize;
+    layoutAttributes.incomingImageSize = self.incomingImageSize;
     
-    layoutAttributes.outgoingPhotoImageSize = self.outgoingPhotoImageSize;
+    layoutAttributes.outgoingImageSize = self.outgoingImageSize;
     
     layoutAttributes.incomingLocationMapSize = self.incomingLocationMapSize;
     
@@ -657,13 +657,18 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
             break;
         }
         case MIMETypeImage: {
-            CGSize photoSize = [self _photoSizeForIndexPath:indexPath];
+            CGSize photoSize = [self _imageSizeForIndexPath:indexPath];
             CGSize imageSize = [[UIImage alloc] initWithData:data].size;
             finalSize.height = MIN(imageSize.height / (imageSize.width / photoSize.width), photoSize.height);
             break;
         }
         case MIMETypeLocation: {
             finalSize = [self _locationMapSizeForIndexPath:indexPath];
+            break;
+        }
+        case MIMETypeGIF: {
+            finalSize = [self _imageSizeForIndexPath:indexPath];
+            break;
         }
         default:
             break;
@@ -708,13 +713,13 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     return self.incomingLocationMapSize;
 }
 
-- (CGSize)_photoSizeForIndexPath:(NSIndexPath *)indexPath
+- (CGSize)_imageSizeForIndexPath:(NSIndexPath *)indexPath
 {
     if ([self _isOutgoingMessageAtIndexPath:indexPath]) {
-        return self.outgoingPhotoImageSize;
+        return self.outgoingImageSize;
     }
     
-    return self.incomingPhotoImageSize;
+    return self.incomingImageSize;
 }
 
 - (CGFloat)_messageBubbleAvatarSpacingForIndexPath:(NSIndexPath *)indexPath

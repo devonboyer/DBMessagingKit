@@ -18,7 +18,7 @@
 #import "MessagingCollectionViewFlowLayout.h"
 #import "MessagingCollectionViewFlowLayoutInvalidationContext.h"
 #import "MessagingTextCell.h"
-#import "MessagingPhotoCell.h"
+#import "MessagingImageCell.h"
 #import "MessagingLocationCell.h"
 #import "MessagingTimestampSupplementaryView.h"
 #import "MessagingLoadEarlierMessagesHeaderView.h"
@@ -349,11 +349,15 @@
             break;
         }
         case MIMETypeImage: {
-            cellIdentifier = kMessagingPhotoCellIdentifier;
+            cellIdentifier = kMessagingImageCellIdentifier;
             break;
         }
         case MIMETypeLocation: {
             cellIdentifier = kMessagingLocationCellIdentifier;
+            break;
+        }
+        case MIMETypeGIF: {
+            cellIdentifier = kMessagingGIFCellIdentifier;
             break;
         }
         default:
@@ -381,13 +385,13 @@
             break;
         }
         case MIMETypeImage:{
-            MessagingPhotoCell *photoCell = (MessagingPhotoCell *)cell;
+            MessagingImageCell *imageCell = (MessagingImageCell *)cell;
             UIImage *image = [[UIImage alloc] initWithData:[self collectionView:collectionView dataForMessageAtIndexPath:indexPath]];
-            if (!image) {
-                [collectionView.dataSource collectionView:collectionView wantsImageForImageView:photoCell.photoImageView atIndexPath:indexPath];
+            if (image) {
+                imageCell.imageView.image = image;
             }
             else {
-                photoCell.photoImageView.image = image;
+                [collectionView.dataSource collectionView:collectionView wantsImageForImageView:imageCell.imageView atIndexPath:indexPath];
             }
             break;
         }
@@ -395,6 +399,17 @@
             MessagingLocationCell *locationCell = (MessagingLocationCell *)cell;
             CLLocation *location = [collectionView.dataSource collectionView:collectionView locationForMessageAtIndexPath:indexPath];
             [locationCell setLocation:location];
+            break;
+        }
+        case MIMETypeGIF: {
+            MessagingGIFCell *GIFCell = (MessagingGIFCell *)cell;
+            NSData *GIFData = [collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath];
+            if (GIFData) {
+                GIFCell.animatedGIFData = GIFData;
+            }
+            else {
+               [collectionView.dataSource collectionView:collectionView wantsImageForImageView:GIFCell.imageView atIndexPath:indexPath];
+            }
             break;
         }
         default:
@@ -432,9 +447,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didTapAvatarImageView:(UIImageView *)avatarImageView atIndexPath:(NSIndexPath *)indexPath { }
 
-- (void)collectionView:(UICollectionView *)collectionView didTapPhotoImageView:(UIImageView *)photoImageView atIndexPath:(NSIndexPath *)indexPath { }
+- (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
 
-- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleAtIndexPath:(NSIndexPath *)indexPath { }
+- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView atIndexPath:(NSIndexPath *)indexPath { }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 

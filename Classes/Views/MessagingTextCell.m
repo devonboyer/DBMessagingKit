@@ -163,8 +163,8 @@
 
 - (void)handleMessageTextViewTap:(UITapGestureRecognizer *)tap
 {
-    if ([self.delegate respondsToSelector:@selector(messageCellDidTapMessageBubble:)]) {
-        [self.delegate messageCellDidTapMessageBubble:self];
+    if ([self.delegate respondsToSelector:@selector(messageCell:didTapMessageBubbleImageView:)]) {
+        [self.delegate messageCell:self didTapMessageBubbleImageView:self.messageBubbleImageView];
     }
     
     CGPoint tapPoint = [tap locationInView:self.collectionView];
@@ -182,18 +182,6 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return otherGestureRecognizer == _longPress;
-}
-
-#pragma mark - SocialDetectionTextViewDelegate
-
-- (void)textView:(UITextView *)textView didSelectHashtag:(NSString *)hashtag
-{
-    NSLog(@"%@", hashtag);
-}
-
-- (void)textView:(UITextView *)textView didSelectMention:(NSString *)mention
-{
-    NSLog(@"%@", mention);
 }
 
 #pragma mark - Notifications

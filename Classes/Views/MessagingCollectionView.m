@@ -20,8 +20,9 @@
 #import "MessagingCollectionViewFlowLayout.h"
 
 NSString * const kMessagingTextCellIdentifier = @"kMessagingTextCellIdentifier";
-NSString * const kMessagingPhotoCellIdentifier = @"kMessagingPhotoCellIdentifier";
+NSString * const kMessagingImageCellIdentifier = @"kMessagingImageCellIdentifier";
 NSString * const kMessagingLocationCellIdentifier = @"kMessagingLocationCellIdentifier";
+NSString * const kMessagingGIFCellIdentifier = @"kMessagingGIFCellIdentifier";
 
 NSString * const kMessagingimestampSupplementaryViewIdentifier = @"kMessagingimestampSupplementaryViewIdentifier";
 NSString * const kMessagingTypingIndicatorFooterViewIdentifier = @"kMessagingTypingIndicatorFooterViewIdentifier";
@@ -57,9 +58,10 @@ NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHe
 {
     // Cells
     [self registerClass:[MessagingTextCell class] forCellWithReuseIdentifier:kMessagingTextCellIdentifier];
-    [self registerClass:[MessagingPhotoCell class] forCellWithReuseIdentifier:kMessagingPhotoCellIdentifier];
+    [self registerClass:[MessagingImageCell class] forCellWithReuseIdentifier:kMessagingImageCellIdentifier];
     [self registerClass:[MessagingLocationCell class] forCellWithReuseIdentifier:kMessagingLocationCellIdentifier];
-
+    [self registerClass:[MessagingGIFCell class] forCellWithReuseIdentifier:kMessagingGIFCellIdentifier];
+    
     // Supplementary Views
     [self registerClass:[MessagingTimestampSupplementaryView class] forSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp withReuseIdentifier:kMessagingimestampSupplementaryViewIdentifier];
     [self registerClass:[MessagingTypingIndicatorFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kMessagingTypingIndicatorFooterViewIdentifier];
@@ -90,7 +92,7 @@ NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHe
     return timestampSupplementaryView;
 }
 
-#pragma mark - ChatCollectionViewCellDelegate
+#pragma mark - MessagingParentCellDelegate
 
 - (void)messageCell:(MessagingParentCell *)cell didTapAvatarImageView:(UIImageView *)avatarImageView
 {
@@ -99,16 +101,18 @@ NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHe
                       atIndexPath:[self indexPathForCell:cell]];
 }
 
-- (void)messageCell:(MessagingParentCell *)cell didTapPhotoImageView:(UIImageView *)photoImageView
+- (void)messageCell:(MessagingParentCell *)cell didTapImageView:(UIImageView *)imageView
 {
     [self.delegate collectionView:self
-            didTapPhotoImageView:photoImageView
+             didTapImageView:imageView
                       atIndexPath:[self indexPathForCell:cell]];
 }
 
-- (void)messageCellDidTapMessageBubble:(MessagingParentCell *)cell
+- (void)messageCell:(MessagingParentCell *)cell didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView
 {
-    [self.delegate collectionView:self didTapMessageBubbleAtIndexPath:[self indexPathForCell:cell]];
+    [self.delegate collectionView:self
+     didTapMessageBubbleImageView:messageBubbleImageView
+                      atIndexPath:[self indexPathForCell:cell]];
 }
 
 @end

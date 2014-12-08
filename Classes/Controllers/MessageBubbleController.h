@@ -122,4 +122,9 @@
  */
 - (UIImageView *)messageBubbleForIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ *  Begins a consecutive group at the specified indexPath.
+ */
+- (void)beginMessageGroupAtIndexPath:(NSIndexPath *)indexPath;
+
 @end

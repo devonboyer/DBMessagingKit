@@ -83,20 +83,27 @@ typedef void (^MessagingLocationCompletionBlock)(void);
     if (!_cachedMapSnapshotImage) {
         CLLocationDegrees latitude = location.coordinate.latitude;
         CLLocationDegrees longitude = location.coordinate.longitude;
-        CLLocationCoordinate2D coordinateOrigin = CLLocationCoordinate2DMake(latitude, longitude);
-        CLLocationCoordinate2D coordinateMax = CLLocationCoordinate2DMake(latitude + [self mapSize].width, longitude + [self mapSize].height);
+//        CLLocationCoordinate2D coordinateOrigin = CLLocationCoordinate2DMake(latitude, longitude);
+//        CLLocationCoordinate2D coordinateMax = CLLocationCoordinate2DMake(latitude + 50, longitude + 50);
+//
+//        MKMapPoint upperLeft = MKMapPointForCoordinate(coordinateOrigin);
+//        MKMapPoint lowerRight = MKMapPointForCoordinate(coordinateMax);
+//        MKMapRect mapRect = MKMapRectMake(upperLeft.x,
+//                                          upperLeft.y,
+//                                          lowerRight.x - upperLeft.x,
+//                                          lowerRight.y - upperLeft.y);
+        MKCoordinateRegion coordinateRegion;
+        coordinateRegion.center.latitude = latitude;
+        coordinateRegion.center.longitude = longitude;
+        coordinateRegion.span.latitudeDelta = 10.0;
+        coordinateRegion.span.longitudeDelta = 10.0;
 
-        MKMapPoint upperLeft = MKMapPointForCoordinate(coordinateOrigin);
-        MKMapPoint lowerRight = MKMapPointForCoordinate(coordinateMax);
-
-        MKMapRect mapRect = MKMapRectMake(upperLeft.x,
-                                          upperLeft.y,
-                                          lowerRight.x - upperLeft.x,
-                                          lowerRight.y - upperLeft.y);
-
-        [self createMapViewSnapshotForLocation:location coordinateRegion:MKCoordinateRegionForMapRect(MKMapRectWorld) withCompletionHandler:^{
-            self.photoImageView.image = _cachedMapSnapshotImage;
+        [self createMapViewSnapshotForLocation:location coordinateRegion:coordinateRegion withCompletionHandler:^{
+            self.imageView.image = _cachedMapSnapshotImage;
         }];
+    }
+    else {
+        self.imageView.image = _cachedMapSnapshotImage;
     }
 }
 

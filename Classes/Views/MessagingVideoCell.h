@@ -6,15 +6,8 @@
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
-#import "MessagingPhotoCell.h"
+#import "MessagingImageCell.h"
 
-@protocol MessagingTextCell <MessagingPhotoCellDelegate>
-
-@optional
-- (void)messageCellDidPlayVideo:(MessagingParentCell *)cell;
-
-@end
-
-@interface MessagingVideoCell : MessagingPhotoCell
+@interface MessagingVideoCell : MessagingImageCell
 
 @end

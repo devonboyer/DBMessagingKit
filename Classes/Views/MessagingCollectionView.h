@@ -12,8 +12,9 @@
 #import <UIKit/UIKit.h>
 
 #import "MessagingTextCell.h"
-#import "MessagingPhotoCell.h"
+#import "MessagingImageCell.h"
 #import "MessagingLocationCell.h"
+#import "MessagingGIFCell.h"
 #import "MessagingCollectionViewDataSource.h"
 #import "MessagingCollectionViewDelegateFlowLayout.h"
 #import "MessagingCollectionViewFlowLayout.h"
@@ -24,15 +25,16 @@
 
 // Cells
 extern NSString * const kMessagingTextCellIdentifier;
-extern NSString * const kMessagingPhotoCellIdentifier;
+extern NSString * const kMessagingImageCellIdentifier;
 extern NSString * const kMessagingLocationCellIdentifier;
+extern NSString * const kMessagingGIFCellIdentifier;
 
 // Supplementary Views
 extern NSString * const kMessagingimestampSupplementaryViewIdentifier;
 extern NSString * const kMessagingTypingIndicatorFooterViewIdentifier;
 extern NSString * const kMessagingLoadMoreHeaderViewIdentifier;
 
-@interface MessagingCollectionView : UICollectionView <MessagingPhotoCellDelegate, MessagingTextCellDelegate>
+@interface MessagingCollectionView : UICollectionView <MessagingImageCellDelegate, MessagingTextCellDelegate>
 
 @property (weak, nonatomic) id <MessagingCollectionViewDataSource> dataSource;
 @property (weak, nonatomic) id <MessagingCollectionViewDelegateFlowLayout> delegate;

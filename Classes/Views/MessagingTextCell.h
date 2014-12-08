@@ -14,7 +14,7 @@
 @protocol MessagingTextCellDelegate <MessagingParentCellDelegate>
 
 @optional
-- (void)messageCellDidTapMessageBubble:(MessagingParentCell *)cell;
+- (void)messageCell:(MessagingParentCell *)cell didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView;
 
 @end
 
