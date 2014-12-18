@@ -44,6 +44,7 @@
 		6780497E1A350EDD001E4DC7 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780497C1A350EDD001E4DC7 /* UIImage+AnimatedGIF.m */; };
 		678049811A351673001E4DC7 /* MessagingGIFCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049801A351673001E4DC7 /* MessagingGIFCell.m */; };
 		678049851A3519CA001E4DC7 /* PingTransition.gif in Resources */ = {isa = PBXBuildFile; fileRef = 678049841A3519CA001E4DC7 /* PingTransition.gif */; };
+		679DF5761A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 679DF5751A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +133,8 @@
 		6780497F1A351673001E4DC7 /* MessagingGIFCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingGIFCell.h; sourceTree = "<group>"; };
 		678049801A351673001E4DC7 /* MessagingGIFCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingGIFCell.m; sourceTree = "<group>"; };
 		678049841A3519CA001E4DC7 /* PingTransition.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = PingTransition.gif; sourceTree = "<group>"; };
+		679DF5741A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingInlineTimestampsCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		679DF5751A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingInlineTimestampsCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,6 +295,8 @@
 			children = (
 				6780491D1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.h */,
 				6780491E1A313106001E4DC7 /* MessagingCollectionViewFlowLayout.m */,
+				679DF5741A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.h */,
+				679DF5751A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.m */,
 				6780491F1A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.h */,
 				678049201A313106001E4DC7 /* MessagingCollectionViewFlowLayoutInvalidationContext.m */,
 				678049211A313106001E4DC7 /* MessagingCollectionViewLayoutAttributes.h */,
@@ -484,6 +489,7 @@
 				678049451A313106001E4DC7 /* NSAttributedString+Messaging.m in Sources */,
 				678049581A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m in Sources */,
 				6780497E1A350EDD001E4DC7 /* UIImage+AnimatedGIF.m in Sources */,
+				679DF5761A437E600025CBD9 /* MessagingInlineTimestampsCollectionViewFlowLayout.m in Sources */,
 				678049591A313106001E4DC7 /* MessagingParentCell.m in Sources */,
 				6780494D1A313106001E4DC7 /* MessagingTimestampFormatter.m in Sources */,
 				678049431A313106001E4DC7 /* Message.m in Sources */,
@@ -616,6 +622,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MessagingKit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -626,6 +633,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MessagingKit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

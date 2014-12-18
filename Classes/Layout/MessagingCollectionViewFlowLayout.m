@@ -257,11 +257,11 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
             layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
             layoutAttributes.messageBubbleTextViewTextContainerInsets = self.messageBubbleTextViewTextContainerInsets;
             
-            if (indexPath == _tappedIndexPath) {
+            if ([indexPath isEqual:_tappedIndexPath]) {
                 layoutAttributes.frame = CGRectMake(CGRectGetMinX(cellAttributes.frame), CGRectGetMaxY(cellAttributes.frame), self.itemWidth, [self _timestampSupplementaryViewHeightForIndexPath:indexPath]);
             }
             else {
-                layoutAttributes.frame = CGRectMake(CGRectGetMinX(cellAttributes.frame), CGRectGetMaxY(cellAttributes.frame), self.itemWidth, 0);
+                layoutAttributes.frame = CGRectZero;
             }
         }
     }
@@ -956,6 +956,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     }
     
     layoutAttributes.transform = CGAffineTransformScale(translation, 0.0, 0.0);
+    
     return layoutAttributes;
 }
 
