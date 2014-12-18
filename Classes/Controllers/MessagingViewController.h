@@ -53,12 +53,15 @@
 
 /**
  *  Specifies whether or not the view controller should automatically scroll to the most recent message
- *  when the view appears and when sending, receiving, and composing a new message.
+ *  when composing a new message.
  *
- *  @discussion The default value is 'YES', which allows the view controller to scroll automatically to the most recent message.
+ *  The collection view will always scroll to the most recent message when the view appears and when sending or
+ *  receiving a new message.
+ *
+ *  @discussion The default value is 'NO', which allows the view controller to scroll automatically to the most recent message.
  *  Set to 'NO' if you want to manage scrolling yourself.
  */
-@property (assign, nonatomic) BOOL automaticallyScrollsToMostRecentMessage;
+@property (assign, nonatomic) BOOL automaticallyScrollsToMostRecentMessageWhenComposing;
 
 /**
  *  Specifies whether or not the view controller should show the "load earlier messages" header view.

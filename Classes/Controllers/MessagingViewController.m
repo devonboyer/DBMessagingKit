@@ -60,8 +60,8 @@
 {
     [super viewDidLoad];
 
-    self.automaticallyScrollsToMostRecentMessage = YES;
-    self.acceptsAutoCorrectBeforeSending = YES;
+    _automaticallyScrollsToMostRecentMessageWhenComposing = NO;
+    _acceptsAutoCorrectBeforeSending = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -273,10 +273,8 @@
         cell.messageBubbleImageView.highlightedImage = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
     }
     
-    if (_automaticallyScrollsToMostRecentMessage) {
-        [self updateCollectionViewInsets];
-        [self scrollToBottomAnimated:YES];
-    }
+    [self updateCollectionViewInsets];
+    [self scrollToBottomAnimated:YES];
 }
 
 - (void)_messageInputView:(UIView<MessagingInputUtility> *)messageInputView sendButtonTapped:(UIButton *)sendButton
@@ -531,7 +529,7 @@
     
     [self _toggleSendButtonEnabled];
     
-    if (_automaticallyScrollsToMostRecentMessage) {
+    if (_automaticallyScrollsToMostRecentMessageWhenComposing) {
         [self scrollToBottomAnimated:YES];
     }
 }
@@ -551,7 +549,11 @@
     [UIView animateWithDuration:0.1 animations:^{
         [self adjustInputToolbarHeightByDelta:delta];
         [self updateCollectionViewInsets];
-        [self scrollToBottomAnimated:NO];
+        
+        if (_automaticallyScrollsToMostRecentMessageWhenComposing) {
+            [self scrollToBottomAnimated:NO];
+        }
+        
     } completion:nil];
     
     [self updateKeyboardTriggerPoint];
