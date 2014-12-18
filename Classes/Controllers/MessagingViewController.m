@@ -189,7 +189,7 @@
 }
 
 - (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (progress < 0) progress = 0;
+    if (progress < 0.2) progress = 0.2;
     if (progress > 1) progress = 1;
     
     MessagingParentCell *cell = (MessagingParentCell *)[_collectionView cellForItemAtIndexPath:indexPath];
@@ -548,7 +548,7 @@
 
 - (void)textViewDidChangeFrame:(UITextView *)textView delta:(CGFloat)delta
 {
-    [UIView animateWithDuration:0.2f animations:^{
+    [UIView animateWithDuration:0.1 animations:^{
         [self adjustInputToolbarHeightByDelta:delta];
         [self updateCollectionViewInsets];
         [self scrollToBottomAnimated:NO];

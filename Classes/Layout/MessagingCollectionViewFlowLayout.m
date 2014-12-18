@@ -98,27 +98,27 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     _messageBubbleCache.name = @"com.MessagingKit.messageBubbleCache";
     _messageBubbleCache.countLimit = 200.0;
     
-    // Defaults
-    self.messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f);
-    self.messageBubbleFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-    self.springResistanceFactor = 1000.0;
-    self.messageBubbleLeftRightMargin = 50.0f;
-    self.incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
-    self.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
-    self.incomingImageSize = CGSizeMake(220.0, 240.0);
-    self.outgoingImageSize = CGSizeMake(220.0, 240.0);
-    self.incomingLocationMapSize = CGSizeMake(180.0, 100.0);
-    self.outgoingLocationMapSize = CGSizeMake(180.0, 100.0);
-    self.incomingMessageBubbleAvatarSpacing = 5.0;
-    self.outgoingMessageBubbleAvatarSpacing = 5.0;
-    self.inOutMessageBubbleInteritemSpacing = 10.0;
+    // Attributes that affect cells
+    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f);
+    _messageBubbleFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    _springResistanceFactor = 1000.0;
+    _messageBubbleLeftRightMargin = 50.0f;
+    _incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
+    _outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
+    _incomingImageSize = CGSizeMake(220.0, 240.0);
+    _outgoingImageSize = CGSizeMake(220.0, 240.0);
+    _incomingLocationMapSize = CGSizeMake(180.0, 100.0);
+    _outgoingLocationMapSize = CGSizeMake(180.0, 100.0);
+    _incomingMessageBubbleAvatarSpacing = 5.0;
+    _outgoingMessageBubbleAvatarSpacing = 5.0;
+    _inOutMessageBubbleInteritemSpacing = 10.0;
     
-    self.cellTopLabelPadding = 10.0;
-    self.messageTopLabelPadding = 5.0;
-    self.cellBottomLabelPadding = 5.0;
-    self.timestampSupplementaryViewPadding = 10.0;
-    
-    self.dynamicsEnabled = NO;
+    // Attributes that affect layout
+    _cellTopLabelPadding = 10.0;
+    _messageTopLabelPadding = 5.0;
+    _cellBottomLabelPadding = 5.0;
+    _timestampSupplementaryViewPadding = 10.0;
+    _dynamicsEnabled = NO;
     
     self.sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
     [self setMinimumLineSpacing:2.0];
@@ -501,6 +501,14 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     
     // Animate the timestamp to become visible
     [self.collectionView performBatchUpdates:^{
+        
+        if (_tappedIndexPath) {
+            // Scroll to make the timestamp visible
+            CGRect visibleRect = [self.collectionView cellForItemAtIndexPath:_tappedIndexPath].frame;
+            visibleRect.origin.y += [self _timestampSupplementaryViewHeightForIndexPath:_tappedIndexPath];
+            [self.collectionView scrollRectToVisible:visibleRect animated:true];
+        }
+        
     } completion:^(BOOL finished) {
         if (finished) {
             [self invalidateLayout];
@@ -735,7 +743,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 - (CGFloat)_messageBubbleTextContainerInsetsTotal
 {
     UIEdgeInsets insets = self.messageBubbleTextViewTextContainerInsets;
-    return insets.left + insets.right;;
+    return insets.left + insets.right;
 }
 
 - (CGFloat)_cellTopLabelHeightForIndexPath:(NSIndexPath *)indexPath
@@ -750,7 +758,8 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
         }
     }
     
-    // HACK: Add padding to cellTopLabel to add extra padding between incoming and outgoing cells
+    // Add padding to cellTopLabel to add extra padding between incoming and outgoing cells as oppose to messing
+    // with cell frames in the layout
     if (indexPath.row > 0) {
         NSString *sentByUserID = [self.collectionView.dataSource collectionView:self.collectionView sentByUserIDForMessageAtIndexPath:indexPath];
         NSString *previousSentByUserID = [self.collectionView.dataSource collectionView:self.collectionView sentByUserIDForMessageAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row - 1 inSection:0]];

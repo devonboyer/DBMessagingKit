@@ -79,6 +79,13 @@
 @property (nonatomic) BOOL showTypingIndicator;
 
 /**
+ *  The indexPaths of messages that are currently 'sending'.
+ *
+ *  @discussion To finish sending a message call 'finishSendingMessageAtIndexPath:' or 'finishSendingAllMessages'.
+ */
+@property (strong, nonatomic) NSMutableArray *currentlySendingMessageIndexPaths;
+
+/**
  *  This method is called when the user taps the send button on the inputToolbar
  *  after composing a message with the specified text.
  *
@@ -104,33 +111,56 @@
  */
 - (void)sendMessageWithPhoto:(UIImage *)photo;
 
-@property (strong, nonatomic) NSMutableArray *currentlySendingMessageIndexPaths;
-- (void)beginSendingMessage;
-- (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath;
-- (void)finishSendingMessageAtIndexPath:(NSIndexPath *)indexPath;
-- (void)finishSendingAllMessages;
-- (NSIndexPath *)indexPathForLatestMessage;
-
 /**
- *  Completes the "sending" of a new message by animating and resetting the 'inputToolbar',
+ *  Begins the sending of a new message by animating and resetting the 'inputToolbar',
  *  animating the addition of a new collection view cell in the collection view,
  *  reloading the collection view, and scrolling to the newly sent message
  *  as specified by 'automaticallyScrollsToMostRecentMessage'.
  *
  *  @discussion You should call this method at the end of 'sendMessageWithText:' and 'sendMessageWithPhoto:'
- *  after adding the new message to your data source and performing any related tasks.
- *
- *  @see 'automaticallyScrollsToMostRecentMessage`.
- *  @see 'sendMessageWithText:' and 'sendMessageWithPhoto:'.
+ *  after adding the new message to your data source and performing any related tasks. You must call then
+ *  'finishSendingMessageAtIndexPath:' or 'updateMessageSendingProgress:forItemAtIndexPath:' when approriate.
  */
+- (void)beginSendingMessage;
 
 /**
- *  Completes the "receiving" of a new message by animating the typing indicator,
+ *  Updates the sending progress of a message by increasing the alpha of the message to simulate sending
+ *  progress.
+ *
+ *  @discussion The progress of a message will always be between 0.2 and 1.0 to maintain the user experience.
+ *
+ *  @param indexPath The indexPath of the message to update.
+ *  @param progress The sending progress of the message.
+ */
+- (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Finish the sending progress of a message by increasing the alpha of the message to 1.0.
+ *
+ *  @param indexPath The indexPath of the message that has finished sending..
+ */
+- (void)finishSendingMessageAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Finish the sending progress of a message by increasing the alpha to 1.0 of all messages in
+ * 'currentlySendingMessagesIndexPaths'.
+ */
+- (void)finishSendingAllMessages;
+
+/**
+ *  A convenience method for returning the index path fo the latest message that was sent or recieved.
+ *
+ *  @return Returns the indexPath for the latest message.
+ */
+- (NSIndexPath *)indexPathForLatestMessage;
+
+/**
+ *  Completes the receiving of a new message by animating the typing indicator,
  *  animating the addition of a new collection view cell in the collection view,
  *  reloading the collection view, and scrolling to the newly sent message
  *  as specified by 'automaticallyScrollsToMostRecentMessage'.
  *
- *  @discussion You should call this method after adding a new "received" message
+ *  @discussion You should call this method after adding a new received message
  *  to your data source and performing any related tasks.
  *
  *  @see 'automaticallyScrollsToMostRecentMessage'.
@@ -173,9 +203,5 @@
  *  @see 'MessagingInputUtility'
  */
 - (void)registerClassForMessageInputView:(Class)viewClass withInitialHeight:(CGFloat)initialHeight;
-
-- (void)updateCollectionViewInsets;
-- (void)updateKeyboardTriggerPoint;
-- (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom;
 
 @end

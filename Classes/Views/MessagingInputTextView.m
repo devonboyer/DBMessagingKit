@@ -194,7 +194,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
         }
     }
     
-    [UIView animateWithDuration:0.1f animations:^{
+    [UIView animateWithDuration:0.1 animations:^{
         self.frame = frame;
     }];
 }
