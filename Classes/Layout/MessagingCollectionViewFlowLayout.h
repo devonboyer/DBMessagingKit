@@ -14,6 +14,7 @@
 @class MessagingCollectionView;
 
 extern NSString * const MessagingCollectionElementKindTimestamp;
+extern NSString * const MessagingCollectionElementKindLocationTimestamp;
 
 /**
  *  The 'MessagingCollectionViewFlowLayout' organizes message items in a vertical list.
@@ -119,5 +120,15 @@ extern NSString * const MessagingCollectionElementKindTimestamp;
  *  @return The size of the item displayed at indexPath.
  */
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Returns true if the message at a given index path was an outgoing message or false
+ *  if the message is an incoming message.
+ *
+ *  @param indexPath The index path of the item.
+ *
+ *  @return Returns true if the message is an outgoing message or false otherwise.
+ */
+- (BOOL)isOutgoingMessageAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

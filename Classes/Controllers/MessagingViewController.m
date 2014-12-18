@@ -32,7 +32,7 @@
 
 - (void)_messageInputView:(UIView<MessagingInputUtility> *)chatInputView sendButtonTapped:(UIButton *)sendButton;
 
-- (void)_finishSendingOrReceivingMessage;
+- (void)_beginSendingOrFinishReceivingMessage;
 - (void)_toggleSendButtonEnabled;
 - (void)_clearCurrentlyComposedText;
 - (NSString *)_currentlyComposedText;
@@ -52,6 +52,8 @@
     [_collectionView setDataSource:self];
     [_collectionView setDelegate:self];
     [self.view addSubview:_collectionView];
+    
+    _currentlySendingMessageIndexPaths = [[NSMutableArray alloc] init];
 }
 
 - (void)viewDidLoad
@@ -133,42 +135,6 @@
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
-#pragma mark - Actions
-
-- (void)sendMessageWithText:(NSString *)text { }
-
-- (void)sendMessageWithPhoto:(UIImage *)photo { }
-
-- (void)finishSendingMessage
-{
-    [self _clearCurrentlyComposedText];
-    [self _toggleSendButtonEnabled];
-    
-    [self _finishSendingOrReceivingMessage];
-}
-
-- (void)finishReceivingMessage
-{
-    self.showTypingIndicator = NO;
-    
-    [self _finishSendingOrReceivingMessage];
-}
-
-- (void)scrollToBottomAnimated:(BOOL)animated
-{
-    if ([_collectionView numberOfSections] == 0) {
-        return;
-    }
-    
-    NSInteger items = [_collectionView numberOfItemsInSection:0];
-    
-    if (items > 0) {
-        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:items - 1 inSection:0]
-                                    atScrollPosition:UICollectionViewScrollPositionTop
-                                            animated:animated];
-    }
-}
-
 #pragma mark - Public
 
 - (void)registerClassForMessageInputView:(Class)viewClass
@@ -203,6 +169,81 @@
     [self _toggleSendButtonEnabled];
 }
 
+- (void)sendMessageWithText:(NSString *)text { }
+
+- (void)sendMessageWithPhoto:(UIImage *)photo { }
+
+
+- (void)beginSendingMessage {
+    [self _clearCurrentlyComposedText];
+    [self _toggleSendButtonEnabled];
+
+    NSUInteger previousNumberOfMessages = [_collectionView numberOfItemsInSection:0];
+    NSIndexPath *lastMessageIndexPath = [NSIndexPath indexPathForRow:previousNumberOfMessages inSection:0];
+    
+    // Insert the new message
+    [self _beginSendingOrFinishReceivingMessage];
+    
+    [_currentlySendingMessageIndexPaths addObject:lastMessageIndexPath];
+    [self updateMessageSendingProgress:0.2 forItemAtIndexPath:lastMessageIndexPath];
+}
+
+- (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (progress < 0) progress = 0;
+    if (progress > 1) progress = 1;
+    
+    MessagingParentCell *cell = (MessagingParentCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    cell.messageBubbleImageView.alpha = progress;
+    
+    if (progress == 1.0) {
+        [self finishSendingMessageAtIndexPath:indexPath];
+    }
+}
+
+- (void)finishSendingMessageAtIndexPath:(NSIndexPath *)indexPath
+{
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        MessagingParentCell *cell = (MessagingParentCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+        cell.messageBubbleImageView.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [_currentlySendingMessageIndexPaths removeObject:indexPath];
+        }
+    }];
+}
+
+- (void)finishSendingAllMessages {
+    for (NSIndexPath *indexPath in _currentlySendingMessageIndexPaths) {
+        [self finishSendingMessageAtIndexPath:indexPath];
+    }
+}
+
+- (NSIndexPath *)indexPathForLatestMessage {
+    return [NSIndexPath indexPathForItem:[_collectionView numberOfItemsInSection:0] - 1 inSection:0];
+}
+
+- (void)finishReceivingMessage
+{
+    self.showTypingIndicator = NO;
+    
+    [self _beginSendingOrFinishReceivingMessage];
+}
+
+- (void)scrollToBottomAnimated:(BOOL)animated
+{
+    if ([_collectionView numberOfSections] == 0) {
+        return;
+    }
+    
+    NSInteger items = [_collectionView numberOfItemsInSection:0];
+    
+    if (items > 0) {
+        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:items - 1 inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionTop
+                                        animated:animated];
+    }
+}
+
 #pragma mark - Private
 
 - (void)_configureKeyboardController
@@ -213,7 +254,7 @@
                                                                             delegate:self];
 }
 
-- (void)_finishSendingOrReceivingMessage
+- (void)_beginSendingOrFinishReceivingMessage
 {
     NSUInteger previousNumberOfMessages = [_collectionView numberOfItemsInSection:0];
     NSIndexPath *lastMessageIndexPath = [NSIndexPath indexPathForRow:previousNumberOfMessages inSection:0];
@@ -223,15 +264,15 @@
          [_collectionView insertItemsAtIndexPaths:@[lastMessageIndexPath]];
     } completion:nil];
     
-    // Reload the previous few index paths not including th last message in reload message bubbles and avatars
-    NSMutableArray *indexPathsToReload = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < previousNumberOfMessages; ++i) {
+    // Request a new message bubble form the data source
+    for (NSInteger i = previousNumberOfMessages - 3; i < previousNumberOfMessages; ++i) {
         if (i < 0) continue;
-        [indexPathsToReload addObject: [NSIndexPath indexPathForRow:i inSection:0]];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        MessagingParentCell *cell = (MessagingParentCell *)[_collectionView cellForItemAtIndexPath: indexPath];
+        cell.messageBubbleImageView.image = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].image;
+        cell.messageBubbleImageView.highlightedImage = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
     }
     
-    [_collectionView reloadItemsAtIndexPaths:indexPathsToReload];
-        
     if (_automaticallyScrollsToMostRecentMessage) {
         [self updateCollectionViewInsets];
         [self scrollToBottomAnimated:YES];

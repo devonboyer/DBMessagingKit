@@ -18,6 +18,7 @@
 #import "MessagingTimestampSupplementaryView.h"
 
 NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionElementKindTimestamp";
+NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCollectionElementKindLocationTimestamp";
 
 @interface MessagingCollectionViewFlowLayout ()
 {
@@ -698,7 +699,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 
 - (CGSize)_avatarSizeForIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self _isOutgoingMessageAtIndexPath:indexPath]) {
+    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
         return self.outgoingAvatarViewSize;
     }
     
@@ -706,7 +707,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 }
 
 - (CGSize)_locationMapSizeForIndexPath:(NSIndexPath *)indexPath {
-    if ([self _isOutgoingMessageAtIndexPath:indexPath]) {
+    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
         return self.outgoingLocationMapSize;
     }
     
@@ -715,7 +716,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 
 - (CGSize)_imageSizeForIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self _isOutgoingMessageAtIndexPath:indexPath]) {
+    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
         return self.outgoingImageSize;
     }
     
@@ -724,7 +725,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
 
 - (CGFloat)_messageBubbleAvatarSpacingForIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self _isOutgoingMessageAtIndexPath:indexPath]) {
+    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
         return self.outgoingMessageBubbleAvatarSpacing;
     }
     
@@ -807,10 +808,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     return timestampSupplementaryViewHeight;
 }
 
-- (BOOL)_isOutgoingMessageAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *sentByUserID = [self.collectionView.dataSource collectionView:self.collectionView sentByUserIDForMessageAtIndexPath:indexPath];
-    return [sentByUserID isEqualToString:[self.collectionView.dataSource senderUserID]];
-}
+
 
 #pragma mark - Public
 
@@ -819,6 +817,11 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     CGFloat itemHeight = [self _messageBubbleSizeForItemAtIndexPath:indexPath].height;
     CGFloat itemWidth = self.itemWidth;
     return CGSizeMake(itemWidth, itemHeight);
+}
+
+- (BOOL)isOutgoingMessageAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sentByUserID = [self.collectionView.dataSource collectionView:self.collectionView sentByUserIDForMessageAtIndexPath:indexPath];
+    return [sentByUserID isEqualToString:[self.collectionView.dataSource senderUserID]];
 }
 
 #pragma mark - Notifications
@@ -948,7 +951,7 @@ NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionE
     CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 0);
     CGFloat translationInset = self.messageBubbleTextViewTextContainerInsets.left + self.messageBubbleTextViewTextContainerInsets.right+ [self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
     
-    if ([self _isOutgoingMessageAtIndexPath:elementIndexPath]) {
+    if ([self isOutgoingMessageAtIndexPath:elementIndexPath]) {
         translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
     }
     else {

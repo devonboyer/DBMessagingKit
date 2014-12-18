@@ -45,36 +45,6 @@
 @property (strong, nonatomic, readonly) UIView<MessagingInputUtility> *messageInputView;
 
 /**
- *  Specifies the class from which to instantiate the messaging input view. The class will be instantiated via alloc/
- *  initWithFrame:. The initial size for the messaging input view is '50.0'. To specify a different initial size for the
- *  messaging input view use registerClassForMessageInputView:withInitialHeight: instead.
- *
- *  @discussion This is the recommended registration method for the 'MessagingInputView'.
- *
- *  @param viewClass The class from which to instantiate the chatInputView.
- *
- *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
- *
- *  @see 'MessagingInputUtility'
- */
-- (void)registerClassForMessageInputView:(Class)viewClass;
-
-/**
- *  Specifies the class from which to instantiate the chat input view. The class will be instantiated via alloc/initWithFrame: 
- *  with the given initial size.
- *
- *  It is recommended that you register a custom chat input view if you would like to specify a custom initial size.
- *
- *  @param viewClass      The class from which to instantiate the chatInputView.
- *  @param initialSize    The initial size for the chat input view.
- *
- *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
- *
- *  @see 'MessagingInputUtility'
- */
-- (void)registerClassForMessageInputView:(Class)viewClass withInitialHeight:(CGFloat)initialHeight;
-
-/**
  *  Specifies whether or not to accept any auto-correct suggestions before sending a message.
  *
  *  @discussion The default value is 'YES'.
@@ -134,6 +104,13 @@
  */
 - (void)sendMessageWithPhoto:(UIImage *)photo;
 
+@property (strong, nonatomic) NSMutableArray *currentlySendingMessageIndexPaths;
+- (void)beginSendingMessage;
+- (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)finishSendingMessageAtIndexPath:(NSIndexPath *)indexPath;
+- (void)finishSendingAllMessages;
+- (NSIndexPath *)indexPathForLatestMessage;
+
 /**
  *  Completes the "sending" of a new message by animating and resetting the 'inputToolbar',
  *  animating the addition of a new collection view cell in the collection view,
@@ -146,7 +123,6 @@
  *  @see 'automaticallyScrollsToMostRecentMessage`.
  *  @see 'sendMessageWithText:' and 'sendMessageWithPhoto:'.
  */
-- (void)finishSendingMessage;
 
 /**
  *  Completes the "receiving" of a new message by animating the typing indicator,
@@ -168,7 +144,35 @@
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
 
+/**
+ *  Specifies the class from which to instantiate the messaging input view. The class will be instantiated via alloc/
+ *  initWithFrame:. The initial size for the messaging input view is '50.0'. To specify a different initial size for the
+ *  messaging input view use registerClassForMessageInputView:withInitialHeight: instead.
+ *
+ *  @discussion This is the recommended registration method for the 'MessagingInputView'.
+ *
+ *  @param viewClass The class from which to instantiate the chatInputView.
+ *
+ *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
+ *
+ *  @see 'MessagingInputUtility'
+ */
+- (void)registerClassForMessageInputView:(Class)viewClass;
 
+/**
+ *  Specifies the class from which to instantiate the chat input view. The class will be instantiated via alloc/initWithFrame:
+ *  with the given initial size.
+ *
+ *  It is recommended that you register a custom chat input view if you would like to specify a custom initial size.
+ *
+ *  @param viewClass      The class from which to instantiate the chatInputView.
+ *  @param initialSize    The initial size for the chat input view.
+ *
+ *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
+ *
+ *  @see 'MessagingInputUtility'
+ */
+- (void)registerClassForMessageInputView:(Class)viewClass withInitialHeight:(CGFloat)initialHeight;
 
 - (void)updateCollectionViewInsets;
 - (void)updateKeyboardTriggerPoint;

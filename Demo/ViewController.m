@@ -87,7 +87,14 @@
     Message *newMessage = [Message messageWithText:text sentByUserID:@"Outgoing" sentAt:[NSDate date]];
     [_messages addObject:newMessage];
    // [SystemSoundPlayer playMessageSentSound];
-    [self finishSendingMessage];
+    [self beginSendingMessage];
+    
+    // Save the last indexPath to simulate finishing sending the message
+    NSIndexPath *lastMessageIndexPath = [self indexPathForLatestMessage];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self finishSendingMessageAtIndexPath:lastMessageIndexPath];
+    });
 }
 
 - (void)sendMessageWithPhoto:(UIImage *)photo {
@@ -102,7 +109,6 @@
     Message *newMessage = [Message messageWithImage:photo sentByUserID:@"Outgoing" sentAt:[NSDate date]];
     [_messages addObject:newMessage];
     // [SystemSoundPlayer playMessageSentSound];
-    [self finishSendingMessage];
 }
 
 #pragma mark - MessagingCollectionViewDataSource
@@ -162,7 +168,7 @@
     Message *message = [_messages objectAtIndex:indexPath.row];
 
     if (indexPath.row % 3 == 0) {
-        [_messageBubbleController beginMessageGroupAtIndexPath:indexPath];
+       // [_messageBubbleController beginMessageGroupAtIndexPath:indexPath];
         return [[MessagingTimestampFormatter sharedFormatter] attributedTimestampForDate:message.sentAt];
     }
     
