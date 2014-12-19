@@ -10,6 +10,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 /**
  *  The 'MessagingCollectionViewDelegateFlowLayout' protocol defines methods that allow you to
@@ -37,6 +38,15 @@
  *  @param indexPath       The index path of the item for which the photo was tapped.
  */
 - (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Notifies the delegate that the movie player at the specified indexPath did receive a tap event.
+ *
+ *  @param collectionView  The collection view object that is notifying the delegate of the tap event.
+ *  @param moviePlayer     The moviePlayer that was tapped.
+ *  @param indexPath       The index path of the item for which the movie was tapped.
+ */
+- (void)collectionView:(UICollectionView *)collectionView didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer atIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Notifies the delegate that the message bubble at the specified indexPath did receive a tap event.

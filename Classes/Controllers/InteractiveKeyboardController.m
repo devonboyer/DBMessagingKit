@@ -53,6 +53,12 @@ static void * kInteractiveKeyboardControllerKeyValueObservingContext = &kInterac
 
 - (void)registerForNotfications
 {
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidShow:)
                                                  name:UIKeyboardDidShowNotification
@@ -128,6 +134,12 @@ static void * kInteractiveKeyboardControllerKeyValueObservingContext = &kInterac
 
 #pragma mark - Notifications
 
+- (void)keyboardWillShow:(NSNotification *)notification {
+    if ([self.delegate respondsToSelector:@selector(keyboardControllerWillAppear:)]) {
+        [self.delegate keyboardControllerWillAppear:self];
+    }
+}
+
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     self.keyboardView = self.textView.inputAccessoryView.superview;
@@ -136,6 +148,10 @@ static void * kInteractiveKeyboardControllerKeyValueObservingContext = &kInterac
     [self handleKeyboardNotification:notification completion:^(BOOL finished) {
         [self.panGestureRecognizer addTarget:self action:@selector(handlePanGestureRecognizer:)];
     }];
+    
+    if ([self.delegate respondsToSelector:@selector(keyboardControllerDidAppear:)]) {
+        [self.delegate keyboardControllerDidAppear:self];
+    }
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification

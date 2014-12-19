@@ -23,6 +23,7 @@ NSString * const kMessagingTextCellIdentifier = @"kMessagingTextCellIdentifier";
 NSString * const kMessagingImageCellIdentifier = @"kMessagingImageCellIdentifier";
 NSString * const kMessagingLocationCellIdentifier = @"kMessagingLocationCellIdentifier";
 NSString * const kMessagingGIFCellIdentifier = @"kMessagingGIFCellIdentifier";
+NSString * const kMessagingMovieCellIdentifier = @"kMessagingMovieCellIdentifier";
 
 NSString * const kMessagingimestampSupplementaryViewIdentifier = @"kMessagingimestampSupplementaryViewIdentifier";
 NSString * const kMessagingTypingIndicatorFooterViewIdentifier = @"kMessagingTypingIndicatorFooterViewIdentifier";
@@ -61,7 +62,8 @@ NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHe
     [self registerClass:[MessagingImageCell class] forCellWithReuseIdentifier:kMessagingImageCellIdentifier];
     [self registerClass:[MessagingLocationCell class] forCellWithReuseIdentifier:kMessagingLocationCellIdentifier];
     [self registerClass:[MessagingGIFCell class] forCellWithReuseIdentifier:kMessagingGIFCellIdentifier];
-    
+    [self registerClass:[MessagingMovieCell class] forCellWithReuseIdentifier:kMessagingMovieCellIdentifier];
+
     // Supplementary Views
     [self registerClass:[MessagingTimestampSupplementaryView class] forSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp withReuseIdentifier:kMessagingimestampSupplementaryViewIdentifier];
     [self registerClass:[MessagingTypingIndicatorFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kMessagingTypingIndicatorFooterViewIdentifier];
@@ -112,6 +114,13 @@ NSString * const kMessagingLoadMoreHeaderViewIdentifier = @"kMessagingLoadMoreHe
 {
     [self.delegate collectionView:self
      didTapMessageBubbleImageView:messageBubbleImageView
+                      atIndexPath:[self indexPathForCell:cell]];
+}
+
+- (void)messageCell:(MessagingParentCell *)cell didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer
+{
+    [self.delegate collectionView:self
+                didTapMoviePlayer:moviePlayer
                       atIndexPath:[self indexPathForCell:cell]];
 }
 

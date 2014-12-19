@@ -33,12 +33,21 @@
     [_messages addObject:[Message messageWithText:@"There is no dependency on model objects." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"Oh, we can't forget data detectors for phone numbers 123-456-7890 and websites https://github.com/DevonBoyer and more." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithLocation:[[CLLocation alloc] initWithLatitude:42.9837 longitude:81.2497] sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"PingTransition" ofType: @"gif"];
-    NSData *GIFData = [[NSData alloc] initWithContentsOfFile:filePath];
-    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
 
+    //    [_messages addObject:[Message messageWithLocation:[[CLLocation alloc] initWithLatitude:42.9837 longitude:81.2497] sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    
+    NSString *movieFilePath = [[NSBundle mainBundle] pathForResource: @"calmthestorm" ofType: @"mp4"];
+    NSData *movieData = [[NSData alloc] initWithContentsOfFile:movieFilePath];
+    [_messages addObject:[Message messageWithData:movieData MIMEType:MIMETypeMovie sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithData:movieData MIMEType:MIMETypeMovie sentByUserID:@"Incoming" sentAt:[NSDate date]]];
+
+    NSString *GIFFilePath = [[NSBundle mainBundle] pathForResource: @"PingTransition" ofType: @"gif"];
+    NSData *GIFData = [[NSData alloc] initWithContentsOfFile:GIFFilePath];
+    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    
     // Configure a message bubble controller with template images
     _messageBubbleController = [[MessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
     [_messageBubbleController setTopTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleTop"]];
@@ -81,7 +90,8 @@
      *
      *  1. Play sound (optional)
      *  2. Add new message model object to your data source
-     *  3. Call 'finishSendingMessage'
+     *  3. Call 'beginSendingMessage'
+     *  4. Call 'updateMessageSendingProgress:forItemAtIndexPath' or 'finishSendingMessageAtIndexPath'
      */
     
     Message *newMessage = [Message messageWithText:text sentByUserID:@"Outgoing" sentAt:[NSDate date]];
@@ -91,7 +101,7 @@
     
     // Save the last indexPath to simulate finishing sending the message
     NSIndexPath *lastMessageIndexPath = [self indexPathForLatestMessage];
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishSendingMessageAtIndexPath:lastMessageIndexPath];
     });
@@ -225,6 +235,22 @@
             break;
         default:
             break;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer atIndexPath:(NSIndexPath *)indexPath {
+    
+    if (moviePlayer.isPreparedToPlay) {
+        switch (moviePlayer.playbackState) {
+            case MPMoviePlaybackStatePlaying:
+                [moviePlayer pause];
+                break;
+            case MPMoviePlaybackStateStopped: case MPMoviePlaybackStatePaused:
+                [moviePlayer play];
+                break;
+            default:
+                break;
+        }
     }
 }
 

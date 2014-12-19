@@ -20,6 +20,7 @@
 #import "MessagingTextCell.h"
 #import "MessagingImageCell.h"
 #import "MessagingLocationCell.h"
+#import "MessagingMovieCell.h"
 #import "MessagingTimestampSupplementaryView.h"
 #import "MessagingLoadEarlierMessagesHeaderView.h"
 #import "MessagingTypingIndicatorFooterView.h"
@@ -60,7 +61,7 @@
 {
     [super viewDidLoad];
 
-    _automaticallyScrollsToMostRecentMessageWhenComposing = NO;
+    _automaticallyScrollsToMostRecentMessageWhenComposing = YES;
     _acceptsAutoCorrectBeforeSending = YES;
 }
 
@@ -271,6 +272,11 @@
         MessagingParentCell *cell = (MessagingParentCell *)[_collectionView cellForItemAtIndexPath: indexPath];
         cell.messageBubbleImageView.image = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].image;
         cell.messageBubbleImageView.highlightedImage = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
+        
+        // Re-apply mask to image cells
+        if ([cell isKindOfClass:[MessagingImageCell class]]) {
+            [((MessagingImageCell *)cell).imageView setImage:((MessagingImageCell *)cell).imageView.image];
+        }
     }
     
     [self updateCollectionViewInsets];
@@ -399,6 +405,10 @@
             cellIdentifier = kMessagingGIFCellIdentifier;
             break;
         }
+        case MIMETypeMovie: {
+            cellIdentifier = kMessagingMovieCellIdentifier;
+            break;
+        }
         default:
             break;
     }
@@ -451,6 +461,11 @@
             }
             break;
         }
+        case MIMETypeMovie: {
+            MessagingMovieCell *movieCell = (MessagingMovieCell *)cell;
+            movieCell.movieData = [collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath];
+            break;
+        }
         default:
             break;
     }
@@ -489,6 +504,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
 
 - (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView atIndexPath:(NSIndexPath *)indexPath { }
+
+- (void)collectionView:(UICollectionView *)collectionView didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer atIndexPath:(NSIndexPath *)indexPath { }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
@@ -532,6 +549,8 @@
     if (_automaticallyScrollsToMostRecentMessageWhenComposing) {
         [self scrollToBottomAnimated:YES];
     }
+    
+    [self updateCollectionViewInsets];
 }
 
 - (void)textViewDidChange:(UITextView *)textView

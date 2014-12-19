@@ -106,13 +106,4 @@
  */
 @property (assign, nonatomic) CGSize outgoingLocationMapSize;
 
-/**
- *  The interitem spacing between an incoming and outgoing message.
- *
- *  @discussion The minimumLineSpacing property of a 'UICollectionViewFlowLayout' handles spacing between
- *  consecutive messages by the same sentByUserID, while the inOutMessageBubbleInteritemSpacing will handle the spacing
- *  between an incoming and outgoing message which is typically larger. The default is '5.0'.
- */
-@property (assign, nonatomic) CGFloat inOutMessageBubbleInteritemSpacing;
-
 @end

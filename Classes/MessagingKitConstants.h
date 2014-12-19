@@ -17,8 +17,7 @@
 typedef NS_ENUM(NSUInteger, MIMEType) {
     MIMETypeText,
     MIMETypeImage,
-    MIMETypeVideo,
-    MIMETypeAudio,
+    MIMETypeMovie,
     MIMETypeGIF,
     MIMETypeLocation
 };

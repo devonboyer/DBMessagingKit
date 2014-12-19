@@ -169,7 +169,8 @@
     
     CGPoint tapPoint = [tap locationInView:self.collectionView];
     NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:tapPoint];
-    self.collectionView.collectionViewLayout.tappedIndexPath = tappedIndexPath;
+    MessagingCollectionViewFlowLayout *collectionViewLayout = (MessagingCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    collectionViewLayout.tappedIndexPath = tappedIndexPath;
 }
 
 #pragma mark - UIGestureRecognizerDelegate

@@ -13,6 +13,8 @@
 
 @interface UIImage (Messaging)
 
++ (UIImage *)imageForFrameAtTime:(NSTimeInterval)time movieURL:(NSURL *)movieURL;
+
 /**
  *  Creates and returns a new image overlayed with the spcified color.
  *

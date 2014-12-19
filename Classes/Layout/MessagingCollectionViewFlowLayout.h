@@ -92,6 +92,15 @@ extern NSString * const MessagingCollectionElementKindLocationTimestamp;
 @property (assign, nonatomic) CGFloat timestampSupplementaryViewPadding;
 
 /**
+ *  The interitem spacing between an incoming and outgoing message.
+ *
+ *  @discussion The minimumLineSpacing property of a 'UICollectionViewFlowLayout' handles spacing between
+ *  consecutive messages by the same sentByUserID, while the inOutMessageBubbleInteritemSpacing will handle the spacing
+ *  between an incoming and outgoing message which is typically larger. The default is '5.0'.
+ */
+@property (assign, nonatomic) CGFloat inOutMessageBubbleInteritemSpacing;
+
+/**
  *  The following attibutes can be set to customize the appearance of the layout.
  *
  *  @discussion The following attributes correspond to the attributes in a 'MessagingCollectionViewLayoutAttributes'
@@ -110,7 +119,6 @@ extern NSString * const MessagingCollectionElementKindLocationTimestamp;
 @property (assign, nonatomic) CGFloat messageBubbleLeftRightMargin;
 @property (assign, nonatomic) CGFloat incomingMessageBubbleAvatarSpacing;
 @property (assign, nonatomic) CGFloat outgoingMessageBubbleAvatarSpacing;
-@property (assign, nonatomic) CGFloat inOutMessageBubbleInteritemSpacing;
 
 /**
  *  Computes and returns the size of the item specified by indexPath.

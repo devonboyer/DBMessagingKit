@@ -68,7 +68,7 @@
         [self.imageView setUserInteractionEnabled:YES];
         [self.imageView setFrame:self.messageBubbleImageView.frame];
         [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        [self.imageView setBackgroundColor:[UIColor iMessageGrayColor]];
+        [self.imageView setBackgroundColor:[UIColor clearColor]];
         [self.imageView setImage:nil]; // create an initial mask
         [self.messageBubbleImageView addSubview:self.imageView];
         

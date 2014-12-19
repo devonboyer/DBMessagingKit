@@ -39,11 +39,12 @@
 		6780495B1A313106001E4DC7 /* MessagingTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780493E1A313106001E4DC7 /* MessagingTextCell.m */; };
 		6780495C1A313106001E4DC7 /* MessagingTimestampSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */; };
 		6780495D1A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */; };
-		678049781A33D047001E4DC7 /* MessagingVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049771A33D047001E4DC7 /* MessagingVideoCell.m */; };
+		678049781A33D047001E4DC7 /* MessagingMovieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049771A33D047001E4DC7 /* MessagingMovieCell.m */; };
 		6780497B1A33D064001E4DC7 /* MessagingLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */; };
 		6780497E1A350EDD001E4DC7 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780497C1A350EDD001E4DC7 /* UIImage+AnimatedGIF.m */; };
 		678049811A351673001E4DC7 /* MessagingGIFCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049801A351673001E4DC7 /* MessagingGIFCell.m */; };
 		678049851A3519CA001E4DC7 /* PingTransition.gif in Resources */ = {isa = PBXBuildFile; fileRef = 678049841A3519CA001E4DC7 /* PingTransition.gif */; };
+		679DF5781A43B4560025CBD9 /* calmthestorm.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 679DF5771A43B4560025CBD9 /* calmthestorm.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,8 +124,8 @@
 		678049411A313106001E4DC7 /* MessagingTypingIndicatorFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingTypingIndicatorFooterView.h; sourceTree = "<group>"; };
 		678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingTypingIndicatorFooterView.m; sourceTree = "<group>"; };
 		678049701A31325C001E4DC7 /* MessagingKitConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingKitConstants.h; sourceTree = "<group>"; };
-		678049761A33D047001E4DC7 /* MessagingVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingVideoCell.h; sourceTree = "<group>"; };
-		678049771A33D047001E4DC7 /* MessagingVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingVideoCell.m; sourceTree = "<group>"; };
+		678049761A33D047001E4DC7 /* MessagingMovieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingMovieCell.h; sourceTree = "<group>"; };
+		678049771A33D047001E4DC7 /* MessagingMovieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingMovieCell.m; sourceTree = "<group>"; };
 		678049791A33D064001E4DC7 /* MessagingLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingLocationCell.h; sourceTree = "<group>"; };
 		6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingLocationCell.m; sourceTree = "<group>"; };
 		6780497C1A350EDD001E4DC7 /* UIImage+AnimatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AnimatedGIF.m"; sourceTree = "<group>"; };
@@ -132,6 +133,7 @@
 		6780497F1A351673001E4DC7 /* MessagingGIFCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagingGIFCell.h; sourceTree = "<group>"; };
 		678049801A351673001E4DC7 /* MessagingGIFCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagingGIFCell.m; sourceTree = "<group>"; };
 		678049841A3519CA001E4DC7 /* PingTransition.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = PingTransition.gif; sourceTree = "<group>"; };
+		679DF5771A43B4560025CBD9 /* calmthestorm.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = calmthestorm.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,8 +349,8 @@
 				6780493E1A313106001E4DC7 /* MessagingTextCell.m */,
 				6780493B1A313106001E4DC7 /* MessagingImageCell.h */,
 				6780493C1A313106001E4DC7 /* MessagingImageCell.m */,
-				678049761A33D047001E4DC7 /* MessagingVideoCell.h */,
-				678049771A33D047001E4DC7 /* MessagingVideoCell.m */,
+				678049761A33D047001E4DC7 /* MessagingMovieCell.h */,
+				678049771A33D047001E4DC7 /* MessagingMovieCell.m */,
 				678049791A33D064001E4DC7 /* MessagingLocationCell.h */,
 				6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */,
 				6780497F1A351673001E4DC7 /* MessagingGIFCell.h */,
@@ -364,6 +366,7 @@
 		678049831A3519CA001E4DC7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				679DF5771A43B4560025CBD9 /* calmthestorm.mp4 */,
 				678049841A3519CA001E4DC7 /* PingTransition.gif */,
 			);
 			path = Resources;
@@ -454,6 +457,7 @@
 				678048361A312954001E4DC7 /* LaunchScreen.xib in Resources */,
 				678049521A313106001E4DC7 /* camera_button@2x.png in Resources */,
 				678048331A312954001E4DC7 /* Images.xcassets in Resources */,
+				679DF5781A43B4560025CBD9 /* calmthestorm.mp4 in Resources */,
 				678049511A313106001E4DC7 /* camera_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,7 +497,7 @@
 				6780494A1A313106001E4DC7 /* MessagingViewController.m in Sources */,
 				678049481A313106001E4DC7 /* InteractiveKeyboardController.m in Sources */,
 				678049561A313106001E4DC7 /* MessagingCollectionView.m in Sources */,
-				678049781A33D047001E4DC7 /* MessagingVideoCell.m in Sources */,
+				678049781A33D047001E4DC7 /* MessagingMovieCell.m in Sources */,
 				678049461A313106001E4DC7 /* UIColor+Messaging.m in Sources */,
 				678049811A351673001E4DC7 /* MessagingGIFCell.m in Sources */,
 				6780497B1A33D064001E4DC7 /* MessagingLocationCell.m in Sources */,

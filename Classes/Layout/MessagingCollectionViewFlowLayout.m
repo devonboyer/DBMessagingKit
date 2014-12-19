@@ -27,6 +27,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 }
 
 @property (strong, nonatomic) NSCache *messageBubbleCache;
+@property (strong, nonatomic) NSMutableDictionary *messageBubbleSizes;
 
 // Tiling and Springs
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
@@ -35,11 +36,8 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 @property (assign, nonatomic) CGFloat latestDelta;
 @property (assign, nonatomic) UIInterfaceOrientation previousOrientation;
 
+// Initial/Final layout attributes
 @property (strong, nonatomic) NSMutableArray *insertedIndexPaths;
-
-// Caches for keeping current/previous attributes
-@property (nonatomic, strong) NSMutableDictionary *currentSupplementaryAttributesByKind;
-@property (nonatomic, strong) NSMutableDictionary *cachedSupplementaryAttributesByKind;
 
 @end
 
@@ -92,6 +90,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     _visibleIndexPaths = [[NSMutableSet alloc] init];
     _visibleHeaderFooterIndexPaths = [[NSMutableSet alloc] init];
     _insertedIndexPaths = [[NSMutableArray alloc] init];
+    _messageBubbleSizes = [[NSMutableDictionary alloc] init];
     
     // Cache
     _messageBubbleCache = [[NSCache alloc] init];
@@ -111,12 +110,12 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     _outgoingLocationMapSize = CGSizeMake(180.0, 100.0);
     _incomingMessageBubbleAvatarSpacing = 5.0;
     _outgoingMessageBubbleAvatarSpacing = 5.0;
-    _inOutMessageBubbleInteritemSpacing = 10.0;
     
     // Attributes that affect layout
-    _cellTopLabelPadding = 10.0;
+    _cellTopLabelPadding = 20.0;
     _messageTopLabelPadding = 5.0;
     _cellBottomLabelPadding = 5.0;
+    _inOutMessageBubbleInteritemSpacing = 10.0;
     _timestampSupplementaryViewPadding = 10.0;
     _dynamicsEnabled = NO;
     
@@ -144,18 +143,10 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 {
     [super prepareLayout];
     
-    // Deep-copy attributes in current cache
-    self.cachedSupplementaryAttributesByKind = [NSMutableDictionary dictionary];
-    [self.currentSupplementaryAttributesByKind enumerateKeysAndObjectsUsingBlock:^(NSString *kind, NSMutableDictionary * attribByPath, BOOL *stop) {
-        NSMutableDictionary * cachedAttribByPath = [[NSMutableDictionary alloc] initWithDictionary:attribByPath copyItems:YES];
-        [self.cachedSupplementaryAttributesByKind setObject:cachedAttribByPath forKey:kind];
-    }];
-    
     if (self.dynamicsEnabled) {
         
-        // pad rect to avoid flickering
-        CGRect originalRect = (CGRect){.origin = self.collectionView.bounds.origin, .size = self.collectionView.frame.size};
-        CGRect visibleRect = CGRectInset(originalRect, -100, -100);
+        CGFloat padding = -100.0f;
+        CGRect visibleRect = CGRectInset(self.collectionView.bounds, padding, padding);
         
         NSArray *visibleItems = [super layoutAttributesForElementsInRect:visibleRect];
         NSSet *visibleItemsIndexPaths = [NSSet setWithArray:[visibleItems valueForKey:NSStringFromSelector(@selector(indexPath))]];
@@ -170,6 +161,12 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 {
     NSArray *superAttrributes = [super layoutAttributesForElementsInRect:rect];
     NSMutableArray *attributesInRect = [superAttrributes mutableCopy];
+    
+    // Add supplementary views to specfic index paths
+    for (UICollectionViewLayoutAttributes *attributes in superAttrributes)
+    {
+        [attributesInRect addObject:[self layoutAttributesForSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp atIndexPath:attributes.indexPath]];
+    }
     
     if (self.dynamicsEnabled) {
         NSMutableArray *attributesInRectCopy = [attributesInRect mutableCopy];
@@ -193,28 +190,11 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
         attributesInRect = attributesInRectCopy;
     }
     
-    // Add supplementary views to specfic index paths
-    for (UICollectionViewLayoutAttributes *attributes in superAttrributes)
-    {
-        [attributesInRect addObject:[self layoutAttributesForSupplementaryViewOfKind:MessagingCollectionElementKindTimestamp atIndexPath:attributes.indexPath]];
-    }
-    
     // Always cache all visible attributes so we can use them later when computing final/initial animated attributes
     [attributesInRect enumerateObjectsUsingBlock:^(MessagingCollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop) {
         
         if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
             [self _configureLayoutAttributes:layoutAttributes];
-        }
-        else if (layoutAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) {
-            NSMutableDictionary *supplementaryAttribuesByIndexPath = [self.currentSupplementaryAttributesByKind objectForKey:layoutAttributes.representedElementKind];
-            if (supplementaryAttribuesByIndexPath == nil)
-            {
-                supplementaryAttribuesByIndexPath = [NSMutableDictionary dictionary];
-                [self.currentSupplementaryAttributesByKind setObject:supplementaryAttribuesByIndexPath forKey:layoutAttributes.representedElementKind];
-            }
-            
-            [supplementaryAttribuesByIndexPath setObject:layoutAttributes
-                                                  forKey:layoutAttributes.indexPath];
         }
         
         if (_tappedIndexPath) {
@@ -231,11 +211,11 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 {
     MessagingCollectionViewLayoutAttributes *layoutAttributes = (MessagingCollectionViewLayoutAttributes *)[super layoutAttributesForItemAtIndexPath:indexPath];
     
-    if (self.dynamicsEnabled) {
-        if ([_dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath]) {
-            layoutAttributes = (MessagingCollectionViewLayoutAttributes *)[_dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath];
-        }
-    }
+//    if (self.dynamicsEnabled) {
+//        if ([_dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath]) {
+//            layoutAttributes = (MessagingCollectionViewLayoutAttributes *)[_dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath];
+//        }
+//    }
     
     if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
         [self _configureLayoutAttributes:layoutAttributes];
@@ -274,47 +254,15 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 {
     if (self.dynamicsEnabled) {
         UIScrollView *scrollView = self.collectionView;
-        
-        CGFloat delta;
-        if (self.scrollDirection == UICollectionViewScrollDirectionVertical) delta = newBounds.origin.y - scrollView.bounds.origin.y;
-        else delta = newBounds.origin.x - scrollView.bounds.origin.x;
+        CGFloat delta = newBounds.origin.y - scrollView.bounds.origin.y;
         
         self.latestDelta = delta;
         
         CGPoint touchLocation = [self.collectionView.panGestureRecognizer locationInView:self.collectionView];
         
         [self.dynamicAnimator.behaviors enumerateObjectsUsingBlock:^(UIAttachmentBehavior *springBehaviour, NSUInteger idx, BOOL *stop) {
-            if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
-                CGFloat distanceFromTouch = fabsf(touchLocation.y - springBehaviour.anchorPoint.y);
-                
-                CGFloat scrollResistance;
-                if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
-                else scrollResistance = distanceFromTouch / self.springResistanceFactor;
-                
-                UICollectionViewLayoutAttributes *item = [springBehaviour.items firstObject];
-                CGPoint center = item.center;
-                if (delta < 0) center.y += MAX(delta, delta*scrollResistance);
-                else center.y += MIN(delta, delta*scrollResistance);
-                
-                item.center = center;
-                
-                [self.dynamicAnimator updateItemUsingCurrentState:item];
-            } else {
-                CGFloat distanceFromTouch = fabsf(touchLocation.x - springBehaviour.anchorPoint.x);
-                
-                CGFloat scrollResistance;
-                if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
-                else scrollResistance = distanceFromTouch / self.springResistanceFactor;
-                
-                UICollectionViewLayoutAttributes *item = [springBehaviour.items firstObject];
-                CGPoint center = item.center;
-                if (delta < 0) center.x += MAX(delta, delta*scrollResistance);
-                else center.x += MIN(delta, delta*scrollResistance);
-                
-                item.center = center;
-                
-                [self.dynamicAnimator updateItemUsingCurrentState:item];
-            }
+            [self adjustSpringBehavior:springBehaviour forTouchLocation:touchLocation];
+            [self.dynamicAnimator updateItemUsingCurrentState:[springBehaviour.items firstObject]];
         }];
     }
     
@@ -338,31 +286,33 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
         }
     }];
 
-    if (self.dynamicsEnabled) {
-        [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger idx, BOOL *stop) {
-            if (updateItem.updateAction == UICollectionUpdateActionInsert) {
-                if([self.dynamicAnimator layoutAttributesForCellAtIndexPath:updateItem.indexPathAfterUpdate])
-                {
-                    return;
-                }
-                
-                MessagingCollectionViewLayoutAttributes *attributes = [MessagingCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:updateItem.indexPathAfterUpdate];
-                
-                CGSize size = self.collectionView.bounds.size;
-                attributes.frame = CGRectMake(0.0f,
-                                              size.height - size.width,
-                                              size.width,
-                                              size.width);
-                
-                if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
-                    [self _configureLayoutAttributes:(MessagingCollectionViewLayoutAttributes *)attributes];
-                }
-                
+ 
+    [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger idx, BOOL *stop) {
+        if (updateItem.updateAction == UICollectionUpdateActionInsert) {
+            if(self.dynamicsEnabled &&
+               [self.dynamicAnimator layoutAttributesForCellAtIndexPath:updateItem.indexPathAfterUpdate])
+            {
+                *stop = YES;
+            }
+            
+            MessagingCollectionViewLayoutAttributes *attributes = [MessagingCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:updateItem.indexPathAfterUpdate];
+            
+            if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
+                [self _configureLayoutAttributes:(MessagingCollectionViewLayoutAttributes *)attributes];
+            }
+            
+            CGFloat collectionViewHeight = CGRectGetHeight(self.collectionView.bounds);
+            attributes.frame = CGRectMake(0.0f,
+                                          collectionViewHeight + CGRectGetHeight(attributes.frame),
+                                          CGRectGetWidth(attributes.frame),
+                                          CGRectGetHeight(attributes.frame));
+            
+            if (self.dynamicsEnabled) {
                 UIAttachmentBehavior *springBehaviour = [self springBehaviorWithLayoutAttributesItem:attributes];
                 [self.dynamicAnimator addBehavior:springBehaviour];
             }
-        }];
-    }
+        }
+    }];
 }
 
 - (void)finalizeCollectionViewUpdates {
@@ -389,10 +339,67 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     [super invalidateLayoutWithContext:context];
 }
 
+#pragma mark - Getters
+
+- (CGSize)collectionViewContentSize
+{
+    CGSize contentSize = [super collectionViewContentSize];
+    
+    if (self.tappedIndexPath) {
+        contentSize.height += [self _timestampSupplementaryViewHeightForIndexPath:self.tappedIndexPath];
+    }
+    
+    return contentSize;
+}
+
+- (CGFloat)itemWidth
+{
+    return CGRectGetWidth(self.collectionView.bounds) - self.sectionInset.left - self.sectionInset.right;
+}
+
+- (UIDynamicAnimator *)dynamicAnimator
+{
+    if (!_dynamicAnimator) {
+        _dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
+    }
+    
+    return _dynamicAnimator;
+}
+
+- (NSMutableSet *)visibleIndexPaths
+{
+    if (!_visibleIndexPaths) {
+        _visibleIndexPaths = [NSMutableSet new];
+    }
+    return _visibleIndexPaths;
+}
+
+- (CGFloat)incomingMessageBubbleAvatarSpacing
+{
+    if (self.incomingAvatarViewSize.width == 0) {
+        return 0.0f;
+    }
+    
+    return _incomingMessageBubbleAvatarSpacing;
+}
+
+- (CGFloat)outgoingMessageBubbleAvatarSpacing
+{
+    if (self.outgoingAvatarViewSize.width == 0) {
+        return 0.0f;
+    }
+    
+    return _outgoingMessageBubbleAvatarSpacing;
+}
+
 #pragma mark - Setters
 
 - (void)setDynamicsEnabled:(BOOL)dynamicsEnabled
 {
+    if (_dynamicsEnabled == dynamicsEnabled) {
+        return;
+    }
+    
     _dynamicsEnabled = dynamicsEnabled;
     
     if (!dynamicsEnabled) {
@@ -404,6 +411,10 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 
 - (void)setMessageBubbleFont:(UIFont *)messageBubbleFont
 {
+    if ([_messageBubbleFont isEqual:messageBubbleFont]) {
+        return;
+    }
+    
     NSParameterAssert(messageBubbleFont != nil);
     _messageBubbleFont = messageBubbleFont;
     [self invalidateLayoutWithContext:[MessagingCollectionViewFlowLayoutInvalidationContext context]];
@@ -516,59 +527,6 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     }];
 }
 
-#pragma mark - Getters
-
-- (CGSize)collectionViewContentSize
-{
-    CGSize contentSize = [super collectionViewContentSize];
-    
-    if (self.tappedIndexPath) {
-        contentSize.height += [self _timestampSupplementaryViewHeightForIndexPath:self.tappedIndexPath];
-    }
-    
-    return contentSize;
-}
-
-- (CGFloat)itemWidth
-{
-    return CGRectGetWidth(self.collectionView.bounds) - self.sectionInset.left - self.sectionInset.right;
-}
-
-- (UIDynamicAnimator *)dynamicAnimator
-{
-    if (!_dynamicAnimator) {
-        _dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
-    }
-    
-    return _dynamicAnimator;
-}
-
-- (NSMutableSet *)visibleIndexPaths
-{
-    if (!_visibleIndexPaths) {
-        _visibleIndexPaths = [NSMutableSet new];
-    }
-    return _visibleIndexPaths;
-}
-
-- (CGFloat)incomingMessageBubbleAvatarSpacing
-{
-    if (self.incomingAvatarViewSize.width == 0) {
-        return 0.0f;
-    }
-    
-    return _incomingMessageBubbleAvatarSpacing;
-}
-
-- (CGFloat)outgoingMessageBubbleAvatarSpacing
-{
-    if (self.outgoingAvatarViewSize.width == 0) {
-        return 0.0f;
-    }
-    
-    return _outgoingMessageBubbleAvatarSpacing;
-}
-
 #pragma mark - Private
 
 - (void)_resetLayout {
@@ -617,8 +575,6 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     layoutAttributes.cellBottomLabelHeight = [self _cellBottomLabelHeightForIndexPath:indexPath];
     
     layoutAttributes.messageBubbleFont = self.messageBubbleFont;
-    
-    layoutAttributes.inOutMessageBubbleInteritemSpacing = self.inOutMessageBubbleInteritemSpacing;
 }
 
 - (CGRect)_adjustedFrameForAttributes:(UICollectionViewLayoutAttributes *)attributes forElementKind:(NSString *)elementKind
@@ -666,9 +622,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
             break;
         }
         case MIMETypeImage: {
-            CGSize photoSize = [self _imageSizeForIndexPath:indexPath];
-            CGSize imageSize = [[UIImage alloc] initWithData:data].size;
-            finalSize.height = MIN(imageSize.height / (imageSize.width / photoSize.width), photoSize.height);
+            finalSize = [self _imageSizeForIndexPath:indexPath];
             break;
         }
         case MIMETypeLocation: {
@@ -676,6 +630,10 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
             break;
         }
         case MIMETypeGIF: {
+            finalSize = [self _imageSizeForIndexPath:indexPath];
+            break;
+        }
+        case MIMETypeMovie: {
             finalSize = [self _imageSizeForIndexPath:indexPath];
             break;
         }
@@ -856,7 +814,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     UIAttachmentBehavior *springBehavior = [[UIAttachmentBehavior alloc] initWithItem:item attachedToAnchor:item.center];
     springBehavior.length = 1.0f;
     springBehavior.damping = 1.0f;
-    springBehavior.frequency = 2.5f;
+    springBehavior.frequency = 1.0f;
     return springBehavior;
 }
 
@@ -864,8 +822,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
 {
     //  a "newly visible" item is in `visibleItems` but not in `self.visibleIndexPaths`
     NSIndexSet *indexSet = [visibleItems indexesOfObjectsPassingTest:^BOOL(UICollectionViewLayoutAttributes *item, NSUInteger index, BOOL *stop) {
-        return (item.representedElementCategory == UICollectionElementCategoryCell ?
-                [self.visibleIndexPaths containsObject:item.indexPath] : [self.visibleHeaderFooterIndexPaths containsObject:item.indexPath]) == NO;
+        return ![self.visibleIndexPaths containsObject:item.indexPath];
     }];
     
     NSArray *newlyVisibleItems = [visibleItems objectsAtIndexes:indexSet];
@@ -876,12 +833,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
         UIAttachmentBehavior *springBehaviour = [self springBehaviorWithLayoutAttributesItem:item];
         [self adjustSpringBehavior:springBehaviour forTouchLocation:touchLocation];
         [self.dynamicAnimator addBehavior:springBehaviour];
-        if(item.representedElementCategory == UICollectionElementCategoryCell) {
-            [self.visibleIndexPaths addObject:item.indexPath];
-        }
-        else {
-            [self.visibleHeaderFooterIndexPaths addObject:item.indexPath];
-        }
+        [self.visibleIndexPaths addObject:item.indexPath];
     }];
 }
 
@@ -900,7 +852,6 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
         UICollectionViewLayoutAttributes *layoutAttributes = [springBehaviour.items firstObject];
         [self.dynamicAnimator removeBehavior:springBehaviour];
         [self.visibleIndexPaths removeObject:layoutAttributes.indexPath];
-        [self.visibleHeaderFooterIndexPaths removeObject:layoutAttributes.indexPath];
     }];
 }
 
@@ -909,32 +860,18 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     UICollectionViewLayoutAttributes *item = [springBehavior.items firstObject];
     CGPoint center = item.center;
     
-    // If our touchLocation is not (0,0), we'll need to adjust our item's center "in flight"
+    //  if touch is not (0,0) -- adjust item center "in flight"
     if (!CGPointEqualToPoint(CGPointZero, touchLocation)) {
-        if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
-            CGFloat distanceFromTouch = fabsf(touchLocation.y - springBehavior.anchorPoint.y);
-            
-            CGFloat scrollResistance;
-            if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
-            else scrollResistance = distanceFromTouch / self.springResistanceFactor;
-            
-            if (self.latestDelta < 0) center.y += MAX(self.latestDelta, self.latestDelta*scrollResistance);
-            else center.y += MIN(self.latestDelta, self.latestDelta*scrollResistance);
-            
-            item.center = center;
-            
-        } else {
-            CGFloat distanceFromTouch = fabsf(touchLocation.x - springBehavior.anchorPoint.x);
-            
-            CGFloat scrollResistance;
-            if (self.springResistanceFactor) scrollResistance = distanceFromTouch / self.springResistanceFactor;
-            else scrollResistance = distanceFromTouch / self.springResistanceFactor;
-            
-            if (self.latestDelta < 0) center.x += MAX(self.latestDelta, self.latestDelta*scrollResistance);
-            else center.x += MIN(self.latestDelta, self.latestDelta*scrollResistance);
-            
-            item.center = center;
+        CGFloat distanceFromTouch = fabsf(touchLocation.y - springBehavior.anchorPoint.y);
+        CGFloat scrollResistance = distanceFromTouch / self.springResistanceFactor;
+        
+        if (self.latestDelta < 0.0f) {
+            center.y += MAX(self.latestDelta, self.latestDelta * scrollResistance);
         }
+        else {
+            center.y += MIN(self.latestDelta, self.latestDelta * scrollResistance);
+        }
+        item.center = center;
     }
 }
 

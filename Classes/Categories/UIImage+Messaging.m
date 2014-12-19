@@ -11,7 +11,26 @@
 
 #import "UIImage+Messaging.h"
 
+#import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
+
 @implementation UIImage (Messaging)
+
++ (UIImage *)imageForFrameAtTime:(NSTimeInterval)time movieURL:(NSURL *)movieURL {
+    
+    __block UIImage *frameImage = nil;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AVURLAsset *asset1 = [[AVURLAsset alloc] initWithURL:movieURL options:nil];
+        AVAssetImageGenerator *generate1 = [[AVAssetImageGenerator alloc] initWithAsset:asset1];
+        generate1.appliesPreferredTrackTransform = YES;
+        NSError *error = nil;
+        CGImageRef frameRef = [generate1 copyCGImageAtTime:CMTimeMake(time, 1) actualTime:NULL error:&error];
+        frameImage = [[UIImage alloc] initWithCGImage:frameRef];
+    });
+    
+    return frameImage;
+}
 
 - (UIImage *)imageWithColor:(UIColor *)color
 {

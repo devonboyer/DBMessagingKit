@@ -93,12 +93,6 @@
     _outgoingMessageBubbleAvatarSpacing = outgoingMessageBubbleAvatarSpacing;
 }
 
-- (void)setInOutMessageBubbleInteritemSpacing:(CGFloat)inOutMessageBubbleInteritemSpacing
-{
-    NSParameterAssert(inOutMessageBubbleInteritemSpacing >= 0.0f);
-    _inOutMessageBubbleInteritemSpacing = inOutMessageBubbleInteritemSpacing;
-}
-
 #pragma mark - NSCopying
 
 - (instancetype)copyWithZone:(NSZone *)zone
@@ -123,7 +117,6 @@
     copy.outgoingLocationMapSize = self.outgoingLocationMapSize;
     copy.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     copy.outgoingMessageBubbleAvatarSpacing = self.outgoingMessageBubbleAvatarSpacing;
-    copy.inOutMessageBubbleInteritemSpacing = self.inOutMessageBubbleInteritemSpacing;
     
     return copy;
 }

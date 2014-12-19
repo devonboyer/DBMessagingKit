@@ -42,6 +42,18 @@ extern NSString * const InteractiveKeyboardDidChangeFrameUserInfoKey;
  */
 - (void)keyboardController:(InteractiveKeyboardController *)keyboardController keyboardDidChangeFrame:(CGRect)keyboardFrame;
 
+@optional
+
+/**
+ *  Tells the delegate that the keyboard will appear.
+ */
+- (void)keyboardControllerWillAppear:(InteractiveKeyboardController *)keyboardController;
+
+/**
+ *  Tells the delegate that the keyboard did appear.
+ */
+- (void)keyboardControllerDidAppear:(InteractiveKeyboardController *)keyboardController;
+
 @end
 
 /**

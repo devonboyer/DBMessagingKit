@@ -12,7 +12,6 @@
 #import <UIKit/UIKit.h>
 
 @class MessagingParentCell;
-@class MessagingCollectionView;
 
 typedef NS_ENUM(NSInteger, MessageBubbleType) {
     MessageBubbleTypeOutgoing,
@@ -29,7 +28,7 @@ typedef NS_ENUM(NSInteger, MessageBubbleType) {
 @interface MessagingParentCell : UICollectionViewCell
 
 @property (weak, nonatomic) id <MessagingParentCellDelegate> delegate;
-@property (weak, nonatomic) MessagingCollectionView *collectionView;
+@property (weak, nonatomic) UICollectionView *collectionView;
 
 @property (strong, nonatomic) UILabel *messageTopLabel;
 @property (strong, nonatomic) UILabel *cellTopLabel;
