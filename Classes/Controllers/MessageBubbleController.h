@@ -14,9 +14,11 @@
 @class MessagingCollectionView;
 
 /**
- *  A 'MessageBubbleController' instance creates message bubbles from template images and manages the 
- *  message bubble that should be used for the appropriate position in a consecutuve group of messages
- *  with the same sentByUserID.
+ *  An instance of 'MessageBubbleController' is a convenience object for managing complex message bubble layouts.
+ *  The logic is based on the idea of 'consecutive' message groups in which multiple messages are sent by the
+ *  same sentByUserID consecutively.
+ *
+ * A 'MessageBubbleController' handles creation of message bubbles using the 'MessageBubbleFactory'.
  */
 @interface MessageBubbleController : NSObject
 

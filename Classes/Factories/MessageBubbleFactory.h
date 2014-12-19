@@ -11,6 +11,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  A 'MessageBubbleFactory' contains class methods for creating configured 'message bubbles'. 
+ */
 @interface MessageBubbleFactory : NSObject
 
 /**

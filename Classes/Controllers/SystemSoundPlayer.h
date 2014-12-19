@@ -11,6 +11,10 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  An instance of 'SystemSoundPlayer' allows for the playing simple sounds, such as when sending
+ *  or recieving a message.
+ */
 @interface SystemSoundPlayer : NSObject
 
 + (SystemSoundPlayer *)sharedPlayer;

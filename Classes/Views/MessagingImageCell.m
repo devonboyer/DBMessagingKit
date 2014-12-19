@@ -51,8 +51,8 @@
 
 @property (strong, nonatomic) MaskedImageView *imageView;
 
-@property (assign, nonatomic) CGSize incomingPhotoImageSize;
-@property (assign, nonatomic) CGSize outgoingPhotoImageSize;
+@property (assign, nonatomic) CGSize incomingImageSize;
+@property (assign, nonatomic) CGSize outgoingImageSize;
 
 @end
 
@@ -83,8 +83,8 @@
 {
     [super applyLayoutAttributes:layoutAttributes];
     
-    self.incomingPhotoImageSize = layoutAttributes.incomingImageSize;
-    self.outgoingPhotoImageSize = layoutAttributes.outgoingImageSize;
+    self.incomingImageSize = layoutAttributes.incomingImageSize;
+    self.outgoingImageSize = layoutAttributes.outgoingImageSize;
 }
 
 - (void)layoutSubviews
@@ -94,21 +94,21 @@
     switch (self.type) {
         case MessageBubbleTypeIncoming: {
             
-            CGFloat photoWidth = self.incomingPhotoImageSize.width;
+            CGFloat imageWidth = self.incomingImageSize.width;
             
             [self.messageBubbleImageView setFrame:CGRectMake(self.incomingAvatarSize.width + self.incomingMessageBubbleAvatarSpacing,
                                                              CGRectGetMaxY(self.messageTopLabel.frame),
-                                                             photoWidth,
+                                                             imageWidth,
                                                              CGRectGetHeight(self.frame) - self.cellTopLabelHeight - self.messageTopLabelHeight - self.cellBottomLabelHeight)];
             break;
         }
         case MessageBubbleTypeOutgoing: {
             
-            CGFloat photoWidth = self.outgoingPhotoImageSize.width;
+            CGFloat imageWidth = self.outgoingImageSize.width;
             
-            [self.messageBubbleImageView setFrame:CGRectMake(CGRectGetWidth(self.frame) - photoWidth - self.outgoingAvatarSize.width - self.outgoingMessageBubbleAvatarSpacing,
+            [self.messageBubbleImageView setFrame:CGRectMake(CGRectGetWidth(self.frame) - imageWidth - self.outgoingAvatarSize.width - self.outgoingMessageBubbleAvatarSpacing,
                                                              CGRectGetMaxY(self.messageTopLabel.frame),
-                                                             photoWidth,
+                                                             imageWidth,
                                                              CGRectGetHeight(self.frame) - self.cellTopLabelHeight - self.messageTopLabelHeight - self.cellBottomLabelHeight)];
             break;
         }
