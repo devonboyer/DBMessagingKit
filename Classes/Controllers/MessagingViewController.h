@@ -17,7 +17,6 @@
 #import "MessagingCollectionViewDelegateFlowLayout.h"
 
 @class MessagingCollectionView;
-@class MessageInputView;
 @class InteractiveKeyboardController;
 
 /**
@@ -53,15 +52,12 @@
 
 /**
  *  Specifies whether or not the view controller should automatically scroll to the most recent message
- *  when composing a new message.
- *
- *  The collection view will always scroll to the most recent message when the view appears and when sending or
- *  receiving a new message.
+ *  when composing a new message and when sending or receiving a new message.
  *
  *  @discussion The default value is 'YES', which allows the view controller to scroll automatically to the most recent message.
  *  Set to 'NO' if you want to manage scrolling yourself.
  */
-@property (assign, nonatomic) BOOL automaticallyScrollsToMostRecentMessageWhenComposing;
+@property (assign, nonatomic) BOOL automaticallyScrollsToMostRecentMessage;
 
 /**
  *  Specifies whether or not the view controller should show the "load earlier messages" header view.
@@ -89,40 +85,24 @@
 @property (strong, nonatomic) NSMutableArray *currentlySendingMessageIndexPaths;
 
 /**
- *  This method is called when the user taps the send button on the inputToolbar
- *  after composing a message with the specified text.
+ *  This method is automatically called when the user taps the send button on the registered UIView<MessageInputUtility>
+ *  after composing a message with the appropriate data and MIMEType.
  *
- *  @param text   The message text.
+ *  @param data     The data to be embedded in the message.
+ *  @param MIMEType A MIME Type identifying the type of data contained in the given data object.
  *
- *  @discussion   The message sender is always the senderId specified by the data source. The message data will be the current
- *  date returned by [NSDate date].
- *
- * @see 'senderId'
+ *  @see MessageInputUtility
  */
-- (void)sendMessageWithText:(NSString *)text;
+- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType;
 
 /**
- *  This method is called when the user selects a photo from the photo gallery or takes a picture with the camera.
- *  after composing a message with the specified data.
+ *  Begins the sending of a new message by animating and resetting the registered UIView<MessageInputUtility>,
+ *  animating the addition of a new collection view cell in the collection view, reloading the collection view, 
+ *  and scrolling to the newly sent message as specified by 'automaticallyScrollsToMostRecentMessage'.
  *
- *  @param text   The message photo.
- *
- *  @discussion   The message sender is always the senderId specified by the data source. The message data will be the current
- *  date returned by [NSDate date].
- *
- *  @see 'senderId'
- */
-- (void)sendMessageWithPhoto:(UIImage *)photo;
-
-/**
- *  Begins the sending of a new message by animating and resetting the 'inputToolbar',
- *  animating the addition of a new collection view cell in the collection view,
- *  reloading the collection view, and scrolling to the newly sent message
- *  as specified by 'automaticallyScrollsToMostRecentMessage'.
- *
- *  @discussion You should call this method at the end of 'sendMessageWithText:' and 'sendMessageWithPhoto:'
- *  after adding the new message to your data source and performing any related tasks. You must call then
- *  'finishSendingMessageAtIndexPath:' or 'updateMessageSendingProgress:forItemAtIndexPath:' when approriate.
+ *  @discussion You should call this method at the end of 'sendMessageWithData:MIMEType' after adding the new 
+ *  message to your data source and performing any related tasks. You must call then either
+ *  'finishSendingMessageAtIndexPath:' or 'updateMessageSendingProgress:forItemAtIndexPath:' when appropriate.
  */
 - (void)beginSendingMessage;
 

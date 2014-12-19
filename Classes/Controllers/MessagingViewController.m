@@ -61,7 +61,7 @@
 {
     [super viewDidLoad];
 
-    _automaticallyScrollsToMostRecentMessageWhenComposing = YES;
+    _automaticallyScrollsToMostRecentMessage = YES;
     _acceptsAutoCorrectBeforeSending = YES;
 }
 
@@ -138,6 +138,8 @@
 
 #pragma mark - Public
 
+- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType { }
+
 - (void)registerClassForMessageInputView:(Class)viewClass
 {
     NSAssert([viewClass isSubclassOfClass:[UIView class]], @"%@ must be a subclass of '%@'", viewClass, NSStringFromClass([UIView class]));
@@ -169,11 +171,6 @@
     [self _configureKeyboardController];
     [self _toggleSendButtonEnabled];
 }
-
-- (void)sendMessageWithText:(NSString *)text { }
-
-- (void)sendMessageWithPhoto:(UIImage *)photo { }
-
 
 - (void)beginSendingMessage {
     [self _clearCurrentlyComposedText];
@@ -239,7 +236,7 @@
     NSInteger items = [_collectionView numberOfItemsInSection:0];
     
     if (items > 0) {
-        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:items - 1 inSection:0]
+        [_collectionView scrollToItemAtIndexPath:[self indexPathForLatestMessage]
                                 atScrollPosition:UICollectionViewScrollPositionTop
                                         animated:animated];
     }
@@ -250,9 +247,9 @@
 - (void)_configureKeyboardController
 {
     _keyboardController = [[InteractiveKeyboardController alloc] initWithTextView:_messageInputView.textView
-                                                                        contextView:self.view
-                                                                panGestureRecognizer:_collectionView.panGestureRecognizer
-                                                                            delegate:self];
+                                                                      contextView:self.view
+                                                             panGestureRecognizer:_collectionView.panGestureRecognizer
+                                                                         delegate:self];
 }
 
 - (void)_beginSendingOrFinishReceivingMessage
@@ -280,13 +277,16 @@
     }
     
     [self updateCollectionViewInsets];
-    [self scrollToBottomAnimated:YES];
+    
+    if (_automaticallyScrollsToMostRecentMessage) {
+        [self scrollToBottomAnimated:YES];
+    }
 }
 
 - (void)_messageInputView:(UIView<MessagingInputUtility> *)messageInputView sendButtonTapped:(UIButton *)sendButton
 {
     if ([self _currentlyComposedText].length > 0) {
-        [self sendMessageWithText:[self _currentlyComposedText]];
+        [self sendMessageWithData:[[self _currentlyComposedText] dataUsingEncoding:NSUTF8StringEncoding] MIMEType:MIMETypeText];
     }
 }
 
@@ -546,7 +546,7 @@
     
     [self _toggleSendButtonEnabled];
     
-    if (_automaticallyScrollsToMostRecentMessageWhenComposing) {
+    if (_automaticallyScrollsToMostRecentMessage) {
         [self scrollToBottomAnimated:YES];
     }
     
@@ -569,7 +569,7 @@
         [self adjustInputToolbarHeightByDelta:delta];
         [self updateCollectionViewInsets];
         
-        if (_automaticallyScrollsToMostRecentMessageWhenComposing) {
+        if (_automaticallyScrollsToMostRecentMessage) {
             [self scrollToBottomAnimated:NO];
         }
         

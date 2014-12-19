@@ -39,14 +39,11 @@
     NSString *movieFilePath = [[NSBundle mainBundle] pathForResource: @"calmthestorm" ofType: @"mp4"];
     NSData *movieData = [[NSData alloc] initWithContentsOfFile:movieFilePath];
     [_messages addObject:[Message messageWithData:movieData MIMEType:MIMETypeMovie sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithData:movieData MIMEType:MIMETypeMovie sentByUserID:@"Incoming" sentAt:[NSDate date]]];
 
     NSString *GIFFilePath = [[NSBundle mainBundle] pathForResource: @"PingTransition" ofType: @"gif"];
     NSData *GIFData = [[NSData alloc] initWithContentsOfFile:GIFFilePath];
     [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+
     
     // Configure a message bubble controller with template images
     _messageBubbleController = [[MessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
@@ -84,7 +81,8 @@
 
 #pragma mark - Actions
 
-- (void)sendMessageWithText:(NSString *)text {
+- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType {
+    
     /**
      *  This you should do when sending a message:
      *
@@ -94,31 +92,17 @@
      *  4. Call 'updateMessageSendingProgress:forItemAtIndexPath' or 'finishSendingMessageAtIndexPath'
      */
     
-    Message *newMessage = [Message messageWithText:text sentByUserID:@"Outgoing" sentAt:[NSDate date]];
+    Message *newMessage = [Message messageWithData:data MIMEType:MIMEType sentByUserID:[self senderUserID] sentAt:[NSDate date]];
     [_messages addObject:newMessage];
-   // [SystemSoundPlayer playMessageSentSound];
+    // [SystemSoundPlayer playMessageSentSound];
     [self beginSendingMessage];
     
     // Save the last indexPath to simulate finishing sending the message
     NSIndexPath *lastMessageIndexPath = [self indexPathForLatestMessage];
-
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishSendingMessageAtIndexPath:lastMessageIndexPath];
     });
-}
-
-- (void)sendMessageWithPhoto:(UIImage *)photo {
-    /**
-     *  This you should do when sending a message:
-     *
-     *  1. Play sound (optional)
-     *  2. Add new message model object to your data source
-     *  3. Call 'finishSendingMessage'
-     */
-    
-    Message *newMessage = [Message messageWithImage:photo sentByUserID:@"Outgoing" sentAt:[NSDate date]];
-    [_messages addObject:newMessage];
-    // [SystemSoundPlayer playMessageSentSound];
 }
 
 #pragma mark - MessagingCollectionViewDataSource
