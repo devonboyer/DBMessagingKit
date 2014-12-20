@@ -28,8 +28,7 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Subclass MessagingViewController.
 - Implement the required and optional methods in the MessagingCollectionViewDataSource protocol.
 - Implement the optional methods in the MessagingCollectionViewDelegateFlowLayout protocol.
-
-* There is no dependency on any model objects, all data is handled by MessagingCollectionViewDataSource.
+- There is no dependency on internal model objects, all data is handled by MessagingCollectionViewDataSource, where you can return the appropriate data from your app's native message model object.
 
 #####Message Input View#####
 - You must register a message input view with the MessagingViewController that conforms to MessageInputUtility
