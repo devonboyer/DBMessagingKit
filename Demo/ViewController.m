@@ -33,8 +33,6 @@
     [_messages addObject:[Message messageWithText:@"There is no dependency on model objects." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"Oh, we can't forget data detectors for phone numbers 123-456-7890 and websites https://github.com/DevonBoyer and more." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-
-    //    [_messages addObject:[Message messageWithLocation:[[CLLocation alloc] initWithLatitude:42.9837 longitude:81.2497] sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     
     NSString *movieFilePath = [[NSBundle mainBundle] pathForResource: @"calmthestorm" ofType: @"mp4"];
     NSData *movieData = [[NSData alloc] initWithContentsOfFile:movieFilePath];
@@ -100,7 +98,7 @@
     // Save the last indexPath to simulate finishing sending the message
     NSIndexPath *lastMessageIndexPath = [self indexPathForLatestMessage];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self finishSendingMessageAtIndexPath:lastMessageIndexPath];
     });
 }

@@ -470,6 +470,13 @@
             break;
     }
     
+    // TODO: Somehow store the progress for each indexPath as well
+    for (NSIndexPath *currentlySendingIndexPath in _currentlySendingMessageIndexPaths) {
+        if ([currentlySendingIndexPath isEqual:indexPath]) {
+            cell.messageBubbleImageView.alpha = 0.2;
+        }
+    }
+    
     return cell;
 }
 

@@ -164,6 +164,7 @@
     
     self.messageBubbleImageView.image = nil;
     self.messageBubbleImageView.highlightedImage = nil;
+    self.messageBubbleImageView.alpha = 1.0;
 }
 
 #pragma mark - Setters

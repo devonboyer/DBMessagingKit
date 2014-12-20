@@ -895,7 +895,7 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:elementIndexPath];
     
     CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 0);
-    CGFloat translationInset = self.messageBubbleTextViewTextContainerInsets.left + self.messageBubbleTextViewTextContainerInsets.right+ [self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
+    CGFloat translationInset = [self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
     
     if ([self isOutgoingMessageAtIndexPath:elementIndexPath]) {
         translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
