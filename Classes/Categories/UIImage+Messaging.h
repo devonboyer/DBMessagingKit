@@ -13,14 +13,24 @@
 
 @interface UIImage (Messaging)
 
+/**
+ *  Creates and returns an image for a frame at a given time of a movie.
+ *
+ *  @discussion The given movieURL must be a path on disk, not the network.
+ *
+ *  @param time     The time of the frame in the movie.
+ *  @param movieURL The local URL for the movie.
+ *
+ *  @return An image of a frame at the specified time.
+ */
 + (UIImage *)imageForFrameAtTime:(NSTimeInterval)time movieURL:(NSURL *)movieURL;
 
 /**
- *  Creates and returns a new image overlayed with the spcified color.
+ *  Creates and returns a new image overlayed with the specified color.
  *
  *  @param color The color to overlay the receiver.
  *
- *  @return A new image overlayed with the spcified color.
+ *  @return A new image overlayed with the specified color.
  */
 - (UIImage *)imageWithColor:(UIColor *)color;
 

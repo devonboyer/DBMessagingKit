@@ -9,14 +9,21 @@
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
 //
 
+//! Project version number for MessagingKit.
+FOUNDATION_EXPORT double MessagingKitVersionNumber;
+
+//! Project version string for MessagingKit.
+FOUNDATION_EXPORT const unsigned char MessagingKitVersionString[];
+
 #ifndef MessagingKit_MessagingKit_h
 #define MessagingKit_MessagingKit_h
+
+#import "MessagingKitConstants.h"
 
 // Protocols
 #import "MessagingInputUtility.h"
 #import "MessagingCollectionViewDataSource.h"
 #import "MessagingCollectionViewDelegateFlowLayout.h"
-#import "MessagingKitConstants.h"
 
 // Factories
 #import "MessageBubbleFactory.h"
@@ -25,6 +32,8 @@
 // Controllers
 #import "MessagingViewController.h"
 #import "MessageBubbleController.h"
+#import "InteractiveKeyboardController.h"
+#import "SystemSoundPlayer.h"
 
 // Layout
 #import "MessagingCollectionViewFlowLayout.h"
@@ -36,6 +45,9 @@
 #import "MessagingCollectionView.h"
 #import "MessagingTextCell.h"
 #import "MessagingImageCell.h"
+#import "MessagingMovieCell.h"
+#import "MessagingLocationCell.h"
+#import "MessagingGIFCell.h"
 #import "MessagingInputTextView.h"
 #import "MessagingTimestampSupplementaryView.h"
 #import "MessagingLoadEarlierMessagesHeaderView.h"
@@ -46,9 +58,5 @@
 #import "UIColor+Messaging.h"
 #import "UIImage+Messaging.h"
 #import "UIImage+AnimatedGIF.h"
-
-// Classes
-#import "InteractiveKeyboardController.h"
-#import "SystemSoundPlayer.h"
 
 #endif
