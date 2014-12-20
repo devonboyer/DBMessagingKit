@@ -160,7 +160,6 @@
     Message *message = [_messages objectAtIndex:indexPath.row];
 
     if (indexPath.row % 3 == 0) {
-       // [_messageBubbleController beginMessageGroupAtIndexPath:indexPath];
         return [[MessagingTimestampFormatter sharedFormatter] attributedTimestampForDate:message.sentAt];
     }
     

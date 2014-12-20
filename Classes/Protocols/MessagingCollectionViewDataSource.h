@@ -69,17 +69,6 @@
 - (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  Asks the data source to set the photo to display in the imageView for the the specified
- *  message data item at indexPath in the collectionView.
- *
- *  @param collectionView   The object representing the collection view requesting this information.
- *  @param indexPath        The index path that specifies the location of the item.
- *
- *  @return The location that represents the message.
- */
-- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath;
-
-/**
  *  Asks the data source for the bubble image that corresponds to the specified
  *  message data item at indexPath in the collectionView.
  *
@@ -98,6 +87,17 @@
 - (UIImageView *)collectionView:(UICollectionView *)collectionView messageBubbleForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
+
+/**
+ *  Asks the data source to set the photo to display in the imageView for the the specified
+ *  message data item at indexPath in the collectionView.
+ *
+ *  @param collectionView   The object representing the collection view requesting this information.
+ *  @param indexPath        The index path that specifies the location of the item.
+ *
+ *  @return The location that represents the message.
+ */
+- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Asks the data source for the attributed text to display in the 'messageBubbleTopLabel' for the specified

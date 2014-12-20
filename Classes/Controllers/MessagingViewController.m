@@ -335,11 +335,6 @@
     return nil;
 }
 
-- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath {
-    NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
-    return nil;
-}
-
 - (NSString *)collectionView:(UICollectionView *)collectionView sentByUserIDForMessageAtIndexPath:(NSIndexPath *)indexPath
 {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
@@ -349,6 +344,10 @@
 - (UIImageView *)collectionView:(UICollectionView *)collectionView messageBubbleForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
+    return nil;
+}
+
+- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
 
@@ -428,14 +427,14 @@
     switch ([self collectionView:collectionView MIMETypeForMessageAtIndexPath:indexPath]) {
         case MIMETypeText: {
             MessagingTextCell *textCell = (MessagingTextCell *)cell;
-            NSString *messageText = [[NSString alloc] initWithData:[self collectionView:collectionView dataForMessageAtIndexPath:indexPath] encoding:NSUTF8StringEncoding];
+            NSString *messageText = [[NSString alloc] initWithData:[collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath] encoding:NSUTF8StringEncoding];
             textCell.messageText = messageText;
             textCell.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
             break;
         }
         case MIMETypeImage:{
             MessagingImageCell *imageCell = (MessagingImageCell *)cell;
-            UIImage *image = [[UIImage alloc] initWithData:[self collectionView:collectionView dataForMessageAtIndexPath:indexPath]];
+            UIImage *image = [[UIImage alloc] initWithData:[collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath]];
             if (image) {
                 imageCell.imageView.image = image;
             }
