@@ -12,11 +12,14 @@ An open-source messaging UI framework for iOS, built with simplicity and customi
  Supports the following MIME types (Internet Media Type):
  - Text
  - Image
+ - Movie
+ - GIF
+ - Location (still experimental)
 
 ####Features####
 - Individual Message Timestamps
 - Interactive Keyboard Dismiss
-- Springy Bubbles (similar to iMessage)
+- Springy Bubbles (still experimental)
 
 Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 
@@ -25,15 +28,17 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Subclass MessagingViewController.
 - Implement the required and optional methods in the MessagingCollectionViewDataSource protocol.
 - Implement the optional methods in the MessagingCollectionViewDelegateFlowLayout protocol.
+- There is no dependency on internal model objects, all data is handled by MessagingCollectionViewDataSource, where you can return the appropriate data from your app's native message model object.
 
 #####Message Input View#####
 - You must register a message input view with the MessagingViewController that conforms to MessageInputUtility
 - You may use the provided MessageInputView that is modelled after iMessage.
 
 #####Message Bubbles#####
+- For complex message bubble layouts (such as Facebook Messenger) you can use a MessageBubbleController to figure out for you which message bubble should be displayed for a given message.
 - Message bubbles can be created by passing "template" images to an instance of MessageBubbleController.
 - Message bubbles will revert to the "default" message bubble if a top, middle, or bottom message bubble has not been specified. A "default" message bubble must be specified.
-- You can optionally return an message bubble (UIImageView) in the approripate dataSource method of your choice or use the convience method messageBubbleForItemAtIndexPath: of a MessageBubbleController.
+- You can optionally return a message bubble (UIImageView) in the appropriate dataSource method of your choice or use the convience method messageBubbleForItemAtIndexPath: of a MessageBubbleController.
 
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
