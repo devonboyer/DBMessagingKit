@@ -36,9 +36,10 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - You may use the provided MessageInputView that is modelled after iMessage.
 
 #####Message Bubbles#####
+- For complex message bubble layouts (such as Facebook Messenger) you can use a MessageBubbleController to figure out for you which message bubble should be displayed for a given message.
 - Message bubbles can be created by passing "template" images to an instance of MessageBubbleController.
 - Message bubbles will revert to the "default" message bubble if a top, middle, or bottom message bubble has not been specified. A "default" message bubble must be specified.
-- You can optionally return an message bubble (UIImageView) in the approripate dataSource method of your choice or use the convience method messageBubbleForItemAtIndexPath: of a MessageBubbleController.
+- You can optionally return a message bubble (UIImageView) in the appropriate dataSource method of your choice or use the convience method messageBubbleForItemAtIndexPath: of a MessageBubbleController.
 
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
