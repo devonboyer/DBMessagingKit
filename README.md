@@ -12,6 +12,9 @@ An open-source messaging UI framework for iOS, built with simplicity and customi
  Supports the following MIME types (Internet Media Type):
  - Text
  - Image
+ - Movie
+ - GIF
+ - Location (still experimental)
 
 ####Features####
 - Individual Message Timestamps
