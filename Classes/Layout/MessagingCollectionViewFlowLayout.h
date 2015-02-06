@@ -14,7 +14,6 @@
 @class MessagingCollectionView;
 
 extern NSString * const MessagingCollectionElementKindTimestamp;
-extern NSString * const MessagingCollectionElementKindLocationTimestamp;
 
 /**
  *  The 'MessagingCollectionViewFlowLayout' organizes message items in a vertical list.
@@ -84,7 +83,7 @@ extern NSString * const MessagingCollectionElementKindLocationTimestamp;
 @property (assign, nonatomic) CGFloat cellBottomLabelPadding;
 
 /**
- *  Specifies the padding that should be applied to the 'timestampSupplementaryView'.
+ *  Specifies the padding that should be applied to the 'MessagingTimestampSupplementaryView'.
  *
  *  @discussion The 'timestampSupplementaryView' height is calculated using the boundingBox of the attributed string
  *  passed by the appropriate dataSource method.
@@ -130,7 +129,7 @@ extern NSString * const MessagingCollectionElementKindLocationTimestamp;
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  Returns true if the message at a given index path was an outgoing message or false
+ *  Returns true if the message at a given index path is an outgoing message or false
  *  if the message is an incoming message.
  *
  *  @param indexPath The index path of the item.

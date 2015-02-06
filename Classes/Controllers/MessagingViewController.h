@@ -164,24 +164,24 @@
  *
  *  @discussion This is the recommended registration method for the 'MessagingInputView'.
  *
- *  @param viewClass The class from which to instantiate the chatInputView.
+ *  @param viewClass The class from which to instantiate the messageInputView.
  *
- *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
+ *  @warning The registered messageInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
  *
  *  @see 'MessagingInputUtility'
  */
 - (void)registerClassForMessageInputView:(Class)viewClass;
 
 /**
- *  Specifies the class from which to instantiate the chat input view. The class will be instantiated via alloc/initWithFrame:
+ *  Specifies the class from which to instantiate the messaging input view. The class will be instantiated via alloc/initWithFrame:
  *  with the given initial size.
  *
- *  It is recommended that you register a custom chat input view if you would like to specify a custom initial size.
+ *  It is recommended that you register a custom messageInputView if you would like to specify a custom initial size.
  *
- *  @param viewClass      The class from which to instantiate the chatInputView.
+ *  @param viewClass      The class from which to instantiate the messageInputView.
  *  @param initialSize    The initial size for the chat input view.
  *
- *  @warning The registered chatInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
+ *  @warning The registered messageInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
  *
  *  @see 'MessagingInputUtility'
  */

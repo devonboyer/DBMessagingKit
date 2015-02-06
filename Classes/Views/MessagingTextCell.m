@@ -190,7 +190,7 @@
 - (void)menuWillHide:(NSNotification *)notification
 {
     self.messageBubbleImageView.highlighted = NO;
-   // _messageTextView.selectable = YES;
+    _messageTextView.selectable = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIMenuControllerWillHideMenuNotification

@@ -54,7 +54,7 @@
 @property (assign, nonatomic) CGSize outgoingAvatarViewSize;
 
 /**
- *  The maximum amount of space between the messageBubble and the edge of the screen.
+ *  The minimum amount of space between the messageBubble and the edge of the screen.
  *  The default value is 60.0.
  */
 @property (assign, nonatomic) CGFloat messageBubbleLeftRightMargin;
@@ -63,7 +63,6 @@
  *  The amount of spacing inbetween the avatar and message bubble for incoming messages.
  *
  *  @discussion The spacing will be set to 0.0 if incomingAvatarSize.width is set to 0.0.
- *
  */
 @property (assign, nonatomic) CGFloat incomingMessageBubbleAvatarSpacing;
 
@@ -75,13 +74,13 @@
 @property (assign, nonatomic) CGFloat outgoingMessageBubbleAvatarSpacing;
 
 /**
- *  The inset of the text container's layout area within the text view's content area in a 'ChatCollectionViewCell'.
+ *  The inset of the text container's layout area within the text view's content area in a 'MessagingParentCell'.
  *  The specified inset values should be greater than or equal to 0.0.
  */
 @property (assign, nonatomic) UIEdgeInsets messageBubbleTextViewTextContainerInsets;
 
 /**
- *  The size of the photo for incoming photo messages.
+ *  The size of the image for incoming image messages.
  *
  *  @discussion The width value is used to determine the height that will maintain the same aspect ratio.
  *  The height value will be used as the maximum height.

@@ -353,10 +353,10 @@
 				6780497A1A33D064001E4DC7 /* MessagingLocationCell.m */,
 				6780497F1A351673001E4DC7 /* MessagingGIFCell.h */,
 				678049801A351673001E4DC7 /* MessagingGIFCell.m */,
-				678049371A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.h */,
-				678049381A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m */,
 				6780493F1A313106001E4DC7 /* MessagingTimestampSupplementaryView.h */,
 				678049401A313106001E4DC7 /* MessagingTimestampSupplementaryView.m */,
+				678049371A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.h */,
+				678049381A313106001E4DC7 /* MessagingLoadEarlierMessagesHeaderView.m */,
 				678049411A313106001E4DC7 /* MessagingTypingIndicatorFooterView.h */,
 				678049421A313106001E4DC7 /* MessagingTypingIndicatorFooterView.m */,
 			);

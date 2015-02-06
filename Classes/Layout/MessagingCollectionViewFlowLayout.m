@@ -18,7 +18,6 @@
 #import "MessagingTimestampSupplementaryView.h"
 
 NSString *const MessagingCollectionElementKindTimestamp = @"MessagingCollectionElementKindTimestamp";
-NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCollectionElementKindLocationTimestamp";
 
 @interface MessagingCollectionViewFlowLayout ()
 {
@@ -894,17 +893,19 @@ NSString *const MessagingCollectionElementKindLocationTimestamp = @"MessagingCol
     
     UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:elementIndexPath];
     
-    CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 0);
-    CGFloat translationInset = [self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
-    
-    if ([self isOutgoingMessageAtIndexPath:elementIndexPath]) {
-        translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
+    if ([elementKind isEqualToString:MessagingCollectionElementKindTimestamp]) {
+        CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 0);
+        CGFloat translationInset = [self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
+        
+        if ([self isOutgoingMessageAtIndexPath:elementIndexPath]) {
+            translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
+        }
+        else {
+            translation = CGAffineTransformMakeTranslation(-(layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
+        }
+        
+        layoutAttributes.transform = CGAffineTransformScale(translation, 0.0, 0.0);
     }
-    else {
-        translation = CGAffineTransformMakeTranslation(-(layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
-    }
-    
-    layoutAttributes.transform = CGAffineTransformScale(translation, 0.0, 0.0);
     
     return layoutAttributes;
 }
