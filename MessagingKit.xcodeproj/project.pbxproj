@@ -43,8 +43,6 @@
 		678048421A312954001E4DC7 /* MessagingKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 678048411A312954001E4DC7 /* MessagingKitTests.m */; };
 		678049431A313106001E4DC7 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049031A313106001E4DC7 /* Message.m */; };
 		678049441A313106001E4DC7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049051A313106001E4DC7 /* ViewController.m */; };
-		678049851A3519CA001E4DC7 /* PingTransition.gif in Resources */ = {isa = PBXBuildFile; fileRef = 678049841A3519CA001E4DC7 /* PingTransition.gif */; };
-		679DF5781A43B4560025CBD9 /* calmthestorm.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 679DF5771A43B4560025CBD9 /* calmthestorm.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,8 +130,6 @@
 		678049031A313106001E4DC7 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		678049041A313106001E4DC7 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		678049051A313106001E4DC7 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		678049841A3519CA001E4DC7 /* PingTransition.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = PingTransition.gif; sourceTree = "<group>"; };
-		679DF5771A43B4560025CBD9 /* calmthestorm.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = calmthestorm.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,12 +153,12 @@
 		677B1C5B1A855EC3007D2967 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				677B1C7A1A855EC3007D2967 /* MessagingKit.h */,
+				677B1C7B1A855EC3007D2967 /* MessagingKitConstants.h */,
 				677B1C5C1A855EC3007D2967 /* Categories */,
 				677B1C651A855EC3007D2967 /* Controllers */,
 				677B1C6E1A855EC3007D2967 /* Factories */,
 				677B1C731A855EC3007D2967 /* Layout */,
-				677B1C7A1A855EC3007D2967 /* MessagingKit.h */,
-				677B1C7B1A855EC3007D2967 /* MessagingKitConstants.h */,
 				677B1C7C1A855EC3007D2967 /* Protocols */,
 				677B1C801A855EC3007D2967 /* Resources */,
 				677B1C851A855EC3007D2967 /* Views */,
@@ -346,7 +342,6 @@
 		678049001A313106001E4DC7 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				678049831A3519CA001E4DC7 /* Resources */,
 				678049011A313106001E4DC7 /* Model */,
 				678049041A313106001E4DC7 /* ViewController.h */,
 				678049051A313106001E4DC7 /* ViewController.m */,
@@ -361,15 +356,6 @@
 				678049031A313106001E4DC7 /* Message.m */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		678049831A3519CA001E4DC7 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				679DF5771A43B4560025CBD9 /* calmthestorm.mp4 */,
-				678049841A3519CA001E4DC7 /* PingTransition.gif */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,12 +438,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				678049851A3519CA001E4DC7 /* PingTransition.gif in Resources */,
 				678048361A312954001E4DC7 /* LaunchScreen.xib in Resources */,
 				677B1CAF1A855EC3007D2967 /* camera_button@3x.png in Resources */,
 				678048331A312954001E4DC7 /* Images.xcassets in Resources */,
 				677B1CAE1A855EC3007D2967 /* camera_button@2x.png in Resources */,
-				679DF5781A43B4560025CBD9 /* calmthestorm.mp4 in Resources */,
 				677B1CAD1A855EC3007D2967 /* camera_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,12 +1,15 @@
 //
-//  MessagingPhotoCell.h
-//  MessagingKit
+//  MessagingImageCell.h
+//
 //
 //  GitHub
-//  https://github.com/DevonBoyer/MessagingKit
+//  https://github.com/DevonBoyer/DBMessagingKit
+//
 //
 //  Created by Devon Boyer on 2014-10-09.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
+//
+//  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
 #import "MessagingParentCell.h"

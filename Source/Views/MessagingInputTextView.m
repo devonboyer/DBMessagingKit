@@ -1,12 +1,15 @@
 //
 //  MessagingInputTextView.m
-//  MessagingKit
+//
 //
 //  GitHub
-//  https://github.com/DevonBoyer/MessagingKit
+//  https://github.com/DevonBoyer/DBMessagingKit
+//
 //
 //  Created by Devon Boyer on 2014-09-18.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
+//
+//  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
 #import "MessagingInputTextView.h"

@@ -1,12 +1,15 @@
 //
 //  UIImage+AnimatedGIF.m
-//  MessagingKit
+//
 //
 //  GitHub
 //  https://github.com/mayoff/uiimage-from-animated-gif
 //
+//
 //  Created by Rob Mayoff on 2012-01-27.
 //  Copyright (c) 2014 Rob Mayoff. All rights reserved.
+//
+//  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
 #import "UIImage+AnimatedGIF.h"

@@ -1,9 +1,15 @@
 //
 //  ViewController.m
-//  MessagingKit
+//
+//
+//  GitHub
+//  https://github.com/DevonBoyer/DBMessagingKit
+//
 //
 //  Created by Devon Boyer on 2014-12-04.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
+//
+//  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
 #import "ViewController.h"
@@ -33,15 +39,6 @@
     [_messages addObject:[Message messageWithText:@"There is no dependency on model objects." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"Oh, we can't forget data detectors for phone numbers 123-456-7890 and websites https://github.com/DevonBoyer and more." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    
-    NSString *movieFilePath = [[NSBundle mainBundle] pathForResource: @"calmthestorm" ofType: @"mp4"];
-    NSData *movieData = [[NSData alloc] initWithContentsOfFile:movieFilePath];
-    [_messages addObject:[Message messageWithData:movieData MIMEType:MIMETypeMovie sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-
-    NSString *GIFFilePath = [[NSBundle mainBundle] pathForResource: @"PingTransition" ofType: @"gif"];
-    NSData *GIFData = [[NSData alloc] initWithContentsOfFile:GIFFilePath];
-    [_messages addObject:[Message messageWithData:GIFData MIMEType:MIMETypeGIF sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-
     
     // Configure a message bubble controller with template images
     _messageBubbleController = [[MessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
