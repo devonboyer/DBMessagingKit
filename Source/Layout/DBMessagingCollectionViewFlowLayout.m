@@ -877,21 +877,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     }
 }
 
-- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath {
-   
-    DBMessagingCollectionViewLayoutAttributes *layoutAttributes;
-    
-    if ([_insertedIndexPaths containsObject:itemIndexPath])
-    {
-        layoutAttributes = (DBMessagingCollectionViewLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:itemIndexPath];
-        
-        layoutAttributes.alpha = 0.0f;
-        layoutAttributes.transform3D = CATransform3DMakeTranslation(0, CGRectGetHeight(layoutAttributes.frame), 0);
-    }
-    
-    return layoutAttributes;
-}
-
 - (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath {
     
     UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:elementIndexPath];
