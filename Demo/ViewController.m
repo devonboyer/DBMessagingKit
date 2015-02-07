@@ -52,12 +52,15 @@
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.0,0.0);
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
     
-    // Customize the input toolbar
+    // Customize the input toolbar and add bar button items
     UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
     UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
-    self.messageInputToolbar.sendBarButtonItem = sendBarButtonItem;
+    sendBarButtonItem.tintColor = [UIColor iMessageBlueColor];
     [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
     [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
+    
+    // Specify which bar button will be the send button
+    self.messageInputToolbar.sendBarButtonItem = sendBarButtonItem;
     
     // Setup atrributes for labels
     _boldAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0],
@@ -87,8 +90,7 @@
      *
      *  1. Play sound (optional)
      *  2. Add new message model object to your data source
-     *  3. Call 'beginSendingMessage'
-     *  4. Call 'updateMessageSendingProgress:forItemAtIndexPath' or 'finishSendingMessageAtIndexPath'
+     *  3. Call 'finishSendingMessage'
      */
     
     Message *newMessage = [Message messageWithData:data MIMEType:MIMEType sentByUserID:[self senderUserID] sentAt:[NSDate date]];

@@ -79,17 +79,29 @@
     UIBarButtonItem *innerRightBarButtonItem;
     for (UIBarButtonItem *barButtonItem in _contentToolbar.items) {
         if (barButtonItem == _flexibleSpace) {
-            innerLeftBarButtonItem = _contentToolbar.items[MAX(index - 1, 0)];
-            innerRightBarButtonItem = _contentToolbar.items[MAX(index + 1, _contentToolbar.items.count - 1)];
+            if (index - 1 >= 0) {
+                innerLeftBarButtonItem = _contentToolbar.items[index - 1];
+            }
+            
+            if (index + 1 <= _contentToolbar.items.count - 1) {
+                innerRightBarButtonItem = _contentToolbar.items[index + 1];
+            }
         }
         index++;
     }
     
-    UIView *innerLeftView = [innerLeftBarButtonItem valueForKey:@"view"];
-    UIView *innerRightView = [innerRightBarButtonItem valueForKey:@"view"];
-
+    UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0, 0, 15.0);
     CGFloat margin = 8.0;
-    UIEdgeInsets insets = UIEdgeInsetsMake(0, CGRectGetMaxX(innerLeftView.frame) + margin, 0, self.bounds.size.width - CGRectGetMinX(innerRightView.frame) + margin);
+
+    if (innerLeftBarButtonItem) {
+        UIView *innerLeftView = [innerLeftBarButtonItem valueForKey:@"view"];
+        insets.left = CGRectGetMaxX(innerLeftView.frame) + margin;
+    }
+    
+    if (innerRightBarButtonItem) {
+        UIView *innerRightView = [innerRightBarButtonItem valueForKey:@"view"];
+        insets.right = self.bounds.size.width - CGRectGetMinX(innerRightView.frame) + margin;
+    }
     
     _textView.frame = CGRectMake(insets.left, 0, self.bounds.size.width - insets.left - insets.right, _textView.frame.size.height);
     _textView.center = CGPointMake(_textView.center.x, self.bounds.size.height / 2.0);
