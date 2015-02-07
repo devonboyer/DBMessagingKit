@@ -22,7 +22,7 @@
     NSDictionary *_timestampAttributes;
 }
 
-@property (strong, nonatomic) MessageBubbleController *messageBubbleController;
+@property (strong, nonatomic) DBMessageBubbleController *messageBubbleController;
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @end
@@ -34,21 +34,21 @@
     
     // Setup the demo
     _messages = [[NSMutableArray alloc] init];
-    [_messages addObject:[Message messageWithText:@"Welcome to MessagingKit. A messaging, UI framework for iOS." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithText:@"Welcome to DBMessagingKit. A messaging, UI framework for iOS." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"It is simple to use and very customizable." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"There is no dependency on model objects." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"Oh, we can't forget data detectors for phone numbers 123-456-7890 and websites https://github.com/DevonBoyer and more." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithText:@"Also supports all data detectors like phone numbers 123-456-7890 and websites https://github.com/DevonBoyer/DBMessagingKit." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
     
     // Configure a message bubble controller with template images
-    _messageBubbleController = [[MessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
+    _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
     [_messageBubbleController setTopTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleTop"]];
     [_messageBubbleController setMiddleTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleMid"]];
     [_messageBubbleController setBottomTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleBottom"]];
     [_messageBubbleController setDefaultTemplate:[UIImage imageNamed:@"MessageBubbleDefault"]];
     
     // Register message input view
-    [self registerClassForMessageInputView:[MessageInputView class]];
+    [self registerClassForMessageInputView:[DBMessageInputView class]];
     
     // Customize layout attributes
     self.collectionView.collectionViewLayout.messageBubbleFont = [UIFont systemFontOfSize:18.0];
@@ -65,8 +65,8 @@
     _timestampAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12.0],
                              NSForegroundColorAttributeName:[UIColor lightGrayColor]};
     
-    [[MessagingTimestampFormatter sharedFormatter] setDateTextAttributes:_boldAttributes];
-    [[MessagingTimestampFormatter sharedFormatter] setTimeTextAttributes:_normalAttributes];
+    [[DBMessagingTimestampFormatter sharedFormatter] setDateTextAttributes:_boldAttributes];
+    [[DBMessagingTimestampFormatter sharedFormatter] setTimeTextAttributes:_normalAttributes];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -157,7 +157,7 @@
     Message *message = [_messages objectAtIndex:indexPath.row];
 
     if (indexPath.row % 3 == 0) {
-        return [[MessagingTimestampFormatter sharedFormatter] attributedTimestampForDate:message.sentAt];
+        return [[DBMessagingTimestampFormatter sharedFormatter] attributedTimestampForDate:message.sentAt];
     }
     
     return nil;
@@ -169,7 +169,7 @@
 
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
-    NSString *formatterTimestamp = [[MessagingTimestampFormatter sharedFormatter] verboseTimestampForDate:message.sentAt];
+    NSString *formatterTimestamp = [[DBMessagingTimestampFormatter sharedFormatter] verboseTimestampForDate:message.sentAt];
     return  [[NSAttributedString alloc] initWithString:formatterTimestamp attributes:_timestampAttributes];
 }
 
@@ -177,11 +177,11 @@
     return [_messageBubbleController messageBubbleForIndexPath:indexPath];
 }
 
-- (void)collectionView:(MessagingCollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
     
 }
 
-- (void)collectionView:(MessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
     UIImage *photo = [UIImage imageWithData:message.data];
     imageView.image = photo;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import "MessagingKitConstants.h"
+#import "DBMessagingKitConstants.h"
 
 @interface Message : NSObject
 
