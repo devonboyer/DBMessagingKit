@@ -27,10 +27,6 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Implement the required and optional methods in the DBMessagingCollectionViewDataSource protocol.
 - Implement the optional methods in the DBMessagingCollectionViewDelegateFlowLayout protocol.
 
-#####Message Input View#####
-- You must register a message input view with the DBMessagingViewController that conforms to DBMessageInputUtility
-- You may use the provided DBMessageInputView that is modelled after iMessage.
-
 #####Message Bubbles#####
 - For complex message bubble layouts (such as Facebook Messenger) you can use a DBMessageBubbleController to figure out for you which message bubble should be displayed for a given message.
 - Message bubbles can be created by passing "template" images to an instance of DBMessageBubbleController.
