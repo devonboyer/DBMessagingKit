@@ -1,6 +1,6 @@
 //
-//  MessagingKitTests.m
-//  MessagingKitTests
+//  DBMessagingKitTests.m
+//  DBMessagingKitTests
 //
 //  Created by Devon Boyer on 2014-12-04.
 //  Copyright (c) 2014 Devon Boyer. All rights reserved.
@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface MessagingKitTests : XCTestCase
+@interface DBMessagingKitTests : XCTestCase
 
 @end
 
-@implementation MessagingKitTests
+@implementation DBMessagingKitTests
 
 - (void)setUp {
     [super setUp];

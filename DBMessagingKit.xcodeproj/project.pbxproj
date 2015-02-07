@@ -40,7 +40,7 @@
 		6780482B1A312954001E4DC7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6780482A1A312954001E4DC7 /* AppDelegate.m */; };
 		678048331A312954001E4DC7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 678048321A312954001E4DC7 /* Images.xcassets */; };
 		678048361A312954001E4DC7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 678048341A312954001E4DC7 /* LaunchScreen.xib */; };
-		678048421A312954001E4DC7 /* MessagingKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 678048411A312954001E4DC7 /* MessagingKitTests.m */; };
+		678048421A312954001E4DC7 /* DBMessagingKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 678048411A312954001E4DC7 /* DBMessagingKitTests.m */; };
 		678049431A313106001E4DC7 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049031A313106001E4DC7 /* Message.m */; };
 		678049441A313106001E4DC7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678049051A313106001E4DC7 /* ViewController.m */; };
 /* End PBXBuildFile section */
@@ -125,7 +125,7 @@
 		678048351A312954001E4DC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6780483B1A312954001E4DC7 /* DBMessagingKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DBMessagingKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		678048401A312954001E4DC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		678048411A312954001E4DC7 /* MessagingKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessagingKitTests.m; sourceTree = "<group>"; };
+		678048411A312954001E4DC7 /* DBMessagingKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBMessagingKitTests.m; sourceTree = "<group>"; };
 		678049021A313106001E4DC7 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		678049031A313106001E4DC7 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		678049041A313106001E4DC7 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 		6780483E1A312954001E4DC7 /* MessagingKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				678048411A312954001E4DC7 /* MessagingKitTests.m */,
+				678048411A312954001E4DC7 /* DBMessagingKitTests.m */,
 				6780483F1A312954001E4DC7 /* Supporting Files */,
 			);
 			path = MessagingKitTests;
@@ -402,6 +402,7 @@
 		6780481A1A312954001E4DC7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = DB;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Devon Boyer";
 				TargetAttributes = {
@@ -497,7 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				678048421A312954001E4DC7 /* MessagingKitTests.m in Sources */,
+				678048421A312954001E4DC7 /* DBMessagingKitTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
