@@ -17,7 +17,7 @@
 #import "DBInteractiveKeyboardController.h"
 #import "DBMessageBubbleController.h"
 #import "DBMessagingInputTextView.h"
-#import "DBMessageInputToolbar.h"
+#import "DBMessagingInputToolbar.h"
 #import "DBMessagingCollectionView.h"
 #import "DBMessagingCollectionViewFlowLayout.h"
 #import "DBMessagingCollectionViewFlowLayoutInvalidationContext.h"
@@ -32,7 +32,7 @@
 @interface DBMessagingViewController () <DBMessagingInputTextViewDelegate, DBInteractiveKeyboardControllerDelegate>
 
 @property (strong, nonatomic) DBMessagingCollectionView *collectionView;
-@property (strong, nonatomic) DBMessageInputToolbar *messageInputToolbar;
+@property (strong, nonatomic) DBMessagingInputToolbar *messageInputToolbar;
 @property (strong, nonatomic) DBInteractiveKeyboardController *keyboardController;
 
 - (void)_finishSendingOrReceivingMessage;
@@ -53,7 +53,7 @@
     [_collectionView setDelegate:self];
     [self.view addSubview:_collectionView];
     
-    _messageInputToolbar = [[DBMessageInputToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 50.0, CGRectGetWidth(self.view.frame), 50.0)];
+    _messageInputToolbar = [[DBMessagingInputToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 50.0, CGRectGetWidth(self.view.frame), 50.0)];
     [_messageInputToolbar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
     [_messageInputToolbar.textView setDelegate:self];
     [self.view addSubview:_messageInputToolbar];

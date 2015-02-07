@@ -12,12 +12,12 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessageInputToolbar.h"
+#import "DBMessagingInputToolbar.h"
 
 #import "DBMessagingInputTextView.h"
 #import "UIColor+Messaging.h"
 
-@interface DBMessageInputToolbar () {
+@interface DBMessagingInputToolbar () {
     
     UIBarButtonItem *_flexibleSpace;
 }
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation DBMessageInputToolbar
+@implementation DBMessagingInputToolbar
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

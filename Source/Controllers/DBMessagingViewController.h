@@ -20,7 +20,7 @@
 
 @class DBMessagingCollectionView;
 @class DBInteractiveKeyboardController;
-@class DBMessageInputToolbar;
+@class DBMessagingInputToolbar;
 
 /**
  *  The 'DBMessagingViewController' class is an abstract class that represents a view controller whose content consists of
@@ -44,7 +44,7 @@
 /**
  *  Returns the messaging input view for the 'DBMessagingViewController'
  */
-@property (strong, nonatomic, readonly) DBMessageInputToolbar *messageInputToolbar;
+@property (strong, nonatomic, readonly) DBMessagingInputToolbar *messageInputToolbar;
 
 /**
  *  Specifies whether or not to accept any auto-correct suggestions before sending a message.

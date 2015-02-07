@@ -43,7 +43,7 @@ FOUNDATION_EXPORT const unsigned char DBMessagingKitVersionString[];
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 
 // Views
-#import "DBMessageInputToolbar.h"
+#import "DBMessagingInputToolbar.h"
 #import "DBMessagingCollectionView.h"
 #import "DBMessagingTextCell.h"
 #import "DBMessagingImageCell.h"

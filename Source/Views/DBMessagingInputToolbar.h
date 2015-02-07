@@ -14,7 +14,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class DBMessageInputToolbar;
+@class DBMessagingInputToolbar;
 @class DBMessagingInputTextView;
 
 typedef NS_ENUM(NSInteger, DBMessagingInputToolbarItemPosition) {
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, DBMessagingInputToolbarItemPosition) {
     // DBMessagingInputToolbarItemPositionTop - In development
 };
 
-@interface DBMessageInputToolbar : UIView
+@interface DBMessagingInputToolbar : UIView
 
 @property (strong, nonatomic) UIColor *borderColor;
 @property (assign, nonatomic) NSInteger borderWidth;
