@@ -23,7 +23,7 @@
 		677B1CAD1A855EC3007D2967 /* camera_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 677B1C821A855EC3007D2967 /* camera_button.png */; };
 		677B1CAE1A855EC3007D2967 /* camera_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 677B1C831A855EC3007D2967 /* camera_button@2x.png */; };
 		677B1CAF1A855EC3007D2967 /* camera_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 677B1C841A855EC3007D2967 /* camera_button@3x.png */; };
-		677B1CB01A855EC3007D2967 /* DBMessageInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C871A855EC3007D2967 /* DBMessageInputView.m */; };
+		677B1CB01A855EC3007D2967 /* DBMessageInputToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C871A855EC3007D2967 /* DBMessageInputToolbar.m */; };
 		677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C891A855EC3007D2967 /* DBMessagingCellTextView.m */; };
 		677B1CB21A855EC3007D2967 /* DBMessagingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C8B1A855EC3007D2967 /* DBMessagingCollectionView.m */; };
 		677B1CB31A855EC3007D2967 /* DBMessagingGIFCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C8D1A855EC3007D2967 /* DBMessagingGIFCell.m */; };
@@ -86,12 +86,11 @@
 		677B1C7B1A855EC3007D2967 /* DBMessagingKitConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingKitConstants.h; sourceTree = "<group>"; };
 		677B1C7D1A855EC3007D2967 /* DBMessagingCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewDataSource.h; sourceTree = "<group>"; };
 		677B1C7E1A855EC3007D2967 /* DBMessagingCollectionViewDelegateFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewDelegateFlowLayout.h; sourceTree = "<group>"; };
-		677B1C7F1A855EC3007D2967 /* DBMessagingInputUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingInputUtility.h; sourceTree = "<group>"; };
 		677B1C821A855EC3007D2967 /* camera_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_button.png; sourceTree = "<group>"; };
 		677B1C831A855EC3007D2967 /* camera_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_button@2x.png"; sourceTree = "<group>"; };
 		677B1C841A855EC3007D2967 /* camera_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_button@3x.png"; sourceTree = "<group>"; };
-		677B1C861A855EC3007D2967 /* DBMessageInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessageInputView.h; sourceTree = "<group>"; };
-		677B1C871A855EC3007D2967 /* DBMessageInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageInputView.m; sourceTree = "<group>"; };
+		677B1C861A855EC3007D2967 /* DBMessageInputToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessageInputToolbar.h; sourceTree = "<group>"; };
+		677B1C871A855EC3007D2967 /* DBMessageInputToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageInputToolbar.m; sourceTree = "<group>"; };
 		677B1C881A855EC3007D2967 /* DBMessagingCellTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCellTextView.h; sourceTree = "<group>"; };
 		677B1C891A855EC3007D2967 /* DBMessagingCellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCellTextView.m; sourceTree = "<group>"; };
 		677B1C8A1A855EC3007D2967 /* DBMessagingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionView.h; sourceTree = "<group>"; };
@@ -225,7 +224,6 @@
 			children = (
 				677B1C7D1A855EC3007D2967 /* DBMessagingCollectionViewDataSource.h */,
 				677B1C7E1A855EC3007D2967 /* DBMessagingCollectionViewDelegateFlowLayout.h */,
-				677B1C7F1A855EC3007D2967 /* DBMessagingInputUtility.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -251,8 +249,10 @@
 		677B1C851A855EC3007D2967 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				677B1C861A855EC3007D2967 /* DBMessageInputView.h */,
-				677B1C871A855EC3007D2967 /* DBMessageInputView.m */,
+				677B1C901A855EC3007D2967 /* DBMessagingInputTextView.h */,
+				677B1C911A855EC3007D2967 /* DBMessagingInputTextView.m */,
+				677B1C861A855EC3007D2967 /* DBMessageInputToolbar.h */,
+				677B1C871A855EC3007D2967 /* DBMessageInputToolbar.m */,
 				677B1C881A855EC3007D2967 /* DBMessagingCellTextView.h */,
 				677B1C891A855EC3007D2967 /* DBMessagingCellTextView.m */,
 				677B1C8A1A855EC3007D2967 /* DBMessagingCollectionView.h */,
@@ -261,8 +261,6 @@
 				677B1C8D1A855EC3007D2967 /* DBMessagingGIFCell.m */,
 				677B1C8E1A855EC3007D2967 /* DBMessagingImageCell.h */,
 				677B1C8F1A855EC3007D2967 /* DBMessagingImageCell.m */,
-				677B1C901A855EC3007D2967 /* DBMessagingInputTextView.h */,
-				677B1C911A855EC3007D2967 /* DBMessagingInputTextView.m */,
 				677B1C921A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.h */,
 				677B1C931A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m */,
 				677B1C941A855EC3007D2967 /* DBMessagingLocationCell.h */,
@@ -474,7 +472,7 @@
 				678049431A313106001E4DC7 /* Message.m in Sources */,
 				677B1CB41A855EC3007D2967 /* DBMessagingImageCell.m in Sources */,
 				677B1CA41A855EC3007D2967 /* DBInteractiveKeyboardController.m in Sources */,
-				677B1CB01A855EC3007D2967 /* DBMessageInputView.m in Sources */,
+				677B1CB01A855EC3007D2967 /* DBMessageInputToolbar.m in Sources */,
 				677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */,
 				677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */,
 				677B1CA81A855EC3007D2967 /* DBMessageBubbleFactory.m in Sources */,

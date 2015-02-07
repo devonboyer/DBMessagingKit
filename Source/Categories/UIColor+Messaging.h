@@ -32,6 +32,11 @@
 + (UIColor *)iMessageGreenColor;
 
 /**
+ *  @return A color object containing RBG values similar to the tint color of the iOS 7 messages app icons.
+ */
++ (UIColor *)defaultToolbarTintColor;
+
+/**
  *  Creates and returns a new color object whose brightness component is decreased by the given value, using the initial color 
  *  values of the receiver.
  *

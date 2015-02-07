@@ -15,16 +15,16 @@
 #import <UIKit/UIKit.h>
 
 #import "DBMessagingKitConstants.h"
-#import "DBMessagingInputUtility.h"
 #import "DBMessagingCollectionViewDataSource.h"
 #import "DBMessagingCollectionViewDelegateFlowLayout.h"
 
 @class DBMessagingCollectionView;
 @class DBInteractiveKeyboardController;
+@class DBMessageInputToolbar;
 
 /**
  *  The 'DBMessagingViewController' class is an abstract class that represents a view controller whose content consists of
- *  a 'DBMessagingCollectionView' and 'UIView<DBMessagingInputUtility>' and is specialized to display a messaging interface.
+ *  a 'DBMessagingCollectionView' and 'DBMessagingInputToolbar' and is specialized to display a messaging interface.
  *
  *  @warning This class is intended to be subclassed. You should not use it directly.
  */
@@ -44,7 +44,7 @@
 /**
  *  Returns the messaging input view for the 'DBMessagingViewController'
  */
-@property (strong, nonatomic, readonly) UIView<DBMessagingInputUtility> *messageInputView;
+@property (strong, nonatomic, readonly) DBMessageInputToolbar *messageInputToolbar;
 
 /**
  *  Specifies whether or not to accept any auto-correct suggestions before sending a message.
@@ -81,13 +81,6 @@
 @property (nonatomic) BOOL showTypingIndicator;
 
 /**
- *  The indexPaths of messages that are currently 'sending'.
- *
- *  @discussion To finish sending a message call 'finishSendingMessageAtIndexPath:' or 'finishSendingAllMessages'.
- */
-@property (strong, nonatomic) NSMutableArray *currentlySendingMessageIndexPaths;
-
-/**
  *  This method is automatically called when the user taps the send button on the registered UIView<MessageInputUtility>
  *  after composing a message with the appropriate data and MIMEType.
  *
@@ -98,40 +91,7 @@
  */
 - (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType;
 
-/**
- *  Begins the sending of a new message by animating and resetting the registered UIView<MessageInputUtility>,
- *  animating the addition of a new collection view cell in the collection view, reloading the collection view, 
- *  and scrolling to the newly sent message as specified by 'automaticallyScrollsToMostRecentMessage'.
- *
- *  @discussion You should call this method at the end of 'sendMessageWithData:MIMEType' after adding the new 
- *  message to your data source and performing any related tasks. You must call then either
- *  'finishSendingMessageAtIndexPath:' or 'updateMessageSendingProgress:forItemAtIndexPath:' when appropriate.
- */
-- (void)beginSendingMessage;
-
-/**
- *  Updates the sending progress of a message by increasing the alpha of the message to simulate sending
- *  progress.
- *
- *  @discussion The progress of a message will always be between 0.2 and 1.0 to maintain the user experience.
- *
- *  @param indexPath The indexPath of the message to update.
- *  @param progress The sending progress of the message.
- */
-- (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath;
-
-/**
- *  Finish the sending progress of a message by increasing the alpha of the message to 1.0.
- *
- *  @param indexPath The indexPath of the message that has finished sending..
- */
-- (void)finishSendingMessageAtIndexPath:(NSIndexPath *)indexPath;
-
-/**
- *  Finish the sending progress of a message by increasing the alpha to 1.0 of all messages in
- * 'currentlySendingMessagesIndexPaths'.
- */
-- (void)finishSendingAllMessages;
+- (void)sendCurrentlyComposedText;
 
 /**
  *  A convenience method for returning the index path fo the latest message that was sent or recieved.
@@ -141,9 +101,21 @@
 - (NSIndexPath *)indexPathForLatestMessage;
 
 /**
+ *  Completes the sending of a new message by clearing the currently composed text,
+ *  reloading the collection view, and scrolling to the newly sent message
+ *  as specified by 'automaticallyScrollsToMostRecentMessage'.
+ *
+ *  @discussion You should call this method after adding a new sent message
+ *  to your data source and performing any related tasks.
+ *
+ *  @see 'automaticallyScrollsToMostRecentMessage'.
+ */
+- (void)finishSendingMessage;
+
+/**
  *  Completes the receiving of a new message by animating the typing indicator,
  *  animating the addition of a new collection view cell in the collection view,
- *  reloading the collection view, and scrolling to the newly sent message
+ *  reloading the collection view, and scrolling to the newly received message
  *  as specified by 'automaticallyScrollsToMostRecentMessage'.
  *
  *  @discussion You should call this method after adding a new received message
@@ -159,35 +131,5 @@
  *  @param animated Pass 'YES' if you want to animate scrolling, 'NO' if it should be immediate.
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
-
-/**
- *  Specifies the class from which to instantiate the messaging input view. The class will be instantiated via alloc/
- *  initWithFrame:. The initial size for the messaging input view is '50.0'. To specify a different initial size for the
- *  messaging input view use registerClassForMessageInputView:withInitialHeight: instead.
- *
- *  @discussion This is the recommended registration method for the 'MessagingInputView'.
- *
- *  @param viewClass The class from which to instantiate the messageInputView.
- *
- *  @warning The registered messageInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
- *
- *  @see 'MessagingInputUtility'
- */
-- (void)registerClassForMessageInputView:(Class)viewClass;
-
-/**
- *  Specifies the class from which to instantiate the messaging input view. The class will be instantiated via alloc/initWithFrame:
- *  with the given initial size.
- *
- *  It is recommended that you register a custom messageInputView if you would like to specify a custom initial size.
- *
- *  @param viewClass      The class from which to instantiate the messageInputView.
- *  @param initialSize    The initial size for the chat input view.
- *
- *  @warning The registered messageInputView must conform to 'MessagingInputUtility' and be a subclass of 'UIView'.
- *
- *  @see 'MessagingInputUtility'
- */
-- (void)registerClassForMessageInputView:(Class)viewClass withInitialHeight:(CGFloat)initialHeight;
 
 @end

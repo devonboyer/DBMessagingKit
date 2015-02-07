@@ -41,6 +41,13 @@
                            alpha:1.0];
 }
 
++ (UIColor *)defaultToolbarTintColor {
+    return [UIColor colorWithRed:133 / 255.0
+                           green:141 / 255.0
+                            blue:153 / 255.0
+                           alpha:1.0];
+}
+
 - (UIColor *)colorByDarkeningColorWithValue:(CGFloat)value
 {
     NSUInteger totalComponents = CGColorGetNumberOfComponents(self.CGColor);

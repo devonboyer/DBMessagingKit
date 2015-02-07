@@ -14,7 +14,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MessagingInputTextViewDelegate <UITextViewDelegate>
+@protocol DBMessagingInputTextViewDelegate <UITextViewDelegate>
 
 @optional
 - (void)textViewDidChangeFrame:(UITextView *)textView delta:(CGFloat)delta;
@@ -23,7 +23,7 @@
 
 @interface DBMessagingInputTextView : UITextView <UIAppearance>
 
-@property (weak, nonatomic) id <MessagingInputTextViewDelegate> delegate;
+@property (weak, nonatomic) id <DBMessagingInputTextViewDelegate> delegate;
 
 @property (assign, nonatomic) CGFloat topLayoutGuide;
 @property (assign, nonatomic) NSInteger borderWidth UI_APPEARANCE_SELECTOR;
@@ -33,5 +33,6 @@
 @property (strong, nonatomic) UIColor *placeholderColor UI_APPEARANCE_SELECTOR;
 
 - (NSString *)currentlyComposedText;
+- (void)clear;
 
 @end

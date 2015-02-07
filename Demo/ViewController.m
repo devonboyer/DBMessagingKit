@@ -46,14 +46,18 @@
     [_messageBubbleController setMiddleTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleMid"]];
     [_messageBubbleController setBottomTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleBottom"]];
     [_messageBubbleController setDefaultTemplate:[UIImage imageNamed:@"MessageBubbleDefault"]];
-    
-    // Register message input view
-    [self registerClassForMessageInputView:[DBMessageInputView class]];
-    
+        
     // Customize layout attributes
     self.collectionView.collectionViewLayout.messageBubbleFont = [UIFont systemFontOfSize:18.0];
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.0,0.0);
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
+    
+    // Customize the input toolbar
+    UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
+    UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
+    self.messageInputToolbar.sendBarButtonItem = sendBarButtonItem;
+    [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
+    [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
     
     // Setup atrributes for labels
     _boldAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0],
@@ -90,17 +94,20 @@
     Message *newMessage = [Message messageWithData:data MIMEType:MIMEType sentByUserID:[self senderUserID] sentAt:[NSDate date]];
     [_messages addObject:newMessage];
     // [SystemSoundPlayer playMessageSentSound];
-    [self beginSendingMessage];
-    
-    // Save the last indexPath to simulate finishing sending the message
-    NSIndexPath *lastMessageIndexPath = [self indexPathForLatestMessage];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self finishSendingMessageAtIndexPath:lastMessageIndexPath];
-    });
+    [self finishSendingMessage];
 }
 
-#pragma mark - MessagingCollectionViewDataSource
+- (void)sendButtonTapped:(id)sender {
+    
+    [self sendCurrentlyComposedText];
+}
+
+- (void)cameraButtonTapped:(id)sender {
+    
+    NSLog(@"Camera tapped");
+}
+
+#pragma mark - DBMessagingCollectionViewDataSource
 
 - (NSString *)senderUserID {
     return @"Outgoing";
@@ -187,7 +194,7 @@
     imageView.image = photo;
 }
 
-#pragma mark - MessagingCollectionViewDelegate
+#pragma mark - DBMessagingCollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didTapAvatarImageView:(UIImageView *)avatarImageView atIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Avatar Tapped");

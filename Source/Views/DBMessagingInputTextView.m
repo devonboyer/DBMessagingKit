@@ -55,6 +55,8 @@ static CGFloat const kLabelLeftOffset = 10.0f;
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
     
+    [self addObserver:self forKeyPath:@"frame" options:0 context:nil];
+    
     // Sign up for notifications for text changes:
     
     CGFloat labelLeftOffset = kLabelLeftOffset;
@@ -75,7 +77,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     self.cornerRadius = 5.0;
     self.borderColor = [UIColor colorWithWhite:0.88f alpha:1.0f];
     self.placeholderColor = [UIColor colorWithWhite:0.80f alpha:1.0f];
-    self.placeholderText = NSLocalizedString(@"iMessage", @"IGChatInputView default placeholder text");
+    self.placeholderText = NSLocalizedString(@"iMessage", @"ChatInputView default placeholder text");
     
     _initialFrame = self.frame;
 }
@@ -83,6 +85,26 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self removeObserver:self forKeyPath:@"frame"];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"frame"]) {
+        
+        CGFloat labelLeftOffset = kLabelLeftOffset;
+        // Use our calculated label offset from initWith…:
+        CGFloat labelTopOffset = self.textContainerInset.top;
+        
+        CGSize labelOffset = CGSizeMake(labelLeftOffset, labelTopOffset);
+        CGRect labelFrame = [self placeholderLabelFrameWithOffset:labelOffset];
+        
+        // Reset the frame of the placeholder
+        [self.placeholderLabel setFrame:labelFrame];
+    }
 }
 
 #pragma mark - Setters
@@ -150,6 +172,13 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     return [self.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (void)clear {
+    
+    [self setText:@""];
+    [self updatePlaceholderLabelVisibility];
+    [self adjustFrame];
+}
+
 #pragma mark - Notifications
 
 - (void)textDidChange:(NSNotification *)notification
@@ -172,34 +201,21 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 {
     NSDictionary *attributes = @{NSFontAttributeName : self.font};
     
-    CGRect boundingBox = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attributes context:nil];
+    CGRect stringRect = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attributes context:nil];
     
-    if (boundingBox.size.height > self.frame.size.height) {
-        CGRect rectInSuperview = [self convertRect:self.frame toView:self.superview.superview];
-        if (rectInSuperview.origin.y < (self.topLayoutGuide + 20)) {
-            self.scrollEnabled = YES;
-            [self scrollTextViewToBottomAnimated:NO];
-            return;
-        }
-        else {
-            self.scrollEnabled = NO;
-        }
-    }
     
     CGRect frame = self.frame;
-    frame.size.height = boundingBox.size.height + (CGRectGetHeight(_initialFrame) / 2.0 - self.font.lineHeight / 2.0) * 2;
+    frame.size.height = MAX(stringRect.size.height + (CGRectGetHeight(_initialFrame) / 2.0 - self.font.lineHeight / 2.0) * 2, _initialFrame.size.height);
     
-    if (frame.size.height != CGRectGetHeight(self.frame)) {
-        CGFloat delta = frame.size.height - CGRectGetHeight(self.frame);
+    if (round(frame.size.height) != round(self.frame.size.height)) {
+        CGFloat change = round(frame.size.height - self.frame.size.height);
         
         if ([self.delegate respondsToSelector:@selector(textViewDidChangeFrame:delta:)]) {
-            [self.delegate textViewDidChangeFrame:self delta:delta];
+            [self.delegate textViewDidChangeFrame:self delta:change];
         }
-    }
-    
-    [UIView animateWithDuration:0.1 animations:^{
+        
         self.frame = frame;
-    }];
+    }
 }
 
 - (void)scrollTextViewToBottomAnimated:(BOOL)animated

@@ -17,6 +17,7 @@
 #import "DBInteractiveKeyboardController.h"
 #import "DBMessageBubbleController.h"
 #import "DBMessagingInputTextView.h"
+#import "DBMessageInputToolbar.h"
 #import "DBMessagingCollectionView.h"
 #import "DBMessagingCollectionViewFlowLayout.h"
 #import "DBMessagingCollectionViewFlowLayoutInvalidationContext.h"
@@ -28,18 +29,13 @@
 #import "DBMessagingLoadEarlierMessagesHeaderView.h"
 #import "DBMessagingTypingIndicatorFooterView.h"
 
-@interface DBMessagingViewController () <MessagingInputTextViewDelegate, DBInteractiveKeyboardControllerDelegate>
+@interface DBMessagingViewController () <DBMessagingInputTextViewDelegate, DBInteractiveKeyboardControllerDelegate>
 
 @property (strong, nonatomic) DBMessagingCollectionView *collectionView;
-@property (strong, nonatomic) UIView<DBMessagingInputUtility> *messageInputView;
+@property (strong, nonatomic) DBMessageInputToolbar *messageInputToolbar;
 @property (strong, nonatomic) DBInteractiveKeyboardController *keyboardController;
 
-- (void)_messageInputView:(UIView<DBMessagingInputUtility> *)chatInputView sendButtonTapped:(UIButton *)sendButton;
-
-- (void)_beginSendingOrFinishReceivingMessage;
-- (void)_toggleSendButtonEnabled;
-- (void)_clearCurrentlyComposedText;
-- (NSString *)_currentlyComposedText;
+- (void)_finishSendingOrReceivingMessage;
 
 @end
 
@@ -57,7 +53,15 @@
     [_collectionView setDelegate:self];
     [self.view addSubview:_collectionView];
     
-    _currentlySendingMessageIndexPaths = [[NSMutableArray alloc] init];
+    _messageInputToolbar = [[DBMessageInputToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 50.0, CGRectGetWidth(self.view.frame), 50.0)];
+    [_messageInputToolbar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
+    [_messageInputToolbar.textView setDelegate:self];
+    [self.view addSubview:_messageInputToolbar];
+    
+    _keyboardController = [[DBInteractiveKeyboardController alloc] initWithTextView:_messageInputToolbar.textView
+                                                                        contextView:self.view
+                                                               panGestureRecognizer:_collectionView.panGestureRecognizer
+                                                                           delegate:self];
 }
 
 - (void)viewDidLoad
@@ -66,6 +70,9 @@
 
     _automaticallyScrollsToMostRecentMessage = YES;
     _acceptsAutoCorrectBeforeSending = YES;
+    
+    [self updateCollectionViewInsets];
+    [_messageInputToolbar toggleSendButtonEnabled];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -141,93 +148,39 @@
 
 #pragma mark - Public
 
-- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType { }
+- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType {
 
-- (void)registerClassForMessageInputView:(Class)viewClass
-{
-    NSAssert([viewClass isSubclassOfClass:[UIView class]], @"%@ must be a subclass of '%@'", viewClass, NSStringFromClass([UIView class]));
-    NSAssert([viewClass conformsToProtocol:@protocol(DBMessagingInputUtility)], @"%@ must conform to '%@'", viewClass, NSStringFromProtocol(@protocol(DBMessagingInputUtility)));
-    
-    _messageInputView = [[viewClass alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 50.0, CGRectGetWidth(self.view.frame), 50.0)];
-    [_messageInputView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
-    [[_messageInputView textView] setDelegate:self];
-    [[_messageInputView sendButton] addTarget:self action:@selector(_messageInputView:sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_messageInputView];
 
-    [self updateCollectionViewInsets];
-    [self _configureKeyboardController];
-    [self _toggleSendButtonEnabled];
 }
 
-- (void)registerClassForMessageInputView:(Class)viewClass withInitialHeight:(CGFloat)initialHeight
-{
-    NSAssert([viewClass isSubclassOfClass:[UIView class]], @"%@ must be a subclass of '%@'", viewClass, NSStringFromClass([UIView class]));
-    NSAssert([viewClass conformsToProtocol:@protocol(DBMessagingInputUtility)], @"%@ must conform to '%@'", viewClass, NSStringFromProtocol(@protocol(DBMessagingInputUtility)));
+- (void)sendCurrentlyComposedText {
+    NSString *text = [_messageInputToolbar textView].text;
     
-    _messageInputView = [[viewClass alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - initialHeight, CGRectGetWidth(self.view.bounds), initialHeight)];
-    [_messageInputView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
-    [[_messageInputView textView] setDelegate:self];
-    [[_messageInputView sendButton] addTarget:self action:@selector(_messageInputView:sendButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_messageInputView];
-    
-    [self updateCollectionViewInsets];
-    [self _configureKeyboardController];
-    [self _toggleSendButtonEnabled];
-}
-
-- (void)beginSendingMessage {
-    [self _clearCurrentlyComposedText];
-    [self _toggleSendButtonEnabled];
-
-    NSUInteger previousNumberOfMessages = [_collectionView numberOfItemsInSection:0];
-    NSIndexPath *lastMessageIndexPath = [NSIndexPath indexPathForRow:previousNumberOfMessages inSection:0];
-    
-    // Insert the new message
-    [self _beginSendingOrFinishReceivingMessage];
-    
-    [_currentlySendingMessageIndexPaths addObject:lastMessageIndexPath];
-    [self updateMessageSendingProgress:0.2 forItemAtIndexPath:lastMessageIndexPath];
-}
-
-- (void)updateMessageSendingProgress:(CGFloat)progress forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (progress < 0.2) progress = 0.2;
-    if (progress > 1) progress = 1;
-    
-    DBMessagingParentCell *cell = (DBMessagingParentCell *)[_collectionView cellForItemAtIndexPath:indexPath];
-    cell.messageBubbleImageView.alpha = progress;
-    
-    if (progress == 1.0) {
-        [self finishSendingMessageAtIndexPath:indexPath];
+    if (_acceptsAutoCorrectBeforeSending) {
+        // Accept any auto-correct suggestions before sending.
+        text = [text stringByAppendingString:@" "];
     }
+    
+    text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    [_messageInputToolbar.textView clear];
+    
+    [self sendMessageWithData:[text dataUsingEncoding:NSUTF8StringEncoding] MIMEType:MIMETypeText];
 }
 
-- (void)finishSendingMessageAtIndexPath:(NSIndexPath *)indexPath
-{
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        DBMessagingParentCell *cell = (DBMessagingParentCell *)[_collectionView cellForItemAtIndexPath:indexPath];
-        cell.messageBubbleImageView.alpha = 1.0;
-    } completion:^(BOOL finished) {
-        if (finished) {
-            [_currentlySendingMessageIndexPaths removeObject:indexPath];
-        }
-    }];
+- (void)finishReceivingMessage {
+    self.showTypingIndicator = NO;
+    [self _finishSendingOrReceivingMessage];
 }
 
-- (void)finishSendingAllMessages {
-    for (NSIndexPath *indexPath in _currentlySendingMessageIndexPaths) {
-        [self finishSendingMessageAtIndexPath:indexPath];
-    }
+- (void)finishSendingMessage {
+    [_messageInputToolbar.textView clear];
+    [_messageInputToolbar toggleSendButtonEnabled];
+    [self _finishSendingOrReceivingMessage];
 }
 
 - (NSIndexPath *)indexPathForLatestMessage {
     return [NSIndexPath indexPathForItem:[_collectionView numberOfItemsInSection:0] - 1 inSection:0];
-}
-
-- (void)finishReceivingMessage
-{
-    self.showTypingIndicator = NO;
-    
-    [self _beginSendingOrFinishReceivingMessage];
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated
@@ -247,15 +200,8 @@
 
 #pragma mark - Private
 
-- (void)_configureKeyboardController
-{
-    _keyboardController = [[DBInteractiveKeyboardController alloc] initWithTextView:_messageInputView.textView
-                                                                      contextView:self.view
-                                                             panGestureRecognizer:_collectionView.panGestureRecognizer
-                                                                         delegate:self];
-}
 
-- (void)_beginSendingOrFinishReceivingMessage
+- (void)_finishSendingOrReceivingMessage
 {
     NSUInteger previousNumberOfMessages = [_collectionView numberOfItemsInSection:0];
     NSIndexPath *lastMessageIndexPath = [NSIndexPath indexPathForRow:previousNumberOfMessages inSection:0];
@@ -284,38 +230,6 @@
     if (_automaticallyScrollsToMostRecentMessage) {
         [self scrollToBottomAnimated:YES];
     }
-}
-
-- (void)_messageInputView:(UIView<DBMessagingInputUtility> *)messageInputView sendButtonTapped:(UIButton *)sendButton
-{
-    if ([self _currentlyComposedText].length > 0) {
-        [self sendMessageWithData:[[self _currentlyComposedText] dataUsingEncoding:NSUTF8StringEncoding] MIMEType:MIMETypeText];
-    }
-}
-
-- (void)_toggleSendButtonEnabled
-{
-    UITextView *textView = [_messageInputView textView];
-    UIButton *sendButton = [_messageInputView sendButton];
-    sendButton.enabled = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length > 0;
-}
-
-- (void)_clearCurrentlyComposedText
-{
-    [_messageInputView textView].text = @"";
-    [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification object:nil];
-}
-
-- (NSString *)_currentlyComposedText
-{
-    NSString *text = [_messageInputView textView].text;
-    
-    if (_acceptsAutoCorrectBeforeSending) {
-        // Accept any auto-correct suggestions before sending.
-        text = [text stringByAppendingString:@" "];
-    }
-
-    return [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 #pragma mark - MessagingCollectionViewDataSource
@@ -472,13 +386,6 @@
             break;
     }
     
-    // TODO: Somehow store the progress for each indexPath as well
-    for (NSIndexPath *currentlySendingIndexPath in _currentlySendingMessageIndexPaths) {
-        if ([currentlySendingIndexPath isEqual:indexPath]) {
-            cell.messageBubbleImageView.alpha = 0.2;
-        }
-    }
-    
     return cell;
 }
 
@@ -547,13 +454,13 @@
     return CGSizeMake(_collectionView.collectionViewLayout.itemWidth, 60.0);
 }
 
-#pragma mark - MessageInputTextViewDelegate
+#pragma mark - DBMessageInputTextViewDelegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     [textView becomeFirstResponder];
     
-    [self _toggleSendButtonEnabled];
+    [_messageInputToolbar toggleSendButtonEnabled];
     
     if (_automaticallyScrollsToMostRecentMessage) {
         [self scrollToBottomAnimated:YES];
@@ -564,7 +471,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    [self _toggleSendButtonEnabled];
+    [_messageInputToolbar toggleSendButtonEnabled];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -574,15 +481,12 @@
 
 - (void)textViewDidChangeFrame:(UITextView *)textView delta:(CGFloat)delta
 {
-    [UIView animateWithDuration:0.1 animations:^{
-        [self adjustInputToolbarHeightByDelta:delta];
-        [self updateCollectionViewInsets];
-        
-        if (_automaticallyScrollsToMostRecentMessage) {
-            [self scrollToBottomAnimated:NO];
-        }
-        
-    } completion:nil];
+    [self adjustInputToolbarHeightByDelta:delta];
+    [self updateCollectionViewInsets];
+    
+    if (_automaticallyScrollsToMostRecentMessage) {
+        [self scrollToBottomAnimated:NO];
+    }
     
     [self updateKeyboardTriggerPoint];
 }
@@ -592,7 +496,7 @@
 - (void)updateCollectionViewInsets
 {
     [self setCollectionViewInsetsTopValue:[self.topLayoutGuide length]
-                              bottomValue:CGRectGetHeight(_collectionView.frame) - CGRectGetMinY(_messageInputView.frame)];
+                              bottomValue:CGRectGetHeight(_collectionView.frame) - CGRectGetMinY(_messageInputToolbar.frame)];
 }
 
 - (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom
@@ -604,22 +508,22 @@
 
 - (void)updateKeyboardTriggerPoint
 {
-    _keyboardController.keyboardTriggerPoint = CGPointMake(0.0f, CGRectGetHeight(_messageInputView.bounds));
+    _keyboardController.keyboardTriggerPoint = CGPointMake(0.0f, CGRectGetHeight(_messageInputToolbar.bounds));
 }
 
 - (void)adjustInputToolbarHeightByDelta:(CGFloat)dy
 {
-    CGRect frame = _messageInputView.frame;
+    CGRect frame = _messageInputToolbar.frame;
     frame.origin.y -= dy;
     frame.size.height += dy;
-    _messageInputView.frame = frame;
+    _messageInputToolbar.frame = frame;
 }
 
 - (void)adjustInputToolbarBottomSpaceByDelta:(CGFloat)dy
 {
-    CGRect frame = _messageInputView.frame;
+    CGRect frame = _messageInputToolbar.frame;
     frame.origin.y -= dy;
-    _messageInputView.frame = frame;
+    _messageInputToolbar.frame = frame;
 }
 
 #pragma mark - Keyboard
@@ -629,9 +533,9 @@
     CGFloat heightFromBottom = CGRectGetHeight(_collectionView.frame) - CGRectGetMinY(keyboardFrame);
     heightFromBottom = MAX(0.0f, heightFromBottom);
 
-    CGRect frame = _messageInputView.frame;
-    frame.origin.y = CGRectGetHeight(_collectionView.frame) - heightFromBottom - CGRectGetHeight(_messageInputView.frame);
-    _messageInputView.frame = frame;
+    CGRect frame = _messageInputToolbar.frame;
+    frame.origin.y = CGRectGetHeight(_collectionView.frame) - heightFromBottom - CGRectGetHeight(_messageInputToolbar.frame);
+    _messageInputToolbar.frame = frame;
     
     [self updateCollectionViewInsets];
 }
