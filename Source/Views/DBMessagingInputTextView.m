@@ -14,6 +14,10 @@
 
 #import "DBMessagingInputTextView.h"
 
+#import "UIImage+Messaging.h"
+#import "NSAttributedString+Messaging.h"
+#import "NSMutableAttributedString+Messaging.h"
+
 // Manually-selected label offsets to align placeholder label with text entry.
 static CGFloat const kLabelLeftOffset = 10.0f;
 
@@ -30,14 +34,16 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        [self commonInit];
     }
     
     return self;
 }
 
-- (void)setup
+- (void)commonInit
 {
+    _imageAttatchments = [[NSDictionary alloc] init];
+    
     self.font = [UIFont systemFontOfSize:17.0];
     
     [self setBackgroundColor:[UIColor whiteColor]];
@@ -167,9 +173,42 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 #pragma mark - Actions
 
-- (NSString *)currentlyComposedText
-{
-    return [self.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+- (void)addImageAttatchment:(UIImage *)image forKey:(NSString *)key {
+    
+    NSMutableDictionary *mutableImageAttachments = [_imageAttatchments mutableCopy];
+    [mutableImageAttachments addEntriesFromDictionary:@{key : image}];
+    _imageAttatchments = mutableImageAttachments;
+    
+    CGSize imageSize = image.size;
+    imageSize.width = self.textContainer.size.width - self.textContainerInset.left - self.textContainerInset.right;
+    imageSize.height /= (image.size.width / imageSize.width);
+    
+    NSTextAttachment *imageAttatchment = [[NSTextAttachment alloc] init];
+    imageAttatchment.image = [UIImage imageByRoundingCorners:60.0 ofImage:image];
+    imageAttatchment.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    
+    // Add line height to attatchment to give it some padding
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    
+    NSMutableAttributedString *attachmentString = [NSMutableAttributedString mutableAttributedStringWithAttachment:imageAttatchment];
+    [attachmentString addAttributes:@{NSParagraphStyleAttributeName: style} range:NSMakeRange(0, attachmentString.length)];
+
+    NSMutableAttributedString *replacementString = [[NSMutableAttributedString alloc] initWithAttributedString:self.attributedText];
+    [replacementString appendAttributedString:attachmentString];
+    
+    // Always append a newline character after an attatchment
+    [replacementString appendAttributedString:[NSAttributedString newlineAttributedString]];
+    
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17.0]};
+    [replacementString addAttributes:attributes range:NSMakeRange(0, replacementString.length)];
+
+    self.attributedText = replacementString;
+    [self adjustFrame];
+    [self updatePlaceholderLabelVisibility];
+}
+
+- (NSString *)currentlyComposedText {
+    return [self.attributedText.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 - (void)clear {
@@ -183,7 +222,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 - (void)textDidChange:(NSNotification *)notification
 {
-    if ([self.text length] < 2) {
+    if ([self.attributedText length] < 2) {
         [self setNeedsDisplay]; // placeholder may need to be displayed
     }
     
@@ -199,9 +238,9 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 - (void)adjustFrame
 {
-    NSDictionary *attributes = @{NSFontAttributeName : self.font};
+    CGRect stringRect = [self.attributedText boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
     
-    CGRect stringRect = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attributes context:nil];
+//    CGRect stringRect = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attributes context:nil];
     
     
     CGRect frame = self.frame;
@@ -290,7 +329,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 - (void)updatePlaceholderLabelVisibility
 {
-    if ([self.text length] == 0) {
+    if ([self.attributedText length] == 0) {
         self.placeholderLabel.alpha = 1.f;
     } else {
         self.placeholderLabel.alpha = 0.f;
@@ -298,9 +337,10 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 }
 
 // When text is set or changed, update the label's visibility.
-- (void)setText:(NSString *)text
-{
-    [super setText:text];
+- (void)setText:(NSString *)text {
+    
+    NSDictionary *attributes = @{NSFontAttributeName: self.font};
+    self.attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     
     [self updatePlaceholderLabelVisibility];
 }

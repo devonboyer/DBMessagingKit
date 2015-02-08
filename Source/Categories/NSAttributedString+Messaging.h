@@ -27,4 +27,6 @@
  */
 + (CGSize)boundingBoxForAttributedString:(NSAttributedString *)attributedString maxWidth:(CGFloat)maxWidth;
 
++ (NSAttributedString *)newlineAttributedString;
+
 @end

@@ -16,9 +16,12 @@
 
 @implementation NSAttributedString (Messaging)
 
-+ (CGSize)boundingBoxForAttributedString:(NSAttributedString *)attributedString maxWidth:(CGFloat)maxWidth
-{
++ (CGSize)boundingBoxForAttributedString:(NSAttributedString *)attributedString maxWidth:(CGFloat)maxWidth {
     return [attributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
+}
+
++ (NSAttributedString *)newlineAttributedString {
+    return [[NSAttributedString alloc] initWithString:@"\n"];
 }
 
 @end

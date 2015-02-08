@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		673528DA1A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528D91A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m */; };
 		673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */; };
+		673528E01A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528DF1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m */; };
 		677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */; };
 		677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C601A855EC3007D2967 /* UIColor+Messaging.m */; };
 		677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */; };
@@ -62,6 +63,8 @@
 		673528D91A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewHiddenTimestampFlowLayout.m; sourceTree = "<group>"; };
 		673528DB1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewSlidingTimestampFlowLayout.h; sourceTree = "<group>"; };
 		673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewSlidingTimestampFlowLayout.m; sourceTree = "<group>"; };
+		673528DE1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Messaging.h"; sourceTree = "<group>"; };
+		673528DF1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
@@ -176,6 +179,8 @@
 			children = (
 				677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */,
 				677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */,
+				673528DE1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.h */,
+				673528DF1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m */,
 				677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */,
 				677B1C601A855EC3007D2967 /* UIColor+Messaging.m */,
 				677B1C611A855EC3007D2967 /* UIImage+AnimatedGIF.h */,
@@ -496,6 +501,7 @@
 				677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */,
 				677B1CBB1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m in Sources */,
 				677B1CA71A855EC3007D2967 /* DBSystemSoundPlayer.m in Sources */,
+				673528E01A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m in Sources */,
 				677B1CB81A855EC3007D2967 /* DBMessagingMovieCell.m in Sources */,
 				677B1CBA1A855EC3007D2967 /* DBMessagingTextCell.m in Sources */,
 				677B1CBC1A855EC3007D2967 /* DBMessagingTypingIndicatorFooterView.m in Sources */,

@@ -24,7 +24,16 @@ typedef NS_ENUM(NSInteger, DBMessagingInputToolbarItemPosition) {
     // DBMessagingInputToolbarItemPositionTop - In development
 };
 
+@protocol DBMessagingInputToolbarDelegate <NSObject>
+
+- (void)messagingInputToolbarDidBeginEditing:(DBMessagingInputToolbar *)toolbar;
+- (void)messagingInputToolbar:(DBMessagingInputToolbar *)toolbar shouldChangeFrame:(CGFloat)change;
+
+@end
+
 @interface DBMessagingInputToolbar : UIView
+
+@property (weak, nonatomic) id<DBMessagingInputToolbarDelegate> delegate;
 
 @property (strong, nonatomic) UIColor *borderColor;
 @property (assign, nonatomic) NSInteger borderWidth;

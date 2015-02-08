@@ -19,6 +19,29 @@
 
 @implementation UIImage (Messaging)
 
++ (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image {
+    
+    CGSize imageSize = image.size;
+    CGRect drawingRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    
+    // Begin a new image that will be the new image with the rounded corners
+    UIGraphicsBeginImageContextWithOptions(imageSize, NO, [UIScreen mainScreen].scale);
+    
+    // Add a clip before drawing anything, in the shape of an rounded rect
+    [[UIBezierPath bezierPathWithRoundedRect:drawingRect
+                                cornerRadius:cornerRadius] addClip];
+    // Draw your image
+    [image drawInRect:drawingRect];
+    
+    // Get the image, here setting the UIImageView image
+    UIImage *finishedImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // Lets forget about that we were drawing
+    UIGraphicsEndImageContext();
+    
+    return finishedImage;
+}
+
 + (UIImage *)imageForFrameAtTime:(NSTimeInterval)time movieURL:(NSURL *)movieURL {
     
     __block UIImage *frameImage = nil;

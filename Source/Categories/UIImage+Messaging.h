@@ -16,6 +16,8 @@
 
 @interface UIImage (Messaging)
 
++ (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image;
+
 /**
  *  Creates and returns an image for a frame at a given time of a movie.
  *

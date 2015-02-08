@@ -30,7 +30,7 @@
 #import "DBMessagingLoadEarlierMessagesHeaderView.h"
 #import "DBMessagingTypingIndicatorFooterView.h"
 
-@interface DBMessagingViewController () <DBMessagingInputTextViewDelegate, DBInteractiveKeyboardControllerDelegate>
+@interface DBMessagingViewController () <DBMessagingInputToolbarDelegate, DBInteractiveKeyboardControllerDelegate>
 
 @property (strong, nonatomic) DBMessagingCollectionView *collectionView;
 @property (strong, nonatomic) DBMessagingInputToolbar *messageInputToolbar;
@@ -56,7 +56,7 @@
     
     _messageInputToolbar = [[DBMessagingInputToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 50.0, CGRectGetWidth(self.view.frame), 50.0)];
     [_messageInputToolbar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
-    [_messageInputToolbar.textView setDelegate:self];
+    [_messageInputToolbar setDelegate:self];
     [self.view addSubview:_messageInputToolbar];
     
     _keyboardController = [[DBInteractiveKeyboardController alloc] initWithTextView:_messageInputToolbar.textView
@@ -481,34 +481,10 @@
     return CGSizeMake(_collectionView.collectionViewLayout.itemWidth, 60.0);
 }
 
-#pragma mark - DBMessageInputTextViewDelegate
+#pragma mark - DBMessagingInputToolbarDelegate
 
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    [textView becomeFirstResponder];
-    
-    [_messageInputToolbar toggleSendButtonEnabled];
-    
-    if (_automaticallyScrollsToMostRecentMessage) {
-        [self scrollToBottomAnimated:YES];
-    }
-    
-    [self updateCollectionViewInsets];
-}
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    [_messageInputToolbar toggleSendButtonEnabled];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    [textView resignFirstResponder];
-}
-
-- (void)textViewDidChangeFrame:(UITextView *)textView delta:(CGFloat)delta
-{
-    [self adjustInputToolbarHeightByDelta:delta];
+- (void)messagingInputToolbar:(DBMessagingInputToolbar *)toolbar shouldChangeFrame:(CGFloat)change {
+    [self adjustInputToolbarHeightByDelta:change];
     [self updateCollectionViewInsets];
     
     if (_automaticallyScrollsToMostRecentMessage) {
@@ -516,6 +492,16 @@
     }
     
     [self updateKeyboardTriggerPoint];
+}
+
+- (void)messagingInputToolbarDidBeginEditing:(DBMessagingInputToolbar *)toolbar {
+    [_messageInputToolbar toggleSendButtonEnabled];
+    
+    if (_automaticallyScrollsToMostRecentMessage) {
+        [self scrollToBottomAnimated:YES];
+    }
+    
+    [self updateCollectionViewInsets];
 }
 
 #pragma mark - Utility

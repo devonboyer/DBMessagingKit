@@ -32,6 +32,9 @@
 @property (strong, nonatomic) NSString *placeholderText UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIColor *placeholderColor UI_APPEARANCE_SELECTOR;
 
+@property (strong, nonatomic, readonly) NSDictionary *imageAttatchments;
+
+- (void)addImageAttatchment:(UIImage *)image forKey:(NSString *)key;
 - (NSString *)currentlyComposedText;
 - (void)clear;
 

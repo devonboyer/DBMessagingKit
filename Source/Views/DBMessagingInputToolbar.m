@@ -17,7 +17,8 @@
 #import "DBMessagingInputTextView.h"
 #import "UIColor+Messaging.h"
 
-@interface DBMessagingInputToolbar () {
+@interface DBMessagingInputToolbar () <DBMessagingInputTextViewDelegate>
+{
     
     UIBarButtonItem *_flexibleSpace;
 }
@@ -56,6 +57,7 @@
         
         _textView = [[DBMessagingInputTextView alloc] initWithFrame:CGRectMake(0,0,0.0,30.0)];
         [_textView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        [_textView setDelegate:self];
         [self addSubview:_textView];
         
         _blur = YES;
@@ -165,11 +167,41 @@
     [self setNeedsLayout];
 }
 
+#pragma mark - Actions
+
 - (void)toggleSendButtonEnabled
 {
     if (_sendBarButtonItem) {
         _sendBarButtonItem.enabled = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length > 0;
     }
+}
+
+#pragma mark - DBMessagingInputTextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+    
+    [self toggleSendButtonEnabled];
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [self.delegate messagingInputToolbarDidBeginEditing:self];
+}
+
+- (void)textViewDidChangeFrame:(UITextView *)textView delta:(CGFloat)delta {
+    [self.delegate messagingInputToolbar:self shouldChangeFrame:delta];
+}
+
+- (BOOL)textView:(DBMessagingInputTextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+//    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[textView currentlyComposedText]];
+//    [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:text]];
+//    
+//    NSDictionary *attributes = @{NSFontAttributeName: textView.font};
+//    [attributedText addAttributes:attributes range:NSMakeRange(0, attributedText.length)];
+//    
+//    textView.attributedText = attributedText;
+    
+    return YES;
 }
 
 @end

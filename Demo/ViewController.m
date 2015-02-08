@@ -15,8 +15,7 @@
 #import "ViewController.h"
 #import "Message.h"
 
-@interface ViewController ()
-{
+@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
     NSDictionary *_boldAttributes;
     NSDictionary *_normalAttributes;
     NSDictionary *_timestampAttributes;
@@ -36,12 +35,12 @@
     _messages = [[NSMutableArray alloc] init];
     [_messages addObject:[Message messageWithText:@"Welcome to DBMessagingKit. A messaging, UI framework for iOS." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"It is simple to use and very customizable." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"There is no dependency on model objects." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"You can even register a custom messaging input view, or use the one built-in you see here!" sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithText:@"You can send text, images, GIFs, movies, or even your location." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
+    [_messages addObject:[Message messageWithText:@"You can add as many buttons to the input toolbar as you want." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
     [_messages addObject:[Message messageWithText:@"Also supports all data detectors like phone numbers 123-456-7890 and websites https://github.com/DevonBoyer/DBMessagingKit." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
     
     // Configure a message bubble controller with template images
-    _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
+    _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageGreenColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
     [_messageBubbleController setTopTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleTop"]];
     [_messageBubbleController setMiddleTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleMid"]];
     [_messageBubbleController setBottomTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleBottom"]];
@@ -59,9 +58,9 @@
     UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
     UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
     sendBarButtonItem.tintColor = [UIColor iMessageBlueColor];
-    [sendBarButtonItem setTitlePositionAdjustment:UIOffsetMake(0, 10.0) forBarMetrics:UIBarMetricsDefault];
     [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
     [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
+    self.messageInputToolbar.textView.placeholderText = @"Text Message";
     
     // Specify which bar button will be the send button
     self.messageInputToolbar.sendBarButtonItem = sendBarButtonItem;
@@ -111,6 +110,21 @@
 - (void)cameraButtonTapped:(id)sender {
     
     NSLog(@"Camera tapped");
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePickerController.delegate = self;
+    [self presentViewController:imagePickerController animated:true completion:nil];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    
+    [self.messageInputToolbar.textView addImageAttatchment:chosenImage forKey:@"key"];
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - DBMessagingCollectionViewDataSource
