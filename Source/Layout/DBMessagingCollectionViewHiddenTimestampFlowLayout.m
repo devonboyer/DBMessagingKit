@@ -165,13 +165,13 @@
     
     if ([elementKind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
         CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 0);
-        CGFloat translationInset = 80.0; //[self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
+        CGFloat translationInset = [self messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self avatarSizeForIndexPath:elementIndexPath].width + 50.0;
         
         if ([self isOutgoingMessageAtIndexPath:elementIndexPath]) {
-            translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
+            translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset - self.sectionInset.right), -layoutAttributes.frame.size.height);
         }
         else {
-            translation = CGAffineTransformMakeTranslation(-(layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
+            translation = CGAffineTransformMakeTranslation(-(layoutAttributes.frame.size.width - translationInset - self.sectionInset.left), -layoutAttributes.frame.size.height);
         }
         
         layoutAttributes.transform = CGAffineTransformScale(translation, 0.0, 0.0);

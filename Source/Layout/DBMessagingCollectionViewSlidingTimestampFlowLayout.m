@@ -105,10 +105,13 @@
     
     if (layoutAttributes) {
         
-        CGRect cellFrame = [self layoutAttributesForItemAtIndexPath:indexPath].frame;
+        DBMessagingCollectionViewLayoutAttributes *cellAttributes = (DBMessagingCollectionViewLayoutAttributes *)[self layoutAttributesForItemAtIndexPath:indexPath];
+        CGRect cellFrame = cellAttributes.frame;
         
         if ([elementKind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
             layoutAttributes.frame = CGRectMake(self.collectionView.bounds.size.width, cellFrame.origin.y, self.messageBubbleLeftRightMargin, cellFrame.size.height);
+            layoutAttributes.cellTopLabelHeight = cellAttributes.cellTopLabelHeight;
+            layoutAttributes.messageBubbleTopLabelHeight = cellAttributes.messageBubbleTopLabelHeight;
         }
     }
     

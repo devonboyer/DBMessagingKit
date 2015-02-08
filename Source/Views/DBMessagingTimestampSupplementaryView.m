@@ -17,9 +17,11 @@
 
 @interface DBMessagingTimestampSupplementaryView ()
 
-@property (assign, nonatomic) UIEdgeInsets messageBubbleTextContainerInsets;
+@property (assign, nonatomic) CGFloat messageBubbleTopLabelHeight;
+@property (assign, nonatomic) CGFloat cellTopLabelHeight;
 @property (assign, nonatomic) CGSize incomingAvatarSize;
 @property (assign, nonatomic) CGSize outgoingAvatarSize;
+@property (assign, nonatomic) UIEdgeInsets messageBubbleTextContainerInsets;
 
 @property (strong, nonatomic) UILabel *timestampLabel;
 
@@ -44,16 +46,40 @@
 {
     [super layoutSubviews];
     
-    switch (self.type) {
-        case MessageBubbleTypeIncoming: {
-            [_timestampLabel setFrame:CGRectMake(self.incomingAvatarSize.width + self.messageBubbleTextContainerInsets.right + self.messageBubbleTextContainerInsets.left, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+    switch (_timestampStyle) {
+        case DBMessagingTimestampStyleHidden: {
+            
+            switch (self.type) {
+                case MessageBubbleTypeIncoming: {
+                    [self.timestampLabel setTextAlignment:NSTextAlignmentLeft];
+                    
+                    [_timestampLabel setFrame:CGRectMake(self.incomingAvatarSize.width + self.messageBubbleTextContainerInsets.right + self.messageBubbleTextContainerInsets.left, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+                    break;
+                }
+                case MessageBubbleTypeOutgoing: {
+                    [self.timestampLabel setTextAlignment:NSTextAlignmentRight];
+
+                    [_timestampLabel setFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - self.outgoingAvatarSize.width - self.messageBubbleTextContainerInsets.right - self.messageBubbleTextContainerInsets.left, CGRectGetHeight(self.bounds))];
+                    break;
+                }
+            }
+            
             break;
         }
-        case MessageBubbleTypeOutgoing: {
-            [_timestampLabel setFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - self.outgoingAvatarSize.width - self.messageBubbleTextContainerInsets.right - self.messageBubbleTextContainerInsets.left, CGRectGetHeight(self.bounds))];
+        case DBMessagingTimestampStyleSliding: {
+            [self.timestampLabel setTextAlignment:NSTextAlignmentLeft];
+            
+            CGFloat relativeHeight = self.bounds.size.height + _messageBubbleTopLabelHeight + _cellTopLabelHeight;
+            
+            CGSize timestampLabelSize = [_timestampLabel sizeThatFits:self.bounds.size];
+            [_timestampLabel setFrame:CGRectMake(0, 0, self.bounds.size.width, timestampLabelSize.height)];
+            [_timestampLabel setCenter:CGPointMake(_timestampLabel.center.x, relativeHeight / 2.0)];
             break;
         }
+        default:
+            break;
     }
+
 }
 
 - (void)applyLayoutAttributes:(DBMessagingCollectionViewLayoutAttributes *)layoutAttributes
@@ -63,6 +89,8 @@
     self.incomingAvatarSize = layoutAttributes.incomingAvatarViewSize;
     self.outgoingAvatarSize = layoutAttributes.outgoingAvatarViewSize;
     self.messageBubbleTextContainerInsets = layoutAttributes.messageBubbleTextViewTextContainerInsets;
+    self.messageBubbleTopLabelHeight = layoutAttributes.messageBubbleTopLabelHeight;
+    self.cellTopLabelHeight = layoutAttributes.cellTopLabelHeight;
 }
 
 - (void)prepareForReuse
@@ -71,28 +99,6 @@
     
     self.timestampLabel.text = @"";
     self.timestampLabel.attributedText = nil;
-}
-
-#pragma mark - Setters
-
-- (void)setType:(MessageBubbleType)type
-{
-    _type = type;
-    
-    switch (type) {
-        case MessageBubbleTypeIncoming: {
-            [self.timestampLabel setTextAlignment:NSTextAlignmentLeft];
-            break;
-        }
-        case MessageBubbleTypeOutgoing: {
-            [self.timestampLabel setTextAlignment:NSTextAlignmentRight];
-            break;
-        }
-        default:
-            break;
-    }
-    
-    [self setNeedsLayout];
 }
 
 @end

@@ -432,10 +432,7 @@
         
         supplementaryView.timestampLabel.attributedText = [collectionView.dataSource collectionView:collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:indexPath];
         supplementaryView.type = ([sentByUserID isEqualToString:[self senderUserID]]) ? MessageBubbleTypeOutgoing : MessageBubbleTypeIncoming;
-        
-        if (_timestampStyle == DBMessagingTimestampStyleSliding) {
-            supplementaryView.timestampLabel.textAlignment = NSTextAlignmentLeft;
-        }
+        supplementaryView.timestampStyle = _timestampStyle;
         
         return supplementaryView;
     }

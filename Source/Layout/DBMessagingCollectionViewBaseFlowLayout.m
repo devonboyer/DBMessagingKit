@@ -462,7 +462,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     NSIndexPath *indexPath = layoutAttributes.indexPath;
     
     CGSize messageBubbleSize = [self _messageBubbleSizeForItemAtIndexPath:indexPath];
-    CGFloat remainingItemWidthForBubble = self.itemWidth - [self _avatarSizeForIndexPath:indexPath].width - [self _messageBubbleAvatarSpacingForIndexPath:indexPath];
+    CGFloat remainingItemWidthForBubble = self.itemWidth - [self avatarSizeForIndexPath:indexPath].width - [self messageBubbleAvatarSpacingForIndexPath:indexPath];
     CGFloat textPadding = [self _messageBubbleTextContainerInsetsTotal];
     CGFloat messageBubblePadding = MAX(0, remainingItemWidthForBubble - messageBubbleSize.width - textPadding);
     
@@ -512,9 +512,9 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 
     CGFloat cellBottomLabelHeight = [self _cellBottomLabelHeightForIndexPath:indexPath];
     
-    CGSize avatarSize = [self _avatarSizeForIndexPath:indexPath];
+    CGSize avatarSize = [self avatarSizeForIndexPath:indexPath];
     
-    CGFloat maximumTextWidth = self.itemWidth - avatarSize.width - self.messageBubbleLeftRightMargin - [self _messageBubbleAvatarSpacingForIndexPath:indexPath];
+    CGFloat maximumTextWidth = self.itemWidth - avatarSize.width - self.messageBubbleLeftRightMargin - [self messageBubbleAvatarSpacingForIndexPath:indexPath];
     
     CGFloat textInsetsTotal = [self _messageBubbleTextContainerInsetsTotal];
     
@@ -571,15 +571,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     return finalSize;
 }
 
-- (CGSize)_avatarSizeForIndexPath:(NSIndexPath *)indexPath
-{
-    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
-        return self.outgoingAvatarViewSize;
-    }
-    
-    return self.incomingAvatarViewSize;
-}
-
 - (CGSize)_locationMapSizeForIndexPath:(NSIndexPath *)indexPath {
     if ([self isOutgoingMessageAtIndexPath:indexPath]) {
         return self.outgoingLocationMapSize;
@@ -595,15 +586,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     }
     
     return self.incomingImageSize;
-}
-
-- (CGFloat)_messageBubbleAvatarSpacingForIndexPath:(NSIndexPath *)indexPath
-{
-    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
-        return self.outgoingMessageBubbleAvatarSpacing;
-    }
-    
-    return self.incomingMessageBubbleAvatarSpacing;
 }
 
 - (CGFloat)_messageBubbleTextContainerInsetsTotal
@@ -669,6 +651,24 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 }
 
 #pragma mark - Public
+
+- (CGSize)avatarSizeForIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
+        return self.outgoingAvatarViewSize;
+    }
+    
+    return self.incomingAvatarViewSize;
+}
+
+- (CGFloat)messageBubbleAvatarSpacingForIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
+        return self.outgoingMessageBubbleAvatarSpacing;
+    }
+    
+    return self.incomingMessageBubbleAvatarSpacing;
+}
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {

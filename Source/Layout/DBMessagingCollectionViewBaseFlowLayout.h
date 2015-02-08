@@ -130,4 +130,8 @@ extern NSString * const DBMessagingCollectionElementKindTimestamp;
  */
 - (BOOL)isOutgoingMessageAtIndexPath:(NSIndexPath *)indexPath;
 
+- (CGSize)avatarSizeForIndexPath:(NSIndexPath *)indexPath;
+
+- (CGFloat)messageBubbleAvatarSpacingForIndexPath:(NSIndexPath *)indexPath;
+
 @end

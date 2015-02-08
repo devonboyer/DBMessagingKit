@@ -14,10 +14,12 @@
 
 #import <UIKit/UIKit.h>
 #import "DBMessagingParentCell.h"
+#import "DBMessagingKitConstants.h"
 
 @interface DBMessagingTimestampSupplementaryView : UICollectionReusableView
 
 @property (strong, nonatomic, readonly) UILabel *timestampLabel;
 @property (assign, nonatomic) MessageBubbleType type;
+@property (assign, nonatomic) DBMessagingTimestampStyle timestampStyle;
 
 @end
