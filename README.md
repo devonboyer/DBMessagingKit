@@ -18,9 +18,8 @@ An open-source messaging UI framework for iOS, built with simplicity and customi
  - Location (In development)
 
 ####Features####
-- Individual Message Timestamps
+- Multiple timestamp styles
 - Interactive Keyboard Dismiss
-- Springy Bubbles (still experimental)
 
 Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 
