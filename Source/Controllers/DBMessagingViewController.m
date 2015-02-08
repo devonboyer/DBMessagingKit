@@ -174,6 +174,12 @@
 
 #pragma mark - Public
 
+- (void)sendMessageWithParts:(NSArray *)parts {
+    
+    // complie message parts
+    // self.messageInputToolbar.textView.messageParts
+}
+
 - (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType {
 
 
@@ -229,27 +235,7 @@
 
 - (void)_finishSendingOrReceivingMessage
 {
-    NSUInteger previousNumberOfMessages = [_collectionView numberOfItemsInSection:0];
-    NSIndexPath *lastMessageIndexPath = [NSIndexPath indexPathForRow:previousNumberOfMessages inSection:0];
-    
-    // Insert the new message
-    [_collectionView performBatchUpdates:^{
-         [_collectionView insertItemsAtIndexPaths:@[lastMessageIndexPath]];
-    } completion:nil];
-    
-    // Request a new message bubble form the data source
-    for (NSInteger i = previousNumberOfMessages - 3; i < previousNumberOfMessages; ++i) {
-        if (i < 0) continue;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-        DBMessagingParentCell *cell = (DBMessagingParentCell *)[_collectionView cellForItemAtIndexPath: indexPath];
-        cell.messageBubbleImageView.image = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].image;
-        cell.messageBubbleImageView.highlightedImage = [_collectionView.dataSource collectionView:_collectionView messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
-        
-        // Re-apply mask to image cells
-        if ([cell isKindOfClass:[DBMessagingImageCell class]]) {
-            [((DBMessagingImageCell *)cell).imageView setImage:((DBMessagingImageCell *)cell).imageView.image];
-        }
-    }
+    [_collectionView reloadData];
     
     [self updateCollectionViewInsets];
     

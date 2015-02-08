@@ -14,6 +14,7 @@
 
 #import "DBMessagingInputTextView.h"
 
+#import "DBMessagingKitConstants.h"
 #import "UIImage+Messaging.h"
 #import "NSAttributedString+Messaging.h"
 #import "NSMutableAttributedString+Messaging.h"
@@ -22,6 +23,10 @@
 static CGFloat const kLabelLeftOffset = 10.0f;
 
 @interface DBMessagingInputTextView ()
+{
+    NSArray *_messageParts;
+    NSMutableArray *_attatchmentRanges;
+}
 
 @property (strong, nonatomic) UILabel *placeholderLabel;
 @property (assign, nonatomic) CGRect initialFrame;
@@ -43,6 +48,8 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 - (void)commonInit
 {
     _imageAttatchments = [[NSDictionary alloc] init];
+    _attatchmentRanges = [[NSMutableArray alloc] init];
+    _messageParts = [[NSArray alloc] init];
     
     self.font = [UIFont systemFontOfSize:17.0];
     
@@ -113,6 +120,21 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     }
 }
 
+#pragma mark - Getters
+
+- (NSArray *)messageParts {
+    
+    // Append the last message part
+    NSString *currentlyComposedText = [self currentlyComposedText];
+    NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
+    if (![currentlyComposedText isEqualToString:@""]) {
+        [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
+    }
+    _messageParts = mutableMessageParts;
+    
+    return _messageParts;
+}
+
 #pragma mark - Setters
 
 - (void)setBorderWidth:(NSInteger)borderWidth
@@ -173,18 +195,14 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 #pragma mark - Actions
 
-- (void)addImageAttatchment:(UIImage *)image forKey:(NSString *)key {
-    
-    NSMutableDictionary *mutableImageAttachments = [_imageAttatchments mutableCopy];
-    [mutableImageAttachments addEntriesFromDictionary:@{key : image}];
-    _imageAttatchments = mutableImageAttachments;
-    
+- (void)addImageAttatchment:(UIImage *)image {
+
     CGSize imageSize = image.size;
     imageSize.width = self.textContainer.size.width - self.textContainerInset.left - self.textContainerInset.right;
     imageSize.height /= (image.size.width / imageSize.width);
     
     NSTextAttachment *imageAttatchment = [[NSTextAttachment alloc] init];
-    imageAttatchment.image = [UIImage imageByRoundingCorners:60.0 ofImage:image];
+    imageAttatchment.image = [UIImage imageByRoundingCorners:34.0 ofImage:image];
     imageAttatchment.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
     
     // Add line height to attatchment to give it some padding
@@ -194,10 +212,11 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     [attachmentString addAttributes:@{NSParagraphStyleAttributeName: style} range:NSMakeRange(0, attachmentString.length)];
 
     NSMutableAttributedString *replacementString = [[NSMutableAttributedString alloc] initWithAttributedString:self.attributedText];
-    [replacementString appendAttributedString:attachmentString];
     
-    // Always append a newline character after an attatchment
-    [replacementString appendAttributedString:[NSAttributedString newlineAttributedString]];
+    // Get the range of the attatchment to use a key
+    NSRange range = NSMakeRange(replacementString.length, replacementString.length + attachmentString.length);
+    
+    [replacementString appendAttributedString:attachmentString];    
     
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17.0]};
     [replacementString addAttributes:attributes range:NSMakeRange(0, replacementString.length)];
@@ -205,13 +224,44 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     self.attributedText = replacementString;
     [self adjustFrame];
     [self updatePlaceholderLabelVisibility];
+    
+    // Add the attatchment to the dictionary
+    NSMutableDictionary *mutableImageAttachments = [_imageAttatchments mutableCopy];
+    [_attatchmentRanges addObject:[NSValue valueWithRange:range]];
+    [mutableImageAttachments addEntriesFromDictionary:@{[NSValue valueWithRange:range] : image}];
+    _imageAttatchments = mutableImageAttachments;
+    
+    // Create the message parts
+    NSString *currentlyComposedText = [self currentlyComposedText];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
+
+        if (![currentlyComposedText isEqualToString:@""]) {
+            [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
+        }
+        
+        [mutableMessageParts addObject:@{@"mime": @"image/jpeg", @"value" : image.encodeToBase64String}];
+        _messageParts = mutableMessageParts;
+    });
 }
 
+// Possibly misleading...?
 - (NSString *)currentlyComposedText {
-    return [self.attributedText.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSRange rangeOfLastImage = ((NSValue *)_attatchmentRanges.lastObject).rangeValue;
+    NSRange targetRange = NSMakeRange(rangeOfLastImage.location, self.attributedText.length - rangeOfLastImage.location);
+    
+    NSString *stringByTrimmingWhitespace = [[self.attributedText.string substringWithRange:targetRange] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    return [stringByTrimmingWhitespace stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\ufffc"]];
 }
 
 - (void)clear {
+    
+    _imageAttatchments = [[NSDictionary alloc] init];
+    _attatchmentRanges = [[NSMutableArray alloc] init];
+    _messageParts = [[NSArray alloc] init];
     
     [self setText:@""];
     [self updatePlaceholderLabelVisibility];
@@ -239,9 +289,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 - (void)adjustFrame
 {
     CGRect stringRect = [self.attributedText boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
-    
-//    CGRect stringRect = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attributes context:nil];
-    
     
     CGRect frame = self.frame;
     frame.size.height = MAX(stringRect.size.height + (CGRectGetHeight(_initialFrame) / 2.0 - self.font.lineHeight / 2.0) * 2, _initialFrame.size.height);

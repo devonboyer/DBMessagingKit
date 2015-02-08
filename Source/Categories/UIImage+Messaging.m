@@ -19,6 +19,15 @@
 
 @implementation UIImage (Messaging)
 
+- (NSString *)encodeToBase64String {
+    return [UIImageJPEGRepresentation(self, 0.5) base64EncodedStringWithOptions:0];
+}
+
++ (UIImage *)decodeBase64StringToImage:(NSString *)encodedString {
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:encodedString options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    return [[UIImage alloc] initWithData:data];
+}
+
 + (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image {
     
     CGSize imageSize = image.size;

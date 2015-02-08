@@ -102,14 +102,31 @@
     [self finishSendingMessage];
 }
 
-- (void)sendButtonTapped:(id)sender {
+- (void)sendMessageWithParts:(NSArray *)parts {
+    [super sendMessageWithParts:parts];
     
-    [self sendCurrentlyComposedText];
+    for (NSDictionary *part in parts) {
+        NSString *mime = part[@"mime"];
+        NSString *value = part[@"value"];
+        
+        if ([mime isEqualToString:@"text/plain"]) {
+            [_messages addObject:[Message messageWithText:value sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
+        } else if ([mime isEqualToString:@"image/jpeg"]) {
+            UIImage *image = [UIImage decodeBase64StringToImage:value];
+            [_messages addObject:[Message messageWithImage:image sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
+        }
+    }
+    
+    [self finishSendingMessage];
+}
+
+- (void)sendButtonTapped:(id)sender {
+    NSArray *messageParts = self.messageInputToolbar.textView.messageParts;
+    [self sendMessageWithParts:messageParts];
 }
 
 - (void)cameraButtonTapped:(id)sender {
     
-    NSLog(@"Camera tapped");
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePickerController.delegate = self;
@@ -122,9 +139,11 @@
     
     UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
     
-    [self.messageInputToolbar.textView addImageAttatchment:chosenImage forKey:@"key"];
+    [self.messageInputToolbar.textView addImageAttatchment:chosenImage];
     
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self.messageInputToolbar.textView becomeFirstResponder];
+    }];
 }
 
 #pragma mark - DBMessagingCollectionViewDataSource

@@ -179,7 +179,6 @@
 #pragma mark - DBMessagingInputTextViewDelegate
 
 - (void)textViewDidChange:(UITextView *)textView {
-    
     [self toggleSendButtonEnabled];
 }
 
@@ -189,19 +188,6 @@
 
 - (void)textViewDidChangeFrame:(UITextView *)textView delta:(CGFloat)delta {
     [self.delegate messagingInputToolbar:self shouldChangeFrame:delta];
-}
-
-- (BOOL)textView:(DBMessagingInputTextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    
-//    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[textView currentlyComposedText]];
-//    [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:text]];
-//    
-//    NSDictionary *attributes = @{NSFontAttributeName: textView.font};
-//    [attributedText addAttributes:attributes range:NSMakeRange(0, attributedText.length)];
-//    
-//    textView.attributedText = attributedText;
-    
-    return YES;
 }
 
 @end

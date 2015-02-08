@@ -16,6 +16,10 @@
 
 @interface UIImage (Messaging)
 
+- (NSString *)encodeToBase64String;
+
++ (UIImage *)decodeBase64StringToImage:(NSString *)encodedString;
+
 + (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image;
 
 /**
