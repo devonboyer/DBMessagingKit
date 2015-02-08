@@ -47,8 +47,6 @@
     
     // Add an aditional pan gesture to the collection view
     _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    _panGesture.cancelsTouchesInView = NO;
-    _panGesture.delaysTouchesBegan = YES;
     _panGesture.delegate = self;
 }
 
@@ -71,23 +69,25 @@
         [attributesInRect enumerateObjectsUsingBlock:^(DBMessagingCollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop) {
             
             CGFloat change = _startLocation.x - _panLocation.x;
+            CGFloat maxChange = self.messageBubbleLeftRightMargin - self.sectionInset.left;
             CGRect frame = layoutAttributes.frame;
             
             if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
                 if ([self isOutgoingMessageAtIndexPath:layoutAttributes.indexPath]) {
-                    if (abs(change) < self.messageBubbleLeftRightMargin) {
+                    if (abs(change) < maxChange) {
                         frame.origin.x = MIN(-change, self.sectionInset.left);
                     } else {
-                        frame.origin.x = MIN(-self.messageBubbleLeftRightMargin, self.sectionInset.left);
+                        frame.origin.x = MIN(-maxChange, self.sectionInset.left);
                     }
                 }
             } else if (layoutAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) {
                 if (layoutAttributes.representedElementKind == DBMessagingCollectionElementKindTimestamp) {
                     CGFloat max = self.collectionView.frame.size.width;
-                    if (abs(change) < self.messageBubbleLeftRightMargin) {
-                        frame.origin.x = MIN(self.collectionView.bounds.size.width - change, max);
+                    CGFloat relativeWidth = self.collectionView.frame.size.width - self.sectionInset.right;
+                    if (abs(change) < maxChange) {
+                        frame.origin.x = MIN(relativeWidth - change, max);
                     } else {
-                        frame.origin.x = MIN(self.collectionView.bounds.size.width - self.messageBubbleLeftRightMargin, max);
+                        frame.origin.x = MIN(relativeWidth - maxChange, max);
                     }
                 }
             }

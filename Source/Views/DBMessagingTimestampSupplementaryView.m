@@ -31,7 +31,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _timestampLabel = [[UILabel alloc] init];
+        _timestampLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        [_timestampLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         [_timestampLabel setTextAlignment:NSTextAlignmentCenter];
         [_timestampLabel setNumberOfLines:1];
         [self addSubview:_timestampLabel];
@@ -52,8 +53,6 @@
             [_timestampLabel setFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds) - self.outgoingAvatarSize.width - self.messageBubbleTextContainerInsets.right - self.messageBubbleTextContainerInsets.left, CGRectGetHeight(self.bounds))];
             break;
         }
-        default:
-            break;
     }
 }
 

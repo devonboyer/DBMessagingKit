@@ -52,7 +52,7 @@
     
     // Customize layout attributes
     self.collectionView.collectionViewLayout.messageBubbleFont = [UIFont systemFontOfSize:18.0];
-    self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(40.0, 40.0);
+    self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
     
     // Customize the input toolbar and add bar button items
@@ -181,9 +181,21 @@
 }
 
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath {
+    
     Message *message = [_messages objectAtIndex:indexPath.row];
-    NSString *formatterTimestamp = [[DBMessagingTimestampFormatter sharedFormatter] verboseTimestampForDate:message.sentAt];
-    return  [[NSAttributedString alloc] initWithString:formatterTimestamp attributes:_timestampAttributes];
+    
+    switch (self.timestampStyle) {
+        case DBMessagingTimestampStyleHidden: {
+            NSString *timestamp = [[DBMessagingTimestampFormatter sharedFormatter] verboseTimestampForDate:message.sentAt];
+            return [[NSAttributedString alloc] initWithString:timestamp attributes:_timestampAttributes];
+        }
+        case DBMessagingTimestampStyleSliding: {
+            NSString *timestamp = [[DBMessagingTimestampFormatter sharedFormatter] timeForDate:message.sentAt];
+            return [[NSAttributedString alloc] initWithString:timestamp attributes:_normalAttributes];
+        }
+        default:
+            return nil;
+    }
 }
 
 - (UIImageView *)collectionView:(UICollectionView *)collectionView messageBubbleForItemAtIndexPath:(NSIndexPath *)indexPath {
