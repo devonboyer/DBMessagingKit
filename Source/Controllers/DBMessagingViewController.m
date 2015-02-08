@@ -19,7 +19,8 @@
 #import "DBMessagingInputTextView.h"
 #import "DBMessagingInputToolbar.h"
 #import "DBMessagingCollectionView.h"
-#import "DBMessagingCollectionViewFlowLayout.h"
+#import "DBMessagingCollectionViewHiddenTimestampFlowLayout.h"
+#import "DBMessagingCollectionViewSlidingTimestampFlowLayout.h"
 #import "DBMessagingCollectionViewFlowLayoutInvalidationContext.h"
 #import "DBMessagingTextCell.h"
 #import "DBMessagingImageCell.h"
@@ -45,7 +46,7 @@
 {
     [super loadView];
     
-    DBMessagingCollectionViewFlowLayout *collectionViewLayout = [[DBMessagingCollectionViewFlowLayout alloc] init];
+    DBMessagingCollectionViewSlidingTimestampFlowLayout *collectionViewLayout = [[DBMessagingCollectionViewSlidingTimestampFlowLayout alloc] init];
     _collectionView = [[DBMessagingCollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:collectionViewLayout];
     [_collectionView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_collectionView setBackgroundColor:[UIColor whiteColor]];

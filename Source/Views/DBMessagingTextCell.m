@@ -18,7 +18,7 @@
 
 #import "DBMessagingCellTextView.h"
 #import "DBMessagingCollectionView.h"
-#import "DBMessagingCollectionViewFlowLayout.h"
+#import "DBMessagingCollectionViewHiddenTimestampFlowLayout.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 
 @interface DBMessagingTextCell () <UIGestureRecognizerDelegate, UITextViewDelegate>
@@ -172,8 +172,12 @@
     
     CGPoint tapPoint = [tap locationInView:self.collectionView];
     NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:tapPoint];
-    DBMessagingCollectionViewFlowLayout *collectionViewLayout = (DBMessagingCollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    collectionViewLayout.tappedIndexPath = tappedIndexPath;
+    
+    // The tap gesture only applys to hidden timestamps
+    if ([self.collectionView.collectionViewLayout isKindOfClass:[DBMessagingCollectionViewHiddenTimestampFlowLayout class]]) {
+        DBMessagingCollectionViewHiddenTimestampFlowLayout *collectionViewLayout = (DBMessagingCollectionViewHiddenTimestampFlowLayout *)self.collectionView.collectionViewLayout;
+        collectionViewLayout.tappedIndexPath = tappedIndexPath;
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate

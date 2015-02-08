@@ -25,3 +25,14 @@ typedef NS_ENUM(NSUInteger, MIMEType) {
     MIMETypeLocation
 };
 
+/**
+ * Specifys the type of layout in which to display timestamps.
+ *
+ * @see DBMessagingCollectionViewHiddenTimestampFlowLayout
+ * @see DBMessagingCollectionViewSlidingTimestampFlowLayout
+ */
+typedef NS_ENUM(NSUInteger, TimestampStyle) {
+    TimestampStyleHidden,
+    TimestampStyleSliding
+};
+

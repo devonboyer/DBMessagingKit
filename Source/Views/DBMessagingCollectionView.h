@@ -21,9 +21,9 @@
 #import "DBMessagingGIFCell.h"
 #import "DBMessagingCollectionViewDataSource.h"
 #import "DBMessagingCollectionViewDelegateFlowLayout.h"
-#import "DBMessagingCollectionViewFlowLayout.h"
+#import "DBMessagingCollectionViewBaseFlowLayout.h"
 
-@class DBMessagingCollectionViewFlowLayout;
+@class DBMessagingCollectionViewBaseFlowLayout;
 @class DBMessagingLoadEarlierMessagesHeaderView;
 @class DBMessagingTypingIndicatorFooterView;
 
@@ -43,7 +43,7 @@ extern NSString * const DBMessagingLoadMoreHeaderViewIdentifier;
 
 @property (weak, nonatomic) id <DBMessagingCollectionViewDataSource> dataSource;
 @property (weak, nonatomic) id <DBMessagingCollectionViewDelegateFlowLayout> delegate;
-@property (strong, nonatomic) DBMessagingCollectionViewFlowLayout *collectionViewLayout;
+@property (strong, nonatomic) DBMessagingCollectionViewBaseFlowLayout *collectionViewLayout;
 
 @property (strong, nonatomic) DBMessagingLoadEarlierMessagesHeaderView *loadMoreHeaderView;
 @property (strong, nonatomic) DBMessagingTypingIndicatorFooterView *typingIndicatorFooterView;

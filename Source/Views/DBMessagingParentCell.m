@@ -15,7 +15,7 @@
 #import "DBMessagingParentCell.h"
 
 #import "DBMessagingCollectionView.h"
-#import "DBMessagingCollectionViewFlowLayout.h"
+#import "DBMessagingCollectionViewBaseFlowLayout.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 
 @interface DBMessagingParentCell () <UIGestureRecognizerDelegate>
@@ -47,6 +47,7 @@
         [self.avatarImageView setClipsToBounds:YES];
         [self.avatarImageView setUserInteractionEnabled:YES];
         [self.avatarImageView setContentMode:UIViewContentModeScaleAspectFill];
+        [self.avatarImageView setBackgroundColor:[UIColor colorWithWhite:0.88 alpha:1.0]];
         [self.contentView addSubview:self.avatarImageView];
         
         self.accessoryImageView = [[UIImageView alloc] init];

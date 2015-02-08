@@ -38,7 +38,9 @@ FOUNDATION_EXPORT const unsigned char DBMessagingKitVersionString[];
 #import "DBSystemSoundPlayer.h"
 
 // Layout
-#import "DBMessagingCollectionViewFlowLayout.h"
+#import "DBMessagingCollectionViewBaseFlowLayout.h"
+#import "DBMessagingCollectionViewHiddenTimestampFlowLayout.h"
+#import "DBMessagingCollectionViewSlidingTimestampFlowLayout.h"
 #import "DBMessagingCollectionViewFlowLayoutInvalidationContext.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 

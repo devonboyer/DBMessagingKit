@@ -1,5 +1,5 @@
 //
-//  DBMessagingCollectionViewFlowLayout.m
+//  DBMessagingCollectionViewBaseFlowLayout.m
 //
 //
 //  GitHub
@@ -12,7 +12,7 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingCollectionViewFlowLayout.h"
+#import "DBMessagingCollectionViewBaseFlowLayout.h"
 #import "DBMessagingKitConstants.h"
 #import "DBMessagingCollectionView.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
@@ -22,8 +22,7 @@
 
 NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit.DBMessagingCollectionElementKindTimestamp";
 
-@interface DBMessagingCollectionViewFlowLayout ()
-{
+@interface DBMessagingCollectionViewBaseFlowLayout () {
     CGFloat _incomingMessageBubbleAvatarSpacing;
     CGFloat _outgoingMessageBubbleAvatarSpacing;
 }
@@ -43,7 +42,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 
 @end
 
-@implementation DBMessagingCollectionViewFlowLayout
+@implementation DBMessagingCollectionViewBaseFlowLayout
 
 + (Class)invalidationContextClass
 {
@@ -61,7 +60,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 {
     self = [super init];
     if (self) {
-        [self setup];
+        [self commonInit];
     }
     return self;
 }
@@ -69,12 +68,12 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self){
-        [self setup];
+        [self commonInit];
     }
     return self;
 }
 
-- (void)setup
+- (void)commonInit
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
@@ -118,7 +117,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     _messageTopLabelPadding = 5.0;
     _cellBottomLabelPadding = 5.0;
     _inOutMessageBubbleInteritemSpacing = 10.0;
-    _timestampSupplementaryViewPadding = 10.0;
     _dynamicsEnabled = NO;
     
     self.sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
@@ -164,12 +162,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     NSArray *superAttrributes = [super layoutAttributesForElementsInRect:rect];
     NSMutableArray *attributesInRect = [superAttrributes mutableCopy];
     
-    // Add supplementary views to specfic index paths
-    for (UICollectionViewLayoutAttributes *attributes in superAttrributes)
-    {
-        [attributesInRect addObject:[self layoutAttributesForSupplementaryViewOfKind:DBMessagingCollectionElementKindTimestamp atIndexPath:attributes.indexPath]];
-    }
-    
     if (self.dynamicsEnabled) {
         NSMutableArray *attributesInRectCopy = [attributesInRect mutableCopy];
         NSArray *dynamicAttributes = [self.dynamicAnimator itemsInRect:rect];
@@ -192,17 +184,10 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
         attributesInRect = attributesInRectCopy;
     }
     
-    // Always cache all visible attributes so we can use them later when computing final/initial animated attributes
     [attributesInRect enumerateObjectsUsingBlock:^(DBMessagingCollectionViewLayoutAttributes *layoutAttributes, NSUInteger idx, BOOL *stop) {
         
         if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
             [self _configureLayoutAttributes:layoutAttributes];
-        }
-        
-        if (_tappedIndexPath) {
-            if ([_tappedIndexPath compare:layoutAttributes.indexPath] == NSOrderedAscending) {
-                layoutAttributes.frame = [self _adjustedFrameForAttributes:layoutAttributes forElementKind:DBMessagingCollectionElementKindTimestamp];
-            }
         }
     }];
     
@@ -223,32 +208,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
         [self _configureLayoutAttributes:layoutAttributes];
     }
     
-    return layoutAttributes;
-}
-
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
-{
-    DBMessagingCollectionViewLayoutAttributes *layoutAttributes = [DBMessagingCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:elementKind withIndexPath:indexPath];
-    
-    if (layoutAttributes) {
-        
-        //get the attributes for the related cell at this index path
-        UICollectionViewLayoutAttributes *cellAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
-        
-        if ([elementKind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
-            layoutAttributes.incomingAvatarViewSize = self.incomingAvatarViewSize;
-            layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
-            layoutAttributes.messageBubbleTextViewTextContainerInsets = self.messageBubbleTextViewTextContainerInsets;
-            
-            if ([indexPath isEqual:_tappedIndexPath]) {
-                layoutAttributes.frame = CGRectMake(CGRectGetMinX(cellAttributes.frame), CGRectGetMaxY(cellAttributes.frame), self.itemWidth, [self _timestampSupplementaryViewHeightForIndexPath:indexPath]);
-            }
-            else {
-                layoutAttributes.frame = CGRectZero;
-            }
-        }
-    }
-
     return layoutAttributes;
 }
 
@@ -342,17 +301,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 }
 
 #pragma mark - Getters
-
-- (CGSize)collectionViewContentSize
-{
-    CGSize contentSize = [super collectionViewContentSize];
-    
-    if (self.tappedIndexPath) {
-        contentSize.height += [self _timestampSupplementaryViewHeightForIndexPath:self.tappedIndexPath];
-    }
-    
-    return contentSize;
-}
 
 - (CGFloat)itemWidth
 {
@@ -497,38 +445,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setTimestampSupplementaryViewPadding:(CGFloat)timestampSupplementaryViewPadding
-{
-    _timestampSupplementaryViewPadding = timestampSupplementaryViewPadding;
-    [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
-}
-
-- (void)setTappedIndexPath:(NSIndexPath *)tappedIndexPath
-{
-    _tappedIndexPath = ([_tappedIndexPath isEqual:tappedIndexPath]) ? nil : tappedIndexPath;
-
-    // Highlight the selected item
-    [self.collectionView selectItemAtIndexPath:_tappedIndexPath
-                                      animated:YES
-                                scrollPosition:UICollectionViewScrollPositionNone];
-    
-    // Animate the timestamp to become visible
-    [self.collectionView performBatchUpdates:^{
-        
-        if (_tappedIndexPath) {
-            // Scroll to make the timestamp visible
-            CGRect visibleRect = [self.collectionView cellForItemAtIndexPath:_tappedIndexPath].frame;
-            visibleRect.origin.y += [self _timestampSupplementaryViewHeightForIndexPath:_tappedIndexPath];
-            [self.collectionView scrollRectToVisible:visibleRect animated:true];
-        }
-        
-    } completion:^(BOOL finished) {
-        if (finished) {
-            [self invalidateLayout];
-        }
-    }];
-}
-
 #pragma mark - Private
 
 - (void)_resetLayout {
@@ -577,16 +493,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     layoutAttributes.cellBottomLabelHeight = [self _cellBottomLabelHeightForIndexPath:indexPath];
     
     layoutAttributes.messageBubbleFont = self.messageBubbleFont;
-}
-
-- (CGRect)_adjustedFrameForAttributes:(UICollectionViewLayoutAttributes *)attributes forElementKind:(NSString *)elementKind
-{
-    CGRect frame = attributes.frame;
-    if ([elementKind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
-        frame.origin.y += [self _timestampSupplementaryViewHeightForIndexPath:attributes.indexPath];
-    }
-    
-    return frame;
 }
 
 - (CGSize)_messageBubbleSizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -762,23 +668,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     return cellBottomLabelHeight;
 }
 
-- (CGFloat)_timestampSupplementaryViewHeightForIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat timestampSupplementaryViewHeight = 0;
-    if ([self.collectionView.dataSource respondsToSelector:@selector(collectionView:cellBottomLabelAttributedTextForItemAtIndexPath:)]) {
-        NSAttributedString *timestampAttributedString = [self.collectionView.dataSource collectionView:self.collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:indexPath];
-        timestampSupplementaryViewHeight = [NSAttributedString boundingBoxForAttributedString:timestampAttributedString maxWidth:self.itemWidth].height;
-        
-        if (timestampSupplementaryViewHeight > 0) {
-            timestampSupplementaryViewHeight += self.timestampSupplementaryViewPadding;
-        }
-    }
-    
-    return timestampSupplementaryViewHeight;
-}
-
-
-
 #pragma mark - Public
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -875,27 +764,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
         }
         item.center = center;
     }
-}
-
-- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath {
-    
-    UICollectionViewLayoutAttributes *layoutAttributes = [self layoutAttributesForSupplementaryViewOfKind:elementKind atIndexPath:elementIndexPath];
-    
-    if ([elementKind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
-        CGAffineTransform translation = CGAffineTransformMakeTranslation(0, 0);
-        CGFloat translationInset = [self _messageBubbleAvatarSpacingForIndexPath:elementIndexPath] + [self _avatarSizeForIndexPath:elementIndexPath].width + 50.0;
-        
-        if ([self isOutgoingMessageAtIndexPath:elementIndexPath]) {
-            translation = CGAffineTransformMakeTranslation((layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
-        }
-        else {
-            translation = CGAffineTransformMakeTranslation(-(layoutAttributes.frame.size.width - translationInset), -layoutAttributes.frame.size.height);
-        }
-        
-        layoutAttributes.transform = CGAffineTransformScale(translation, 0.0, 0.0);
-    }
-    
-    return layoutAttributes;
 }
 
 @end

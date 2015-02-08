@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		673528DA1A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528D91A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m */; };
+		673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */; };
 		677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */; };
 		677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C601A855EC3007D2967 /* UIColor+Messaging.m */; };
 		677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */; };
@@ -17,7 +19,7 @@
 		677B1CA71A855EC3007D2967 /* DBSystemSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C6D1A855EC3007D2967 /* DBSystemSoundPlayer.m */; };
 		677B1CA81A855EC3007D2967 /* DBMessageBubbleFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C701A855EC3007D2967 /* DBMessageBubbleFactory.m */; };
 		677B1CA91A855EC3007D2967 /* DBMessagingTimestampFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C721A855EC3007D2967 /* DBMessagingTimestampFormatter.m */; };
-		677B1CAA1A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C751A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.m */; };
+		677B1CAA1A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C751A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.m */; };
 		677B1CAB1A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C771A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m */; };
 		677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C791A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m */; };
 		677B1CAD1A855EC3007D2967 /* camera_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 677B1C821A855EC3007D2967 /* camera_button.png */; };
@@ -56,6 +58,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		673528D81A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewHiddenTimestampFlowLayout.h; sourceTree = "<group>"; };
+		673528D91A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewHiddenTimestampFlowLayout.m; sourceTree = "<group>"; };
+		673528DB1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewSlidingTimestampFlowLayout.h; sourceTree = "<group>"; };
+		673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewSlidingTimestampFlowLayout.m; sourceTree = "<group>"; };
 		677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
@@ -76,8 +82,8 @@
 		677B1C701A855EC3007D2967 /* DBMessageBubbleFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessageBubbleFactory.m; sourceTree = "<group>"; };
 		677B1C711A855EC3007D2967 /* DBMessagingTimestampFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingTimestampFormatter.h; sourceTree = "<group>"; };
 		677B1C721A855EC3007D2967 /* DBMessagingTimestampFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingTimestampFormatter.m; sourceTree = "<group>"; };
-		677B1C741A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewFlowLayout.h; sourceTree = "<group>"; };
-		677B1C751A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		677B1C741A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewBaseFlowLayout.h; sourceTree = "<group>"; };
+		677B1C751A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewBaseFlowLayout.m; sourceTree = "<group>"; };
 		677B1C761A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewFlowLayoutInvalidationContext.h; sourceTree = "<group>"; };
 		677B1C771A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewFlowLayoutInvalidationContext.m; sourceTree = "<group>"; };
 		677B1C781A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
@@ -209,8 +215,12 @@
 		677B1C731A855EC3007D2967 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				677B1C741A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.h */,
-				677B1C751A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.m */,
+				677B1C741A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.h */,
+				677B1C751A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.m */,
+				673528D81A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.h */,
+				673528D91A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m */,
+				673528DB1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.h */,
+				673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */,
 				677B1C761A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.h */,
 				677B1C771A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m */,
 				677B1C781A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.h */,
@@ -474,12 +484,14 @@
 				677B1CA41A855EC3007D2967 /* DBInteractiveKeyboardController.m in Sources */,
 				677B1CB01A855EC3007D2967 /* DBMessagingInputToolbar.m in Sources */,
 				677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */,
+				673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */,
 				677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */,
+				673528DA1A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m in Sources */,
 				677B1CA81A855EC3007D2967 /* DBMessageBubbleFactory.m in Sources */,
 				677B1CB21A855EC3007D2967 /* DBMessagingCollectionView.m in Sources */,
 				677B1CB31A855EC3007D2967 /* DBMessagingGIFCell.m in Sources */,
 				677B1CB51A855EC3007D2967 /* DBMessagingInputTextView.m in Sources */,
-				677B1CAA1A855EC3007D2967 /* DBMessagingCollectionViewFlowLayout.m in Sources */,
+				677B1CAA1A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.m in Sources */,
 				678049441A313106001E4DC7 /* ViewController.m in Sources */,
 				677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */,
 				677B1CBB1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m in Sources */,

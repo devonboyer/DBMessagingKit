@@ -1,5 +1,5 @@
 //
-//  DBMessagingCollectionViewFlowLayout.h
+//  DBMessagingCollectionViewBaseFlowLayout.h
 //
 //
 //  GitHub
@@ -18,14 +18,16 @@
 
 extern NSString * const DBMessagingCollectionElementKindTimestamp;
 
-/**
- *  The 'DBMessagingCollectionViewFlowLayout' organizes message items in a vertical list.
+/*!
+ *  The 'DBMessagingCollectionViewBaseFlowLayout' organizes message items in a vertical list.
  *  Each 'DBMessagingParentCell' in the layout can display messages of arbitrary sizes and avatar images,
  *  as well as metadata such as a timestamp and sender. You can easily customize the layout via its properties.
  *
  *  @see DBMessagingParentCell
  */
-@interface DBMessagingCollectionViewFlowLayout : UICollectionViewFlowLayout
+@interface DBMessagingCollectionViewBaseFlowLayout : UICollectionViewFlowLayout
+
+- (void)commonInit;
 
 /**
  *  The collection view object currently using this layout object.
@@ -57,11 +59,6 @@ extern NSString * const DBMessagingCollectionElementKindTimestamp;
 @property (assign, nonatomic, readonly) CGFloat itemWidth;
 
 /**
- *  Specifies the indexPath that recieved a tap event in order to display or hide a 'MessagingTimestampSupplementaryView'.
- */
-@property (strong, nonatomic) NSIndexPath *tappedIndexPath;
-
-/**
  *  Specifies the padding that should be applied to the 'cellTopLabel'.
  *
  *  @discussion The 'cellToplabel' height is calculated using the boundingBox of the attributed string passed
@@ -84,14 +81,6 @@ extern NSString * const DBMessagingCollectionElementKindTimestamp;
  *  by the appropriate dataSource method.
  */
 @property (assign, nonatomic) CGFloat cellBottomLabelPadding;
-
-/**
- *  Specifies the padding that should be applied to the 'MessagingTimestampSupplementaryView'.
- *
- *  @discussion The 'timestampSupplementaryView' height is calculated using the boundingBox of the attributed string
- *  passed by the appropriate dataSource method.
- */
-@property (assign, nonatomic) CGFloat timestampSupplementaryViewPadding;
 
 /**
  *  The interitem spacing between an incoming and outgoing message.

@@ -49,13 +49,14 @@
         
     // Customize layout attributes
     self.collectionView.collectionViewLayout.messageBubbleFont = [UIFont systemFontOfSize:18.0];
-    self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(0.0,0.0);
+    self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(40.0, 40.0);
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
     
     // Customize the input toolbar and add bar button items
     UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
     UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
     sendBarButtonItem.tintColor = [UIColor iMessageBlueColor];
+    [sendBarButtonItem setTitlePositionAdjustment:UIOffsetMake(0, 10.0) forBarMetrics:UIBarMetricsDefault];
     [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
     [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
     
