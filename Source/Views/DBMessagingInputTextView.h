@@ -32,10 +32,12 @@
 @property (strong, nonatomic) NSString *placeholderText UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIColor *placeholderColor UI_APPEARANCE_SELECTOR;
 
-@property (strong, nonatomic, readonly) NSDictionary *imageAttatchments;
+@property (strong, nonatomic, readonly) NSMutableArray *attatchmentRanges;
 @property (strong, nonatomic, readonly) NSArray *messageParts;
 
 - (void)addImageAttatchment:(UIImage *)image;
+- (void)removeImageAttatchmentAtRange:(NSRange)range;
+
 - (NSString *)currentlyComposedText;
 - (void)clear;
 

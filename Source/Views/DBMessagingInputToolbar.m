@@ -190,4 +190,18 @@
     [self.delegate messagingInputToolbar:self shouldChangeFrame:delta];
 }
 
+- (BOOL)textView:(DBMessagingInputTextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    if ([text isEqualToString:@""]) {
+        
+        NSValue *rangeValue = [NSValue valueWithRange:range];
+        
+        if ([textView.attatchmentRanges containsObject:rangeValue]) {
+            [textView removeImageAttatchmentAtRange:range];
+        }
+    }
+    
+    return true;
+}
+
 @end

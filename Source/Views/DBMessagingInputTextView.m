@@ -25,7 +25,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 @interface DBMessagingInputTextView ()
 {
     NSArray *_messageParts;
-    NSMutableArray *_attatchmentRanges;
 }
 
 @property (strong, nonatomic) UILabel *placeholderLabel;
@@ -47,7 +46,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 - (void)commonInit
 {
-    _imageAttatchments = [[NSDictionary alloc] init];
     _attatchmentRanges = [[NSMutableArray alloc] init];
     _messageParts = [[NSArray alloc] init];
     
@@ -214,7 +212,9 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     NSMutableAttributedString *replacementString = [[NSMutableAttributedString alloc] initWithAttributedString:self.attributedText];
     
     // Get the range of the attatchment to use a key
-    NSRange range = NSMakeRange(replacementString.length, replacementString.length + attachmentString.length);
+    NSRange range = NSMakeRange(replacementString.length, attachmentString.length);
+    
+    NSLog(@"%@", NSStringFromRange(range));
     
     [replacementString appendAttributedString:attachmentString];    
     
@@ -224,12 +224,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     self.attributedText = replacementString;
     [self adjustFrame];
     [self updatePlaceholderLabelVisibility];
-    
-    // Add the attatchment to the dictionary
-    NSMutableDictionary *mutableImageAttachments = [_imageAttatchments mutableCopy];
-    [_attatchmentRanges addObject:[NSValue valueWithRange:range]];
-    [mutableImageAttachments addEntriesFromDictionary:@{[NSValue valueWithRange:range] : image}];
-    _imageAttatchments = mutableImageAttachments;
     
     // Create the message parts
     NSString *currentlyComposedText = [self currentlyComposedText];
@@ -244,6 +238,25 @@ static CGFloat const kLabelLeftOffset = 10.0f;
         [mutableMessageParts addObject:@{@"mime": @"image/jpeg", @"value" : image.encodeToBase64String}];
         _messageParts = mutableMessageParts;
     });
+    
+    [_attatchmentRanges addObject:[NSValue valueWithRange:range]];
+}
+
+- (void)removeImageAttatchmentAtRange:(NSRange)range {
+    
+    NSValue *rangeValue = [NSValue valueWithRange:range];    
+    [_attatchmentRanges removeObject:rangeValue];
+    
+    // Update the message parts to reflect the deleted attatchment
+    NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
+    [mutableMessageParts removeLastObject];
+    
+    NSDictionary *previousPart = [mutableMessageParts lastObject];
+    if ([previousPart[@"mime"] isEqualToString:@"text/plain"]) {
+        [mutableMessageParts removeLastObject];
+    }
+    
+    _messageParts = mutableMessageParts;
 }
 
 // Possibly misleading...?
@@ -259,7 +272,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 - (void)clear {
     
-    _imageAttatchments = [[NSDictionary alloc] init];
     _attatchmentRanges = [[NSMutableArray alloc] init];
     _messageParts = [[NSArray alloc] init];
     
@@ -274,6 +286,10 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 {
     if ([self.attributedText length] < 2) {
         [self setNeedsDisplay]; // placeholder may need to be displayed
+    }
+    
+    if (self.attributedText.length == 0) {
+        [self clear];
     }
     
     [self updatePlaceholderLabelVisibility];
