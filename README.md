@@ -4,7 +4,7 @@
 
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/5310054/ceb41222-7bfa-11e4-858e-2c6a7fe4c055.gif)
         
-![alt tag](https://cloud.githubusercontent.com/assets/5367914/6097236/58e73ca6-af83-11e4-8f38-adeaec193bfb.gif)
+![alt tag](https://cloud.githubusercontent.com/assets/5367914/6097248/707975a4-af84-11e4-989e-a19cb0ca4708.gif)
 ####What is this repository for?####
 
 An open-source messaging UI framework for iOS, built with simplicity and customization in mind.
