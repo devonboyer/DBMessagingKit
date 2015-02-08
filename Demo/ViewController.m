@@ -86,20 +86,17 @@
 
 #pragma mark - Actions
 
-- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType {
+- (void)sendButtonTapped:(id)sender {
+    NSArray *messageParts = self.messageInputToolbar.textView.messageParts;
+    [self sendMessageWithParts:messageParts];
+}
+
+- (void)cameraButtonTapped:(id)sender {
     
-    /**
-     *  This you should do when sending a message:
-     *
-     *  1. Play sound (optional)
-     *  2. Add new message model object to your data source
-     *  3. Call 'finishSendingMessage'
-     */
-    
-    Message *newMessage = [Message messageWithData:data MIMEType:MIMEType sentByUserID:[self senderUserID] sentAt:[NSDate date]];
-    [_messages addObject:newMessage];
-    // [SystemSoundPlayer playMessageSentSound];
-    [self finishSendingMessage];
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePickerController.delegate = self;
+    [self presentViewController:imagePickerController animated:true completion:nil];
 }
 
 - (void)sendMessageWithParts:(NSArray *)parts {
@@ -118,19 +115,6 @@
     }
     
     [self finishSendingMessage];
-}
-
-- (void)sendButtonTapped:(id)sender {
-    NSArray *messageParts = self.messageInputToolbar.textView.messageParts;
-    [self sendMessageWithParts:messageParts];
-}
-
-- (void)cameraButtonTapped:(id)sender {
-    
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePickerController.delegate = self;
-    [self presentViewController:imagePickerController animated:true completion:nil];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

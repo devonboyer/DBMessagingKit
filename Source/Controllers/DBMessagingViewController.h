@@ -88,18 +88,6 @@
  */
 @property (nonatomic) BOOL showTypingIndicator;
 
-/**
- *  This method is automatically called when the user taps the send button on the registered UIView<MessageInputUtility>
- *  after composing a message with the appropriate data and MIMEType.
- *
- *  @param data     The data to be embedded in the message.
- *  @param MIMEType A MIME Type identifying the type of data contained in the given data object.
- *
- *  @see MessageInputUtility
- */
-- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType;
-
-- (void)sendCurrentlyComposedText;
 
 - (void)sendMessageWithParts:(NSArray *)parts;
 

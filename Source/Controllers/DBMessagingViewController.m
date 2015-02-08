@@ -176,28 +176,6 @@
 
 - (void)sendMessageWithParts:(NSArray *)parts {
     
-    // complie message parts
-    // self.messageInputToolbar.textView.messageParts
-}
-
-- (void)sendMessageWithData:(NSData *)data MIMEType:(MIMEType)MIMEType {
-
-
-}
-
-- (void)sendCurrentlyComposedText {
-    NSString *text = [_messageInputToolbar textView].text;
-    
-    if (_acceptsAutoCorrectBeforeSending) {
-        // Accept any auto-correct suggestions before sending.
-        text = [text stringByAppendingString:@" "];
-    }
-    
-    text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    [_messageInputToolbar.textView clear];
-    
-    [self sendMessageWithData:[text dataUsingEncoding:NSUTF8StringEncoding] MIMEType:MIMETypeText];
 }
 
 - (void)finishReceivingMessage {
