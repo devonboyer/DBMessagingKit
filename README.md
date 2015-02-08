@@ -17,11 +17,18 @@ An open-source messaging UI framework for iOS, built with simplicity and customi
  - GIF
  - Location (In development)
 
+Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
+
 ####Features####
 - Multiple timestamp styles
 - Interactive Keyboard Dismiss
-
-Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
+- Customize cell labels
+- Customize toolbar buttons
+- Arbitrary message sizes
+- Data detectors
+- Dynamic input text view resizing
+- Timestamp formatting
+- Images, Movies, GIFs, Location messages
 
 ####How do I get set up?####
 #####View Controller#####
