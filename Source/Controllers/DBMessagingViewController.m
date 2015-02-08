@@ -46,7 +46,7 @@
 {
     [super loadView];
     
-    DBMessagingCollectionViewSlidingTimestampFlowLayout *collectionViewLayout = [[DBMessagingCollectionViewSlidingTimestampFlowLayout alloc] init];
+    DBMessagingCollectionViewBaseFlowLayout *collectionViewLayout = [[DBMessagingCollectionViewBaseFlowLayout alloc] init];
     _collectionView = [[DBMessagingCollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:collectionViewLayout];
     [_collectionView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_collectionView setBackgroundColor:[UIColor whiteColor]];
@@ -73,7 +73,6 @@
     _acceptsAutoCorrectBeforeSending = YES;
     
     [self updateCollectionViewInsets];
-    [_messageInputToolbar toggleSendButtonEnabled];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -145,6 +144,32 @@
     _showTypingIndicator = showTypingIndicator;
     [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView.collectionViewLayout invalidateLayout];
+}
+- (void)setTimestampStyle:(DBMessagingTimestampStyle)timestampStyle {
+    
+    if (_timestampStyle == timestampStyle) {
+        return;
+    }
+    
+    _timestampStyle = timestampStyle;
+    
+    DBMessagingCollectionViewBaseFlowLayout *layout;
+    
+    switch (timestampStyle) {
+        case DBMessagingTimestampStyleNone:
+            layout = [[DBMessagingCollectionViewBaseFlowLayout alloc] init];
+            break;
+        case DBMessagingTimestampStyleHidden:
+            layout = [[DBMessagingCollectionViewHiddenTimestampFlowLayout alloc] init];
+            break;
+        case DBMessagingTimestampStyleSliding:
+            layout = [[DBMessagingCollectionViewSlidingTimestampFlowLayout alloc] init];
+            break;
+        default:
+            break;
+    }
+    
+    [_collectionView setCollectionViewLayout:layout];
 }
 
 #pragma mark - Public

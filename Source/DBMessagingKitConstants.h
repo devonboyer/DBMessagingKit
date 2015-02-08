@@ -31,8 +31,9 @@ typedef NS_ENUM(NSUInteger, MIMEType) {
  * @see DBMessagingCollectionViewHiddenTimestampFlowLayout
  * @see DBMessagingCollectionViewSlidingTimestampFlowLayout
  */
-typedef NS_ENUM(NSUInteger, TimestampStyle) {
-    TimestampStyleHidden,
-    TimestampStyleSliding
+typedef NS_ENUM(NSUInteger, DBMessagingTimestampStyle) {
+    DBMessagingTimestampStyleNone,
+    DBMessagingTimestampStyleHidden,
+    DBMessagingTimestampStyleSliding
 };
 

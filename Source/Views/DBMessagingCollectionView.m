@@ -21,6 +21,7 @@
 #import "DBMessagingCollectionViewDataSource.h"
 #import "DBMessagingCollectionViewDelegateFlowLayout.h"
 #import "DBMessagingCollectionViewHiddenTimestampFlowLayout.h"
+#import "DBMessagingCollectionViewSlidingTimestampFlowLayout.h"
 
 NSString * const DBMessagingTextCellIdentifier = @"com.DBMessagingKit.DBMessagingTextCellIdentifier";
 NSString * const DBMessagingImageCellIdentifier = @"com.DBMessagingKit.DBMessagingImageCellIdentifier";

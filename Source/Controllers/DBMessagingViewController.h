@@ -47,9 +47,12 @@
 @property (strong, nonatomic, readonly) DBMessagingInputToolbar *messageInputToolbar;
 
 /**
- * Specifys the type of layout in which to display timestamps. The default value is 'TimestampStyleHidden'.
+ * Specifys the type of layout in which to display timestamps. The default value is 'DBMessagingTimestampStyleNone'.
+ *
+ * @warning You must specify the timestamp style before configuring any custom attributes. Currently changing the timestamp
+ * style at runtime is not supported.
  */
-@property (assign, nonatomic) TimestampStyle timestampStyle;
+@property (assign, nonatomic) DBMessagingTimestampStyle timestampStyle;
 
 /**
  *  Specifies whether or not to accept any auto-correct suggestions before sending a message.

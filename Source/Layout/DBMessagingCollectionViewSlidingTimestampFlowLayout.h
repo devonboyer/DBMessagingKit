@@ -25,6 +25,8 @@
  */
 @interface DBMessagingCollectionViewSlidingTimestampFlowLayout : DBMessagingCollectionViewBaseFlowLayout
 
+@property (strong, nonatomic) UIPanGestureRecognizer *panGesture;
+
 @property (assign, nonatomic) BOOL panning;
 @property (assign, nonatomic) CGPoint panLocation;
 @property (assign, nonatomic) CGPoint startLocation;

@@ -46,7 +46,10 @@
     [_messageBubbleController setMiddleTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleMid"]];
     [_messageBubbleController setBottomTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleBottom"]];
     [_messageBubbleController setDefaultTemplate:[UIImage imageNamed:@"MessageBubbleDefault"]];
-        
+    
+    // Set the timestamp style
+    self.timestampStyle = DBMessagingTimestampStyleSliding;
+    
     // Customize layout attributes
     self.collectionView.collectionViewLayout.messageBubbleFont = [UIFont systemFontOfSize:18.0];
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(40.0, 40.0);

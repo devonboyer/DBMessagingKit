@@ -19,10 +19,7 @@
 #import "DBMessagingCollectionView.h"
 #import "NSAttributedString+Messaging.h"
 
-@interface DBMessagingCollectionViewSlidingTimestampFlowLayout () <UIGestureRecognizerDelegate> {
-    
-    UIPanGestureRecognizer *_panGesture;
-}
+@interface DBMessagingCollectionViewSlidingTimestampFlowLayout () <UIGestureRecognizerDelegate>
 
 @end
 
