@@ -50,3 +50,4 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 
 - Springy bubbles
 - Support for 'DBMessagingInputToolbarItemPositionTop' and 'DBMessagingInputToolbarItemPositionBottom'
+- CocoaPods installation
