@@ -15,7 +15,7 @@ An open-source messaging UI framework for iOS, built with simplicity and customi
  - Image
  - Movie
  - GIF
- - Location (still experimental)
+ - Location (In development)
 
 ####Features####
 - Individual Message Timestamps
@@ -39,3 +39,8 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
+
+####What's Next?####
+
+- Springy bubbles
+- Support for 'DBMessagingInputToolbarItemPositionTop' and 'DBMessagingInputToolbarItemPositionBottom'
