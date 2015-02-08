@@ -29,6 +29,7 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Subclass DBMessagingViewController.
 - Implement the required and optional methods in the DBMessagingCollectionViewDataSource protocol.
 - Implement the optional methods in the DBMessagingCollectionViewDelegateFlowLayout protocol.
+- Set the 'timestampStyle' of your view controller subclass to DBMessagingTimestampStyleNone, DBMessagingTimestampStyleHidden, or DBMessagingTimestampStyleSliding.
 
 #####Message Bubbles#####
 - For complex message bubble layouts (such as Facebook Messenger) you can use a DBMessageBubbleController to figure out for you which message bubble should be displayed for a given message.
