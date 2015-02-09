@@ -125,9 +125,7 @@
     
     [self.messageInputToolbar.textView addImageAttatchment:chosenImage];
     
-    [picker dismissViewControllerAnimated:YES completion:^{
-        [self.messageInputToolbar.textView becomeFirstResponder];
-    }];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - DBMessagingCollectionViewDataSource

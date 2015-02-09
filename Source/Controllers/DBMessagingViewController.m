@@ -145,14 +145,11 @@
         return;
     }
     
-    if (_showTypingIndicator == showTypingIndicator) {
-        return;
-    }
-    
     _showTypingIndicator = showTypingIndicator;
     [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
+
 - (void)setTimestampStyle:(DBMessagingTimestampStyle)timestampStyle {
     
     if (_timestampStyle == timestampStyle) {
@@ -240,7 +237,6 @@
 
 #pragma mark - Private
 
-
 - (void)_finishSendingOrReceivingMessage
 {
     [_collectionView reloadData];
@@ -284,10 +280,6 @@
     return nil;
 }
 
-- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
@@ -299,10 +291,6 @@
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellBottomLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
-
-- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
-
-- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
 
 #pragma mark - UICollectionViewDataSource
 
@@ -405,8 +393,8 @@
 
 - (UICollectionReusableView *)collectionView:(DBMessagingCollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind
-                                 atIndexPath:(NSIndexPath *)indexPath
-{
+                                 atIndexPath:(NSIndexPath *)indexPath {
+    
     if (_showTypingIndicator && [kind isEqualToString:UICollectionElementKindSectionFooter]) {
         return [collectionView dequeueTypingIndicatorFooterViewForIndexPath:indexPath];
     }

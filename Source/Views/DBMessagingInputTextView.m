@@ -25,6 +25,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 @interface DBMessagingInputTextView ()
 {
     NSArray *_messageParts;
+    BOOL _trailingMessagePartCreated;
 }
 
 @property (strong, nonatomic) UILabel *placeholderLabel;
@@ -121,16 +122,17 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 #pragma mark - Getters
 
 - (NSArray *)messageParts {
-    // This is wrong, possibility for duplicate parts
     
-    
-    // Append the last message part
-    NSString *currentlyComposedText = [self currentlyComposedText];
-    NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
-    if (![currentlyComposedText isEqualToString:@""]) {
-        [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
+    if (!_trailingMessagePartCreated) {
+        // Append the last message part
+        NSString *currentlyComposedText = [self currentlyComposedText];
+        NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
+        if (![currentlyComposedText isEqualToString:@""]) {
+            [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
+        }
+        _messageParts = mutableMessageParts;
+        _trailingMessagePartCreated = YES;
     }
-    _messageParts = mutableMessageParts;
     
     return _messageParts;
 }
@@ -222,9 +224,8 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     [replacementString addAttributes:attributes range:NSMakeRange(0, replacementString.length)];
 
     self.attributedText = replacementString;
-    [self adjustFrame];
     [self updatePlaceholderLabelVisibility];
-    [self scrollTextViewToBottomAnimated:YES];
+    [self adjustFrame];
     
     // Create the message parts
     NSString *currentlyComposedText = [self currentlyComposedText];
@@ -258,6 +259,8 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     }
     
     _messageParts = mutableMessageParts;
+    
+    [self scrollTextViewToBottomAnimated:YES];
 }
 
 // Possibly misleading...?
@@ -310,21 +313,27 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     CGRect frame = self.frame;
     
     CGFloat proposedHeight = MAX(stringRect.size.height + (CGRectGetHeight(_initialFrame) / 2.0 - self.font.lineHeight / 2.0) * 2, _initialFrame.size.height);
-    
-    if (proposedHeight < _maximumHeight) {
-        self.scrollEnabled = NO;
-        self.showsVerticalScrollIndicator = NO;
-        self.alwaysBounceVertical = NO;
-        
-        frame.size.height = proposedHeight;
-        
-    } else {
-        self.scrollEnabled = YES;
-        self.showsVerticalScrollIndicator = YES;
-        self.alwaysBounceVertical = YES;
-        
-        frame.size.height = _maximumHeight;
-    }
+    frame.size.height = proposedHeight;
+
+//    if (proposedHeight < _maximumHeight) {
+//        
+//        if (self.scrollEnabled) {
+//            self.scrollEnabled = NO;
+//            self.showsVerticalScrollIndicator = NO;
+//            self.alwaysBounceVertical = NO;
+//        }
+//        
+//        
+//    } else {
+//        
+//        if (!self.scrollEnabled) {
+//            self.scrollEnabled = YES;
+//            self.showsVerticalScrollIndicator = YES;
+//            self.alwaysBounceVertical = YES;
+//        }
+//        
+//        frame.size.height = _maximumHeight;
+//    }
     
     if (round(frame.size.height) != round(self.frame.size.height)) {
         CGFloat change = round(frame.size.height - self.frame.size.height);
@@ -421,6 +430,13 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     
     NSDictionary *attributes = @{NSFontAttributeName: self.font};
     self.attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
+    
+    if (_trailingMessagePartCreated) {
+        NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
+        [mutableMessageParts removeLastObject];
+        _messageParts = mutableMessageParts;
+        _trailingMessagePartCreated = NO;
+    }
     
     [self updatePlaceholderLabelVisibility];
 }
