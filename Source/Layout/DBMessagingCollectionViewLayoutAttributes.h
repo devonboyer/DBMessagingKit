@@ -16,11 +16,22 @@
 
 /**
  *  A 'DBMessagingCollectionViewLayoutAttributes' object manages the layout-related attributes
- *  for a given 'DBMessagingParentCell' in a 'DBMessagingCollectionView'.
+ *  for views in a 'DBMessagingCollectionView'.
  */
 @interface DBMessagingCollectionViewLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
+/**
+ *  The distance that the cell is offset when using 'DBMessagingTimestampStyleSliding'.
+ *
+ * @discussion This attribute is only used when using 'DBMessagingTimestampStyleSliding'.
+ */
 @property (assign, nonatomic) CGFloat slidingTimestampDistance;
+
+/**
+ *  The distance that the avatar is offset when using 'DBMessagingTimestampStyleSliding'.
+ *
+ * @discussion This attribute is only used when using 'DBMessagingTimestampStyleSliding'.
+ */
 @property (assign, nonatomic) CGFloat slidingTimestampAvatarDistance;
 
 /**
@@ -61,7 +72,7 @@
 
 /**
  *  The minimum amount of space between the messageBubble and the edge of the screen.
- *  The default value is 60.0.
+ *  The default value is 70.0.
  */
 @property (assign, nonatomic) CGFloat messageBubbleLeftRightMargin;
 
@@ -80,7 +91,7 @@
 @property (assign, nonatomic) CGFloat outgoingMessageBubbleAvatarSpacing;
 
 /**
- *  The inset of the text container's layout area within the text view's content area in a 'MessagingParentCell'.
+ *  The inset of the text container's layout area within the text view's content area in a 'DBMessagingTextCell'.
  *  The specified inset values should be greater than or equal to 0.0.
  */
 @property (assign, nonatomic) UIEdgeInsets messageBubbleTextViewTextContainerInsets;
