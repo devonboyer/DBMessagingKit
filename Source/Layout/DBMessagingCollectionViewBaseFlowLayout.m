@@ -28,7 +28,11 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 }
 
 @property (strong, nonatomic) NSCache *messageBubbleCache;
-@property (strong, nonatomic) NSMutableDictionary *messageBubbleSizes;
+
+// Temporary: Eventually theses and the attributes associated should be handles by cells with async display kit
+@property (strong, nonatomic) NSCache *messageTopLabelCache;
+@property (strong, nonatomic) NSCache *cellTopLabelCache;
+@property (strong, nonatomic) NSCache *cellBottomLabelCache;
 
 // Tiling and Springs
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
@@ -91,12 +95,19 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     _visibleIndexPaths = [[NSMutableSet alloc] init];
     _visibleHeaderFooterIndexPaths = [[NSMutableSet alloc] init];
     _insertedIndexPaths = [[NSMutableArray alloc] init];
-    _messageBubbleSizes = [[NSMutableDictionary alloc] init];
     
     // Cache
     _messageBubbleCache = [[NSCache alloc] init];
-    _messageBubbleCache.name = @"com.MessagingKit.messageBubbleCache";
+    _messageBubbleCache.name = @"com.DBMessagingKit.messageBubbleCache";
     _messageBubbleCache.countLimit = 200.0;
+    
+    _messageTopLabelCache = [[NSCache alloc] init];
+    _messageTopLabelCache.name = @"com.DBMessagingKit.messageTopLabelCache";
+    _messageTopLabelCache.countLimit = 200.0;
+    
+    _cellTopLabelCache = [[NSCache alloc] init];
+    _cellTopLabelCache.name = @"com.DBMessagingKit.cellTopLabelCache";
+    _cellTopLabelCache.countLimit = 200.0;
     
     // Attributes that affect cells
     _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f);
@@ -486,6 +497,9 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     
     layoutAttributes.messageBubbleTextViewTextContainerInsets = self.messageBubbleTextViewTextContainerInsets;
     
+    // Bottleneck: Recalculating these sizes every time the layout is invalidated, these are not cached in any way.
+    // Since both the cells and layout height calculation require these values they need to be cached separately.
+    
     layoutAttributes.cellTopLabelHeight = [self _cellTopLabelHeightForIndexPath:indexPath];
     
     layoutAttributes.messageBubbleTopLabelHeight = [self _messageTopLabelHeightForIndexPath:indexPath];
@@ -565,7 +579,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     }
     
     finalSize = CGSizeMake(finalSize.width, MAX(minimumHeight, messageBubbleHeight));
-    
+
     [_messageBubbleCache setObject:[NSValue valueWithCGSize:finalSize] forKey:@(indexPath.hash)];
     
     return finalSize;
@@ -596,6 +610,12 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 
 - (CGFloat)_cellTopLabelHeightForIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSValue *cachedSize = [_cellTopLabelCache objectForKey:@(indexPath.hash)];
+    if (cachedSize) {
+        return [cachedSize CGSizeValue].height;
+    }
+    
     CGFloat cellTopLabelHeight = 0;
     if ([self.collectionView.dataSource respondsToSelector:@selector(collectionView:cellTopLabelAttributedTextForItemAtIndexPath:)]) {
         NSAttributedString *topLabelAttributedString = [self.collectionView.dataSource collectionView:self.collectionView cellTopLabelAttributedTextForItemAtIndexPath:indexPath];
@@ -617,11 +637,19 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
         }
     }
     
+    [_cellTopLabelCache setObject:[NSValue valueWithCGSize:CGSizeMake(0, cellTopLabelHeight)] forKey:@(indexPath.hash)];
+    
     return cellTopLabelHeight;
 }
 
 - (CGFloat)_messageTopLabelHeightForIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSValue *cachedSize = [_messageTopLabelCache objectForKey:@(indexPath.hash)];
+    if (cachedSize) {
+        return [cachedSize CGSizeValue].height;
+    }
+    
     CGFloat messageTopLabelHeight = 0;
     if ([self.collectionView.dataSource respondsToSelector:@selector(collectionView:messageTopLabelAttributedTextForItemAtIndexPath:)]) {
         NSAttributedString *messageTopLabelAttributedString = [self.collectionView.dataSource collectionView:self.collectionView messageTopLabelAttributedTextForItemAtIndexPath:indexPath];
@@ -632,11 +660,19 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
         }
     }
     
+    [_messageTopLabelCache setObject:[NSValue valueWithCGSize:CGSizeMake(0, messageTopLabelHeight)] forKey:@(indexPath.hash)];
+    
     return messageTopLabelHeight;
 }
 
 - (CGFloat)_cellBottomLabelHeightForIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSValue *cachedSize = [_cellBottomLabelCache objectForKey:@(indexPath.hash)];
+    if (cachedSize) {
+        return [cachedSize CGSizeValue].height;
+    }
+    
     CGFloat cellBottomLabelHeight = 0;
     if ([self.collectionView.dataSource respondsToSelector:@selector(collectionView:cellBottomLabelAttributedTextForItemAtIndexPath:)]) {
         NSAttributedString *bottomLabelAttributedString = [self.collectionView.dataSource collectionView:self.collectionView cellBottomLabelAttributedTextForItemAtIndexPath:indexPath];
@@ -646,6 +682,8 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
             cellBottomLabelHeight += self.cellBottomLabelPadding;
         }
     }
+    
+    [_cellBottomLabelCache setObject:[NSValue valueWithCGSize:CGSizeMake(0, cellBottomLabelHeight)] forKey:@(indexPath.hash)];
     
     return cellBottomLabelHeight;
 }

@@ -72,6 +72,8 @@
             CGFloat maxChange = self.messageBubbleLeftRightMargin - self.sectionInset.left;
             CGRect frame = layoutAttributes.frame;
             
+            change /= 2.0;
+            
             if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
                 if ([self isOutgoingMessageAtIndexPath:layoutAttributes.indexPath]) {
                     if (change <= maxChange) {
@@ -146,20 +148,31 @@
 
     if (panGesture.state == UIGestureRecognizerStateBegan) {
         
-        if (velocity.x < 0 && cvVelocity.y == 0) {
+        if (velocity.x < 0 && abs(cvVelocity.y) < 30.0) {
             _startLocation = [panGesture locationInView:self.collectionView];
             _panning = true;
         }
     }
     
     if (panGesture.state == UIGestureRecognizerStateChanged) {
-        _panLocation = [panGesture locationInView:self.collectionView];
+        CGPoint panLocation = [panGesture locationInView:self.collectionView];
+
+        if (panLocation.x == _panLocation.x) {
+            return;
+        }
+        
+        _panLocation = panLocation;
         [self invalidateLayout];
     }
     
-    if (panGesture.state == UIGestureRecognizerStateEnded) {
-        _panning = false;
-        [self.collectionView performBatchUpdates:nil completion:nil];
+    if (panGesture.state == UIGestureRecognizerStateEnded ||
+        panGesture.state == UIGestureRecognizerStateCancelled ||
+        panGesture.state == UIGestureRecognizerStateFailed) {
+        
+        if (_panning) {
+            _panning = false;
+            [self.collectionView performBatchUpdates:nil completion:nil];
+        }
     }
 }
 
