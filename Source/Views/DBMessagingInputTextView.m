@@ -49,6 +49,8 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     _attatchmentRanges = [[NSMutableArray alloc] init];
     _messageParts = [[NSArray alloc] init];
     
+    _maximumHeight = 200.0;
+    
     self.font = [UIFont systemFontOfSize:17.0];
     
     [self setBackgroundColor:[UIColor whiteColor]];
@@ -67,8 +69,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
                                                object:nil];
     
     [self addObserver:self forKeyPath:@"frame" options:0 context:nil];
-    
-    // Sign up for notifications for text changes:
     
     CGFloat labelLeftOffset = kLabelLeftOffset;
     // Use our calculated label offset from initWith…:
@@ -121,6 +121,8 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 #pragma mark - Getters
 
 - (NSArray *)messageParts {
+    // This is wrong, possibility for duplicate parts
+    
     
     // Append the last message part
     NSString *currentlyComposedText = [self currentlyComposedText];
@@ -222,6 +224,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     self.attributedText = replacementString;
     [self adjustFrame];
     [self updatePlaceholderLabelVisibility];
+    [self scrollTextViewToBottomAnimated:YES];
     
     // Create the message parts
     NSString *currentlyComposedText = [self currentlyComposedText];
@@ -305,7 +308,23 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     CGRect stringRect = [self.attributedText boundingRectWithSize:CGSizeMake(self.frame.size.width - 20, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
     
     CGRect frame = self.frame;
-    frame.size.height = MAX(stringRect.size.height + (CGRectGetHeight(_initialFrame) / 2.0 - self.font.lineHeight / 2.0) * 2, _initialFrame.size.height);
+    
+    CGFloat proposedHeight = MAX(stringRect.size.height + (CGRectGetHeight(_initialFrame) / 2.0 - self.font.lineHeight / 2.0) * 2, _initialFrame.size.height);
+    
+    if (proposedHeight < _maximumHeight) {
+        self.scrollEnabled = NO;
+        self.showsVerticalScrollIndicator = NO;
+        self.alwaysBounceVertical = NO;
+        
+        frame.size.height = proposedHeight;
+        
+    } else {
+        self.scrollEnabled = YES;
+        self.showsVerticalScrollIndicator = YES;
+        self.alwaysBounceVertical = YES;
+        
+        frame.size.height = _maximumHeight;
+    }
     
     if (round(frame.size.height) != round(self.frame.size.height)) {
         CGFloat change = round(frame.size.height - self.frame.size.height);
@@ -320,7 +339,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 
 - (void)scrollTextViewToBottomAnimated:(BOOL)animated
 {
-    CGPoint contentOffsetToShowLastLine = CGPointMake(0.0f, self.contentSize.height - CGRectGetHeight(self.bounds));
+    CGPoint contentOffsetToShowLastLine = CGPointMake(0.0f, self.contentSize.height - self.bounds.size.height);
     
     if (!animated) {
         self.contentOffset = contentOffsetToShowLastLine;

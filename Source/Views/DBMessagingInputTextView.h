@@ -25,7 +25,7 @@
 
 @property (weak, nonatomic) id <DBMessagingInputTextViewDelegate> delegate;
 
-@property (assign, nonatomic) CGFloat topLayoutGuide;
+@property (assign, nonatomic) CGFloat maximumHeight;
 @property (assign, nonatomic) NSInteger borderWidth UI_APPEARANCE_SELECTOR;
 @property (assign, nonatomic) NSInteger cornerRadius UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIColor *borderColor UI_APPEARANCE_SELECTOR;

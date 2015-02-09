@@ -42,6 +42,11 @@
 
 @implementation DBMessagingViewController
 
+- (void)dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)loadView
 {
     [super loadView];
@@ -68,6 +73,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusBarDidChangeFrame:)
+                                                 name:UIApplicationDidChangeStatusBarFrameNotification
+                                               object:nil];
 
     _automaticallyScrollsToMostRecentMessage = YES;
     _acceptsAutoCorrectBeforeSending = YES;
@@ -79,31 +89,29 @@
 {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(statusBarDidChangeFrame:)
-                                                 name:UIApplicationDidChangeStatusBarFrameNotification
-                                               object:nil];
-    
     [self.view layoutIfNeeded];
-    [_collectionView reloadData];
-    [_collectionView.collectionViewLayout invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
+    [self.collectionView.collectionViewLayout invalidateLayout];
     
-    [self scrollToBottomAnimated:NO];
+    if (self.automaticallyScrollsToMostRecentMessage) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self scrollToBottomAnimated:NO];
+            [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
+        });
+    }
+    
     [self updateKeyboardTriggerPoint];
-    [_keyboardController beginListeningForKeyboard];
-    
-    [self updateCollectionViewInsets];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [_keyboardController beginListeningForKeyboard];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     
     [_keyboardController endListeningForKeyboard];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIApplicationDidChangeStatusBarFrameNotification
-                                                  object:nil];
 }
 
 #pragma mark - Rotation
@@ -193,19 +201,41 @@
     return [NSIndexPath indexPathForItem:[_collectionView numberOfItemsInSection:0] - 1 inSection:0];
 }
 
-- (void)scrollToBottomAnimated:(BOOL)animated
-{
-    if ([_collectionView numberOfSections] == 0) {
+// NOT WORKING RIGHT
+- (void)scrollToBottomAnimated:(BOOL)animated {
+    
+    if ([self.collectionView numberOfSections] == 0) {
         return;
     }
     
-    NSInteger items = [_collectionView numberOfItemsInSection:0];
+    NSInteger items = [self.collectionView numberOfItemsInSection:0];
     
-    if (items > 0) {
-        [_collectionView scrollToItemAtIndexPath:[self indexPathForLatestMessage]
-                                atScrollPosition:UICollectionViewScrollPositionTop
-                                        animated:animated];
+    if (items == 0) {
+        return;
     }
+    
+    CGFloat collectionViewContentHeight = [self.collectionView.collectionViewLayout collectionViewContentSize].height;
+    BOOL isContentTooSmall = (collectionViewContentHeight < CGRectGetHeight(self.collectionView.bounds));
+    
+    if (isContentTooSmall) {
+        //  workaround for the first few messages not scrolling
+        //  when the collection view content size is too small, `scrollToItemAtIndexPath:` doesn't work properly
+        //  this seems to be a UIKit bug, see #256 on GitHub
+        [self.collectionView scrollRectToVisible:CGRectMake(0.0, collectionViewContentHeight - 1.0f, 1.0f, 1.0f)
+                                        animated:animated];
+        return;
+    }
+    
+    // Workaround for really long messages not scrolling properly
+    CGSize finalCellSize = [self.collectionView.collectionViewLayout sizeForItemAtIndexPath:[self indexPathForLatestMessage]];
+    
+    CGFloat maxHeightForVisibleMessage = CGRectGetHeight(self.collectionView.bounds) - self.collectionView.contentInset.top - CGRectGetHeight(self.messageInputToolbar.bounds);
+    
+    UICollectionViewScrollPosition scrollPosition = (finalCellSize.height > maxHeightForVisibleMessage) ? UICollectionViewScrollPositionBottom : UICollectionViewScrollPositionTop;
+    
+    [self.collectionView scrollToItemAtIndexPath:[self indexPathForLatestMessage]
+                                atScrollPosition:scrollPosition
+                                        animated:animated];
 }
 
 #pragma mark - Private
@@ -216,13 +246,13 @@
     [_collectionView reloadData];
     
     [self updateCollectionViewInsets];
-    
+
     if (_automaticallyScrollsToMostRecentMessage) {
         [self scrollToBottomAnimated:YES];
     }
 }
 
-#pragma mark - MessagingCollectionViewDataSource
+#pragma mark - DBMessagingCollectionViewDataSource
 
 - (NSString *)senderUserID
 {
@@ -258,18 +288,15 @@
     return nil;
 }
 
-- (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
 
-- (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
 
-- (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellBottomLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellBottomLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
 
@@ -279,18 +306,15 @@
 
 #pragma mark - UICollectionViewDataSource
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return 0;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-- (UICollectionViewCell *)collectionView:(DBMessagingCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *)collectionView:(DBMessagingCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BOOL isOutgoingMessage = [[self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath] isEqualToString:[self senderUserID]];
     
     NSString *cellIdentifier;
@@ -404,21 +428,7 @@
     return nil;
 }
 
-#pragma mark - MessagingCollectionViewDelegateFlowLayout
-
-- (void)collectionView:(UICollectionView *)collectionView didTapAvatarImageView:(UIImageView *)avatarImageView atIndexPath:(NSIndexPath *)indexPath { }
-
-- (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath { }
-
-- (void)collectionView:(UICollectionView *)collectionView didTapMessageBubbleImageView:(UIImageView *)messageBubbleImageView atIndexPath:(NSIndexPath *)indexPath { }
-
-- (void)collectionView:(UICollectionView *)collectionView didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer atIndexPath:(NSIndexPath *)indexPath { }
-
 #pragma mark - UICollectionViewDelegateFlowLayout
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -452,7 +462,9 @@
     [self updateCollectionViewInsets];
     
     if (_automaticallyScrollsToMostRecentMessage) {
-        [self scrollToBottomAnimated:NO];
+        [self.collectionView scrollToItemAtIndexPath:[self indexPathForLatestMessage]
+                                    atScrollPosition:UICollectionViewScrollPositionBottom
+                                            animated:NO];
     }
     
     [self updateKeyboardTriggerPoint];
@@ -470,34 +482,29 @@
 
 #pragma mark - Utility
 
-- (void)updateCollectionViewInsets
-{
+- (void)updateCollectionViewInsets {
     [self setCollectionViewInsetsTopValue:[self.topLayoutGuide length]
                               bottomValue:CGRectGetHeight(_collectionView.frame) - CGRectGetMinY(_messageInputToolbar.frame)];
 }
 
-- (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom
-{
+- (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom {
     UIEdgeInsets insets = UIEdgeInsetsMake(top, 0.0f, bottom, 0.0f);
     _collectionView.contentInset = insets;
     _collectionView.scrollIndicatorInsets = insets;
 }
 
-- (void)updateKeyboardTriggerPoint
-{
+- (void)updateKeyboardTriggerPoint {
     _keyboardController.keyboardTriggerPoint = CGPointMake(0.0f, CGRectGetHeight(_messageInputToolbar.bounds));
 }
 
-- (void)adjustInputToolbarHeightByDelta:(CGFloat)dy
-{
+- (void)adjustInputToolbarHeightByDelta:(CGFloat)dy {
     CGRect frame = _messageInputToolbar.frame;
     frame.origin.y -= dy;
     frame.size.height += dy;
     _messageInputToolbar.frame = frame;
 }
 
-- (void)adjustInputToolbarBottomSpaceByDelta:(CGFloat)dy
-{
+- (void)adjustInputToolbarBottomSpaceByDelta:(CGFloat)dy {
     CGRect frame = _messageInputToolbar.frame;
     frame.origin.y -= dy;
     _messageInputToolbar.frame = frame;
@@ -505,8 +512,7 @@
 
 #pragma mark - Keyboard
 
-- (void)keyboardController:(DBInteractiveKeyboardController *)keyboardController keyboardDidChangeFrame:(CGRect)keyboardFrame
-{
+- (void)keyboardController:(DBInteractiveKeyboardController *)keyboardController keyboardDidChangeFrame:(CGRect)keyboardFrame {
     CGFloat heightFromBottom = CGRectGetHeight(_collectionView.frame) - CGRectGetMinY(keyboardFrame);
     heightFromBottom = MAX(0.0f, heightFromBottom);
 

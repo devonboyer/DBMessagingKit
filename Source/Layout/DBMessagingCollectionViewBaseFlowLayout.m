@@ -135,7 +135,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     _dynamicsEnabled = NO;
     
     self.sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
-    [self setMinimumLineSpacing:2.0];
+    [self setMinimumLineSpacing:2.0];    
 }
 
 - (void)dealloc
