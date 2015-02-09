@@ -214,8 +214,6 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     // Get the range of the attatchment to use a key
     NSRange range = NSMakeRange(replacementString.length, attachmentString.length);
     
-    NSLog(@"%@", NSStringFromRange(range));
-    
     [replacementString appendAttributedString:attachmentString];    
     
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:17.0]};

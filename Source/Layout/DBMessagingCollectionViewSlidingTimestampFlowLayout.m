@@ -79,6 +79,22 @@
                     } else {
                         frame.origin.x = -maxChange + self.sectionInset.left;
                     }
+                    
+                } else if (!CGSizeEqualToSize([self avatarSizeForIndexPath:layoutAttributes.indexPath], CGSizeZero)){
+                    // If incoming avatar's size is greater than zero, they also slide just enough to hide the avatars.
+                    
+                    change /= (maxChange / ([self avatarSizeForIndexPath:layoutAttributes.indexPath].width + self.incomingMessageBubbleAvatarSpacing));
+                    maxChange = [self avatarSizeForIndexPath:layoutAttributes.indexPath].width + self.incomingMessageBubbleAvatarSpacing;
+                    
+                    if (change <= maxChange) {
+                        frame.origin.x = MIN(-change + self.sectionInset.left, self.sectionInset.left);
+                    } else {
+                        frame.origin.x = -maxChange + self.sectionInset.left;
+                    }
+                    
+                    change /= (maxChange / abs(self.sectionInset.left - self.incomingMessageBubbleAvatarSpacing));
+                    maxChange = [self avatarSizeForIndexPath:layoutAttributes.indexPath].width + self.sectionInset.left;
+                    layoutAttributes.slidingTimestampAvatarDistance = MIN(change, maxChange);
                 }
                 
                 layoutAttributes.slidingTimestampDistance = MAX(MIN(change, maxChange), 0);

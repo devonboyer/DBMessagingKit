@@ -122,6 +122,7 @@
     copy.outgoingMessageBubbleAvatarSpacing = self.outgoingMessageBubbleAvatarSpacing;
     
     copy.slidingTimestampDistance = self.slidingTimestampDistance;
+    copy.slidingTimestampAvatarDistance = self.slidingTimestampAvatarDistance;
     
     return copy;
 }

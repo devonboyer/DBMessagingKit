@@ -21,6 +21,7 @@
 @interface DBMessagingParentCell () <UIGestureRecognizerDelegate>
 
 @property (assign, nonatomic) CGFloat slidingTimestampDistance;
+@property (assign, nonatomic) CGFloat slidingTimestampAvatarDistance;
 
 @end
 
@@ -80,8 +81,13 @@
     self.outgoingMessageBubbleAvatarSpacing = layoutAttributes.outgoingMessageBubbleAvatarSpacing;
     self.messageBubbleTextContainerInsets = layoutAttributes.messageBubbleTextViewTextContainerInsets;
     self.slidingTimestampDistance = layoutAttributes.slidingTimestampDistance;
-        
-    CGRect frame = self.cellTopLabel.frame;
+    self.slidingTimestampAvatarDistance = layoutAttributes.slidingTimestampAvatarDistance;
+    
+    CGRect frame = self.avatarImageView.frame;
+    frame.origin.x = -self.slidingTimestampAvatarDistance;
+    self.avatarImageView.frame = frame;
+    
+    frame = self.cellTopLabel.frame;
     frame.origin.x = self.slidingTimestampDistance;
     self.cellTopLabel.frame = frame;
 }
@@ -116,7 +122,7 @@
                                                       CGRectGetWidth(self.frame) - CGRectGetMinX(self.messageBubbleImageView.frame),
                                                       self.cellBottomLabelHeight)];
             
-            [self.avatarImageView setFrame:CGRectMake(0, CGRectGetMaxY(self.messageBubbleImageView.frame) - self.incomingAvatarSize.height, self.incomingAvatarSize.width, self.incomingAvatarSize.height)];
+            [self.avatarImageView setFrame:CGRectMake(-self.slidingTimestampAvatarDistance, CGRectGetMaxY(self.messageBubbleImageView.frame) - self.incomingAvatarSize.height, self.incomingAvatarSize.width, self.incomingAvatarSize.height)];
             
             CGSize accessoryImageSize = CGSizeMake(self.incomingAvatarSize.width * 0.45, self.incomingAvatarSize.height * 0.45);
             [_accessoryImageView setFrame:CGRectMake(CGRectGetMaxX(self.avatarImageView.frame) - accessoryImageSize.width / 1.2, CGRectGetMaxY(self.avatarImageView.frame) - accessoryImageSize.height / 1.2, accessoryImageSize.width, accessoryImageSize.height)];
