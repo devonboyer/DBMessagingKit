@@ -15,25 +15,12 @@
 
 @property (strong, nonatomic) NSString *sentByUserID;
 @property (strong, nonatomic) NSDate *sentAt;
-@property (assign, nonatomic) MIMEType MIMEType;
-@property (strong, nonatomic) NSData *data;
-@property (strong, nonatomic) CLLocation *location;
+@property (assign, nonatomic) NSString *mime;
+@property (strong, nonatomic) NSData *value;
 
-+ (instancetype)messageWithData:(NSData *)data
-                       MIMEType:(MIMEType)MIMEType
-                   sentByUserID:(NSString *)sentByUserID
-                         sentAt:(NSDate *)sentAt;
-
-+ (instancetype)messageWithLocation:(CLLocation *)location
-                       sentByUserID:(NSString *)sentByUserID
-                             sentAt:(NSDate *)sentAt;
-
-+ (instancetype)messageWithText:(NSString *)text
-                   sentByUserID:(NSString *)sentByUserID
-                         sentAt:(NSDate *)sentAt;
-
-+ (instancetype)messageWithImage:(UIImage *)photo
-                    sentByUserID:(NSString *)sentByUserID
-                          sentAt:(NSDate *)sentAt;
+- (instancetype)initWithValue:(id)value
+                         mime:(NSString *)mime
+                 sentByUserID:(NSString *)sentByUserID
+                       sentAt:(NSDate *)sentAt;
 
 @end

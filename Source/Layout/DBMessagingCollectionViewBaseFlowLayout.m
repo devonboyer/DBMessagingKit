@@ -519,23 +519,20 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     layoutAttributes.messageBubbleFont = self.messageBubbleFont;
 }
 
-- (CGSize)_messageBubbleSizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSData *data = [self.collectionView.dataSource collectionView:self.collectionView dataForMessageAtIndexPath:indexPath];
+- (CGSize)_messageBubbleSizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    id value = [self.collectionView.dataSource collectionView:self.collectionView valueForMessageAtIndexPath:indexPath];
     
     NSValue *cachedSize = [_messageBubbleCache objectForKey:@(indexPath.hash)];
     if (cachedSize) {
         return [cachedSize CGSizeValue];
     }
-
-    MIMEType MIMEType = [self.collectionView.dataSource collectionView:self.collectionView MIMETypeForMessageAtIndexPath:indexPath];
+    
+    NSString *mime = [self.collectionView.dataSource collectionView:self.collectionView mimeForMessageAtIndexPath:indexPath];
     
     CGFloat cellTopLabelHeight = [self _cellTopLabelHeightForIndexPath:indexPath];
-    
     CGFloat messageTopLabelHeight = [self _messageTopLabelHeightForIndexPath:indexPath];
-
     CGFloat cellBottomLabelHeight = [self _cellBottomLabelHeightForIndexPath:indexPath];
-    
     CGSize avatarSize = [self avatarSizeForIndexPath:indexPath];
     
     CGFloat maximumTextWidth = self.itemWidth - avatarSize.width - self.messageBubbleLeftRightMargin - [self messageBubbleAvatarSpacingForIndexPath:indexPath];
@@ -543,34 +540,17 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     CGFloat textInsetsTotal = [self _messageBubbleTextContainerInsetsTotal];
     
     CGSize finalSize = CGSizeZero;
-    switch (MIMEType) {
-        case MIMETypeText: {
-            NSString *messageText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            CGRect stringRect = [messageText boundingRectWithSize:CGSizeMake(maximumTextWidth - textInsetsTotal, CGFLOAT_MAX)
-                                                                   options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                                attributes:@{NSFontAttributeName : self.messageBubbleFont}
-                                                                   context:nil];
-            finalSize = CGRectIntegral(stringRect).size;
-            break;
-        }
-        case MIMETypeImage: {
-            finalSize = [self _imageSizeForIndexPath:indexPath];
-            break;
-        }
-        case MIMETypeLocation: {
-            finalSize = [self _locationMapSizeForIndexPath:indexPath];
-            break;
-        }
-        case MIMETypeGIF: {
-            finalSize = [self _imageSizeForIndexPath:indexPath];
-            break;
-        }
-        case MIMETypeMovie: {
-            finalSize = [self _imageSizeForIndexPath:indexPath];
-            break;
-        }
-        default:
-            break;
+    if ([mime isEqualToString:@"text/plain"]) {
+        NSString *messageText = (NSString *)value;
+        CGRect stringRect = [messageText boundingRectWithSize:CGSizeMake(maximumTextWidth - textInsetsTotal, CGFLOAT_MAX)
+                                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                   attributes:@{NSFontAttributeName : self.messageBubbleFont}
+                                                      context:nil];
+        finalSize = CGRectIntegral(stringRect).size;
+    }
+    
+    if ([mime isEqualToString:@"image/jpeg"]) {
+        finalSize = [self _imageSizeForIndexPath:indexPath];
     }
     
     // Account for the size of avatars, an avatar should never be larger than the size of the smallest message bubble.

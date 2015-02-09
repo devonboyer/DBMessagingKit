@@ -55,7 +55,7 @@
  *
  *  @return A MIME Type identifying the type of data contained in the given data object.
  */
-- (MIMEType)collectionView:(UICollectionView *)collectionView MIMETypeForMessageAtIndexPath:(NSIndexPath *)indexPath;
+- (NSString *)collectionView:(UICollectionView *)collectionView mimeForMessageAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Asks the data source for the data to be embedded in the message at the  specified indexPath in the collectionView.
@@ -69,7 +69,7 @@
  *
  *  @return The data to be embedded in the message.
  */
-- (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath;
+- (id)collectionView:(UICollectionView *)collectionView valueForMessageAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Asks the data source for the bubble image that corresponds to the specified

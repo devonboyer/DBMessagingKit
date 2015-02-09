@@ -194,7 +194,6 @@
     return [NSIndexPath indexPathForItem:[_collectionView numberOfItemsInSection:0] - 1 inSection:0];
 }
 
-// NOT WORKING RIGHT
 - (void)scrollToBottomAnimated:(BOOL)animated {
     
     if ([self.collectionView numberOfSections] == 0) {
@@ -252,13 +251,13 @@
     return nil;
 }
 
-- (MIMEType)collectionView:(UICollectionView *)collectionView MIMETypeForMessageAtIndexPath:(NSIndexPath *)indexPath
+- (NSString *)collectionView:(UICollectionView *)collectionView mimeForMessageAtIndexPath:(NSIndexPath *)indexPath
 {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
-    return 0;
+    return nil;
 }
 
-- (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath
+- (id)collectionView:(UICollectionView *)collectionView valueForMessageAtIndexPath:(NSIndexPath *)indexPath
 {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
@@ -299,32 +298,20 @@
 }
 
 - (UICollectionViewCell *)collectionView:(DBMessagingCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     BOOL isOutgoingMessage = [[self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath] isEqualToString:[self senderUserID]];
     
+    NSString *mime = [collectionView.dataSource collectionView:collectionView mimeForMessageAtIndexPath:indexPath];
+    id value = [collectionView.dataSource collectionView:collectionView valueForMessageAtIndexPath:indexPath];
+
     NSString *cellIdentifier;
-    switch ([self collectionView:collectionView MIMETypeForMessageAtIndexPath:indexPath]) {
-        case MIMETypeText: {
-            cellIdentifier = DBMessagingTextCellIdentifier;
-            break;
-        }
-        case MIMETypeImage: {
-            cellIdentifier = DBMessagingImageCellIdentifier;
-            break;
-        }
-        case MIMETypeLocation: {
-            cellIdentifier = DBMessagingLocationCellIdentifier;
-            break;
-        }
-        case MIMETypeGIF: {
-            cellIdentifier = DBMessagingGIFCellIdentifier;
-            break;
-        }
-        case MIMETypeMovie: {
-            cellIdentifier = DBMessagingMovieCellIdentifier;
-            break;
-        }
-        default:
-            break;
+
+    if ([mime isEqualToString:@"text/plain"]) {
+        cellIdentifier = DBMessagingTextCellIdentifier;
+    }
+    
+    if ([mime isEqualToString:@"image/jpeg"]) {
+        cellIdentifier = DBMessagingImageCellIdentifier;
     }
     
     DBMessagingParentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -332,56 +319,34 @@
     cell.collectionView = collectionView;
     cell.type = (isOutgoingMessage) ? MessageBubbleTypeOutgoing : MessageBubbleTypeIncoming;
     
-    cell.cellTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView cellTopLabelAttributedTextForItemAtIndexPath:indexPath];
-    cell.cellBottomLabel.attributedText = [collectionView.dataSource collectionView:collectionView cellBottomLabelAttributedTextForItemAtIndexPath:indexPath];
-    cell.messageTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView messageTopLabelAttributedTextForItemAtIndexPath:indexPath];
-    cell.messageBubbleImageView.image = [collectionView.dataSource collectionView:collectionView messageBubbleForItemAtIndexPath:indexPath].image;
-    cell.messageBubbleImageView.highlightedImage = [collectionView.dataSource collectionView:collectionView messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
-    [collectionView.dataSource collectionView:collectionView wantsAvatarForImageView:cell.avatarImageView atIndexPath:indexPath];
+    cell.cellTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                    cellTopLabelAttributedTextForItemAtIndexPath:indexPath];
+   
+    cell.messageTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                    messageTopLabelAttributedTextForItemAtIndexPath:indexPath];
     
-    switch ([self collectionView:collectionView MIMETypeForMessageAtIndexPath:indexPath]) {
-        case MIMETypeText: {
-            DBMessagingTextCell *textCell = (DBMessagingTextCell *)cell;
-            NSString *messageText = [[NSString alloc] initWithData:[collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath] encoding:NSUTF8StringEncoding];
-            textCell.messageText = messageText;
-            textCell.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
-            break;
-        }
-        case MIMETypeImage:{
-            DBMessagingImageCell *imageCell = (DBMessagingImageCell *)cell;
-            UIImage *image = [[UIImage alloc] initWithData:[collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath]];
-            if (image) {
-                imageCell.imageView.image = image;
-            }
-            else {
-                [collectionView.dataSource collectionView:collectionView wantsImageForImageView:imageCell.imageView atIndexPath:indexPath];
-            }
-            break;
-        }
-        case MIMETypeLocation: {
-            DBMessagingLocationCell *locationCell = (DBMessagingLocationCell *)cell;
-            CLLocation *location = [collectionView.dataSource collectionView:collectionView locationForMessageAtIndexPath:indexPath];
-            [locationCell setLocation:location];
-            break;
-        }
-        case MIMETypeGIF: {
-            DBMessagingGIFCell *GIFCell = (DBMessagingGIFCell *)cell;
-            NSData *GIFData = [collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath];
-            if (GIFData) {
-                GIFCell.animatedGIFData = GIFData;
-            }
-            else {
-               [collectionView.dataSource collectionView:collectionView wantsImageForImageView:GIFCell.imageView atIndexPath:indexPath];
-            }
-            break;
-        }
-        case MIMETypeMovie: {
-            DBMessagingMovieCell *movieCell = (DBMessagingMovieCell *)cell;
-            movieCell.movieData = [collectionView.dataSource collectionView:collectionView dataForMessageAtIndexPath:indexPath];
-            break;
-        }
-        default:
-            break;
+    cell.cellBottomLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                    cellBottomLabelAttributedTextForItemAtIndexPath:indexPath];
+    
+    cell.messageBubbleImageView.image = [collectionView.dataSource collectionView:collectionView
+                                                  messageBubbleForItemAtIndexPath:indexPath].image;
+    
+    cell.messageBubbleImageView.highlightedImage = [collectionView.dataSource collectionView:collectionView
+                                                             messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
+    
+    [collectionView.dataSource collectionView:collectionView
+                      wantsAvatarForImageView:cell.avatarImageView
+                                  atIndexPath:indexPath];
+    
+    if ([mime isEqualToString:@"text/plain"]) {
+        DBMessagingTextCell *textCell = (DBMessagingTextCell *)cell;
+        textCell.messageText = (NSString *)value;
+        textCell.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
+    }
+    
+    if ([mime isEqualToString:@"image/jpeg"]) {
+        DBMessagingImageCell *imageCell = (DBMessagingImageCell *)cell;
+        imageCell.imageView.image = (UIImage *)value; // super dangerous!!
     }
     
     return cell;

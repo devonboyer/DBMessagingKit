@@ -31,13 +31,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Setup the demo
     _messages = [[NSMutableArray alloc] init];
-    [_messages addObject:[Message messageWithText:@"Welcome to DBMessagingKit. A messaging, UI framework for iOS." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"It is simple to use and very customizable." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"You can send text, images, GIFs, movies, or even your location." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"You can add as many buttons to the input toolbar as you want." sentByUserID:@"Outgoing" sentAt:[NSDate date]]];
-    [_messages addObject:[Message messageWithText:@"Also supports all data detectors like phone numbers 123-456-7890 and websites https://github.com/DevonBoyer/DBMessagingKit." sentByUserID:@"Incoming" sentAt:[NSDate date]]];
+    
+    [_messages addObject:[[Message alloc] initWithValue:@"Welcome to DBMessagingKit. A messaging, UI framework for iOS."
+                                                   mime:@"text/plain"
+                                           sentByUserID:@"Outgoing"
+                                                 sentAt:[NSDate date]]];
+    
+    [_messages addObject:[[Message alloc] initWithValue:@"It is simple to use and very customizable."
+                                                   mime:@"text/plain"
+                                           sentByUserID:@"Incoming"
+                                                 sentAt:[NSDate date]]];
+    
+    [_messages addObject:[[Message alloc] initWithValue:@"You can send text, images, GIFs, movies, or even your location."
+                                                   mime:@"text/plain"
+                                           sentByUserID:@"Outgoing"
+                                                 sentAt:[NSDate date]]];
+    
+    [_messages addObject:[[Message alloc] initWithValue:@"You can add as many buttons to the input toolbar as you want."
+                                                   mime:@"text/plain"
+                                           sentByUserID:@"Outgoing"
+                                                 sentAt:[NSDate date]]];
+    
+    [_messages addObject:[[Message alloc] initWithValue:@"Also supports all data detectors like phone numbers 123-456-7890 and websites https://github.com/DevonBoyer/DBMessagingKit."
+                                                   mime:@"text/plain"
+                                           sentByUserID:@"Incoming"
+                                                 sentAt:[NSDate date]]];
     
     // Configure a message bubble controller with template images
     _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageGreenColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
@@ -126,15 +145,12 @@
      */
     for (NSDictionary *part in parts) {
         NSString *mime = part[@"mime"];
-        NSObject *value = part[@"value"];
+        id value = part[@"value"];
         
-        if ([mime isEqualToString:@"text/plain"]) {
-            NSString *text = (NSString *)value;
-            [_messages addObject:[Message messageWithText:text sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
-        } else if ([mime isEqualToString:@"image/jpeg"]) {
-            UIImage *image = (UIImage *)value;
-            [_messages addObject:[Message messageWithImage:image sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
-        }
+        [_messages addObject:[[Message alloc] initWithValue:value
+                                                       mime:mime
+                                               sentByUserID:[self senderUserID]
+                                                     sentAt:[NSDate date]]];
     }
 }
 
@@ -164,19 +180,14 @@
     return message.sentByUserID;
 }
 
-- (MIMEType)collectionView:(UICollectionView *)collectionView MIMETypeForMessageAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)collectionView:(UICollectionView *)collectionView mimeForMessageAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
-    return message.MIMEType;
+    return message.mime;
 }
 
-- (NSData *)collectionView:(UICollectionView *)collectionView dataForMessageAtIndexPath:(NSIndexPath *)indexPath {
+- (id)collectionView:(UICollectionView *)collectionView valueForMessageAtIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
-    return message.data;
-}
-
-- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath {
-    Message *message = [_messages objectAtIndex:indexPath.row];
-    return message.location;
+    return message.value;
 }
 
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -244,7 +255,7 @@
 
 - (void)collectionView:(DBMessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
-    UIImage *photo = [UIImage imageWithData:message.data];
+    UIImage *photo = [UIImage imageWithData:message.value];
     imageView.image = photo;
 }
 
@@ -261,20 +272,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
     Message *message = [_messages objectAtIndex:indexPath.row];
-    
-    switch (message.MIMEType) {
-        case MIMETypeImage:
-            NSLog(@"Image Tapped");
-            break;
-        case MIMETypeLocation:
-            NSLog(@"Location Tapped");
-            break;
-        case MIMETypeGIF:
-            NSLog(@"GIF Tapped");
-            break;
-        default:
-            break;
-    }
+    NSLog(@"%@", message.mime);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer atIndexPath:(NSIndexPath *)indexPath {

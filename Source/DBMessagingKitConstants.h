@@ -14,19 +14,6 @@
 
 #import <Foundation/Foundation.h>
 
-// Add MIME Types as string constants
-
-/**
- * A MIME Type (Internet Media Type) identifying the type of data contained in the given message object.
- */
-typedef NS_ENUM(NSUInteger, MIMEType) {
-    MIMETypeText,
-    MIMETypeImage,
-    MIMETypeMovie,
-    MIMETypeGIF,
-    MIMETypeLocation
-};
-
 /**
  * Specifys the type of layout in which to display timestamps.
  *
