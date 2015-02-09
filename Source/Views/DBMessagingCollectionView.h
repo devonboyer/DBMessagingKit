@@ -26,6 +26,7 @@
 @class DBMessagingCollectionViewBaseFlowLayout;
 @class DBMessagingLoadEarlierMessagesHeaderView;
 @class DBMessagingTypingIndicatorFooterView;
+@class DBMessagingTimestampSupplementaryView;
 
 // Cells
 extern NSString * const DBMessagingTextCellIdentifier;
@@ -50,6 +51,6 @@ extern NSString * const DBMessagingLoadMoreHeaderViewIdentifier;
 
 - (UICollectionReusableView *)dequeueTypingIndicatorFooterViewForIndexPath:(NSIndexPath *)indexPath;
 - (UICollectionReusableView *)dequeueLoadMoreHeaderViewForIndexPath:(NSIndexPath *)indexPath;
-- (UICollectionReusableView *)dequeueTimestampSupplementaryViewForIndexPath:(NSIndexPath *)indexPath;
+- (DBMessagingTimestampSupplementaryView *)dequeueTimestampSupplementaryViewForIndexPath:(NSIndexPath *)indexPath;
 
 @end

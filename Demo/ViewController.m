@@ -249,14 +249,22 @@
     return [_messageBubbleController messageBubbleForIndexPath:indexPath];
 }
 
-- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
     
+    /**
+     *  Set the avatar image by retreiving from the network or disk.
+     *
+     *  Tip: To hide an avatar for a specific indexPath just simply set the imageView.hidden to YES.
+     */
 }
 
-- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+    
+    /**
+     *  Set the image by retreiving from the network or decoding the message's value.
+     */
     Message *message = [_messages objectAtIndex:indexPath.row];
-    UIImage *photo = [UIImage imageWithData:message.value];
-    imageView.image = photo;
+    imageView.image = (UIImage *)message.value;
 }
 
 #pragma mark - DBMessagingCollectionViewDelegate

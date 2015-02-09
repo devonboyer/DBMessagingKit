@@ -92,7 +92,7 @@ NSString * const DBMessagingLoadMoreHeaderViewIdentifier = @"com.DBMessagingKit.
     return typingIndicatorFooterView;
 }
 
-- (UICollectionReusableView *)dequeueTimestampSupplementaryViewForIndexPath:(NSIndexPath *)indexPath
+- (DBMessagingTimestampSupplementaryView *)dequeueTimestampSupplementaryViewForIndexPath:(NSIndexPath *)indexPath
 {
     DBMessagingTimestampSupplementaryView *timestampSupplementaryView = [self dequeueReusableSupplementaryViewOfKind:DBMessagingCollectionElementKindTimestamp withReuseIdentifier:DBMessagingTimestampSupplementaryViewIdentifier forIndexPath:indexPath];
     return timestampSupplementaryView;

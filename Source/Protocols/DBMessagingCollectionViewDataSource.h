@@ -172,7 +172,7 @@
  *  @discussion The avatar image can be set using this method after downloading the image from the server. Setting the 
  *  imageView's image to 'nil' will hide the avatar.
  */
-- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Asks the data source to set the photo to display in the imageView for the the specified
@@ -185,6 +185,6 @@
  *  @discussion This method will be called if the message data is 'nil' and the MIMEType is MIMETypeImage or MIMETypeVideo in 
  *  order to then download the image or video from the server if required.
  */
-- (void)collectionView:(DBMessagingCollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
 
 @end

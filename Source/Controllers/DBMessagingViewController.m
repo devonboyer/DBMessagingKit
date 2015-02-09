@@ -245,49 +245,30 @@
 
 #pragma mark - DBMessagingCollectionViewDataSource
 
-- (NSString *)senderUserID
-{
+- (NSString *)senderUserID {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
 }
 
-- (NSString *)collectionView:(UICollectionView *)collectionView mimeForMessageAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)collectionView:(UICollectionView *)collectionView mimeForMessageAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
 }
 
-- (id)collectionView:(UICollectionView *)collectionView valueForMessageAtIndexPath:(NSIndexPath *)indexPath
-{
+- (id)collectionView:(UICollectionView *)collectionView valueForMessageAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
 }
 
-- (NSString *)collectionView:(UICollectionView *)collectionView sentByUserIDForMessageAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)collectionView:(UICollectionView *)collectionView sentByUserIDForMessageAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
 }
 
-- (UIImageView *)collectionView:(UICollectionView *)collectionView messageBubbleForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UIImageView *)collectionView:(UICollectionView *)collectionView messageBubbleForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(NO, @"ERROR: required method not implemented: %s", __PRETTY_FUNCTION__);
     return nil;
 }
-
-- (NSAttributedString *)collectionView:(UICollectionView *)collectionView messageTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
-- (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellTopLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
-- (NSAttributedString *)collectionView:(UICollectionView *)collectionView cellBottomLabelAttributedTextForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
-#pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return 0;
@@ -319,24 +300,36 @@
     cell.collectionView = collectionView;
     cell.type = (isOutgoingMessage) ? MessageBubbleTypeOutgoing : MessageBubbleTypeIncoming;
     
-    cell.cellTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView
-                                    cellTopLabelAttributedTextForItemAtIndexPath:indexPath];
-   
-    cell.messageTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView
-                                    messageTopLabelAttributedTextForItemAtIndexPath:indexPath];
+    // Required
     
-    cell.cellBottomLabel.attributedText = [collectionView.dataSource collectionView:collectionView
-                                    cellBottomLabelAttributedTextForItemAtIndexPath:indexPath];
+    UIImageView *messageBubble = [collectionView.dataSource collectionView:collectionView
+                                           messageBubbleForItemAtIndexPath:indexPath];
     
-    cell.messageBubbleImageView.image = [collectionView.dataSource collectionView:collectionView
-                                                  messageBubbleForItemAtIndexPath:indexPath].image;
+    cell.messageBubbleImageView.image = messageBubble.image;
+    cell.messageBubbleImageView.highlightedImage = messageBubble.highlightedImage;
     
-    cell.messageBubbleImageView.highlightedImage = [collectionView.dataSource collectionView:collectionView
-                                                             messageBubbleForItemAtIndexPath:indexPath].highlightedImage;
+    // Optional
     
-    [collectionView.dataSource collectionView:collectionView
-                      wantsAvatarForImageView:cell.avatarImageView
-                                  atIndexPath:indexPath];
+    if ([collectionView.dataSource respondsToSelector:@selector(collectionView:cellTopLabelAttributedTextForItemAtIndexPath:)]) {
+        cell.cellTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                        cellTopLabelAttributedTextForItemAtIndexPath:indexPath];
+    }
+    
+    if ([collectionView.dataSource respondsToSelector:@selector(collectionView:messageTopLabelAttributedTextForItemAtIndexPath:)]) {
+        cell.messageTopLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                        messageTopLabelAttributedTextForItemAtIndexPath:indexPath];
+    }
+    
+    if ([collectionView.dataSource respondsToSelector:@selector(collectionView:cellBottomLabelAttributedTextForItemAtIndexPath:)]) {
+        cell.cellBottomLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                        cellBottomLabelAttributedTextForItemAtIndexPath:indexPath];
+    }
+    
+    if ([collectionView.dataSource respondsToSelector:@selector(collectionView:wantsAvatarForImageView:atIndexPath:)]) {
+        [collectionView.dataSource collectionView:collectionView
+                          wantsAvatarForImageView:cell.avatarImageView
+                                      atIndexPath:indexPath];
+    }
     
     if ([mime isEqualToString:@"text/plain"]) {
         DBMessagingTextCell *textCell = (DBMessagingTextCell *)cell;
@@ -346,7 +339,12 @@
     
     if ([mime isEqualToString:@"image/jpeg"]) {
         DBMessagingImageCell *imageCell = (DBMessagingImageCell *)cell;
-        imageCell.imageView.image = (UIImage *)value; // super dangerous!!
+    
+        if ([collectionView.dataSource respondsToSelector:@selector(collectionView:wantsImageForImageView:atIndexPath:)]) {
+            [collectionView.dataSource collectionView:collectionView
+                               wantsImageForImageView:imageCell.imageView
+                                          atIndexPath:indexPath];
+        }
     }
     
     return cell;
@@ -363,11 +361,16 @@
         return [collectionView dequeueLoadMoreHeaderViewForIndexPath:indexPath];
     }
     else if ([kind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
-        DBMessagingTimestampSupplementaryView *supplementaryView = (DBMessagingTimestampSupplementaryView *)[collectionView dequeueTimestampSupplementaryViewForIndexPath:indexPath];
+        DBMessagingTimestampSupplementaryView *supplementaryView = [collectionView dequeueTimestampSupplementaryViewForIndexPath:indexPath];
         
         NSString *sentByUserID = [self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath];
         
-        supplementaryView.timestampLabel.attributedText = [collectionView.dataSource collectionView:collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:indexPath];
+        if ([collectionView.dataSource respondsToSelector:@selector(collectionView:timestampAttributedTextForSupplementaryViewAtIndexPath:)]) {
+            
+            supplementaryView.timestampLabel.attributedText = [collectionView.dataSource collectionView:collectionView
+                                                         timestampAttributedTextForSupplementaryViewAtIndexPath:indexPath];
+        }
+        
         supplementaryView.type = ([sentByUserID isEqualToString:[self senderUserID]]) ? MessageBubbleTypeOutgoing : MessageBubbleTypeIncoming;
         supplementaryView.timestampStyle = _timestampStyle;
         
