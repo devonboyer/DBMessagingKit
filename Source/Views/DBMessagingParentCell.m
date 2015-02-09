@@ -20,6 +20,8 @@
 
 @interface DBMessagingParentCell () <UIGestureRecognizerDelegate>
 
+@property (assign, nonatomic) CGFloat slidingTimestampDistance;
+
 @end
 
 @implementation DBMessagingParentCell
@@ -77,13 +79,18 @@
     self.incomingMessageBubbleAvatarSpacing = layoutAttributes.incomingMessageBubbleAvatarSpacing;
     self.outgoingMessageBubbleAvatarSpacing = layoutAttributes.outgoingMessageBubbleAvatarSpacing;
     self.messageBubbleTextContainerInsets = layoutAttributes.messageBubbleTextViewTextContainerInsets;
+    self.slidingTimestampDistance = layoutAttributes.slidingTimestampDistance;
+        
+    CGRect frame = self.cellTopLabel.frame;
+    frame.origin.x = self.slidingTimestampDistance;
+    self.cellTopLabel.frame = frame;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    [self.cellTopLabel setFrame:CGRectMake(0,
+    [self.cellTopLabel setFrame:CGRectMake(self.slidingTimestampDistance,
                                            0,
                                            CGRectGetWidth(self.frame),
                                            self.cellTopLabelHeight)];

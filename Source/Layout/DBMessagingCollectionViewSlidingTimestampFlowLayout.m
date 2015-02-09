@@ -74,17 +74,20 @@
             
             if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell) {
                 if ([self isOutgoingMessageAtIndexPath:layoutAttributes.indexPath]) {
-                    if (abs(change) < maxChange) {
-                        frame.origin.x = MIN(-change, self.sectionInset.left);
+                    if (change <= maxChange) {
+                        frame.origin.x = MIN(-change + self.sectionInset.left, self.sectionInset.left);
                     } else {
-                        frame.origin.x = MIN(-maxChange, self.sectionInset.left);
+                        frame.origin.x = -maxChange + self.sectionInset.left;
                     }
                 }
+                
+                layoutAttributes.slidingTimestampDistance = MAX(MIN(change, maxChange), 0);
+                
             } else if (layoutAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView) {
                 if (layoutAttributes.representedElementKind == DBMessagingCollectionElementKindTimestamp) {
                     CGFloat max = self.collectionView.frame.size.width;
                     CGFloat relativeWidth = self.collectionView.frame.size.width - self.sectionInset.right;
-                    if (abs(change) < maxChange) {
+                    if (change < maxChange) {
                         frame.origin.x = MIN(relativeWidth - change, max);
                     } else {
                         frame.origin.x = MIN(relativeWidth - maxChange, max);

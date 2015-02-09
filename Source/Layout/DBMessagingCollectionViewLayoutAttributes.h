@@ -20,6 +20,8 @@
  */
 @interface DBMessagingCollectionViewLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
+@property (assign, nonatomic) CGFloat slidingTimestampDistance;
+
 /**
  *  The font used to display the message text.
  *

@@ -67,8 +67,9 @@
             break;
         }
         case DBMessagingTimestampStyleSliding: {
-            [self.timestampLabel setTextAlignment:NSTextAlignmentLeft];
+            [self.timestampLabel setTextAlignment:NSTextAlignmentCenter];
             
+            // Center the timestamp relative the the message bubble
             CGFloat relativeHeight = self.bounds.size.height + _messageBubbleTopLabelHeight + _cellTopLabelHeight;
             
             CGSize timestampLabelSize = [_timestampLabel sizeThatFits:self.bounds.size];
