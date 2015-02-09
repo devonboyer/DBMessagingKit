@@ -237,7 +237,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
             [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
         }
         
-        [mutableMessageParts addObject:@{@"mime": @"image/jpeg", @"value" : image.encodeToBase64String}];
+        [mutableMessageParts addObject:@{@"mime": @"image/jpeg", @"value" : image}];
         _messageParts = mutableMessageParts;
     });
     

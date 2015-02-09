@@ -14,6 +14,8 @@
 
 #import <Foundation/Foundation.h>
 
+// Add MIME Types as string constants
+
 /**
  * A MIME Type (Internet Media Type) identifying the type of data contained in the given message object.
  */

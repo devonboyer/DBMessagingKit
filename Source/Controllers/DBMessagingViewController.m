@@ -179,10 +179,6 @@
 
 #pragma mark - Public
 
-- (void)sendMessageWithParts:(NSArray *)parts {
-    
-}
-
 - (void)finishReceivingMessage {
     self.showTypingIndicator = NO;
     [self _finishSendingOrReceivingMessage];

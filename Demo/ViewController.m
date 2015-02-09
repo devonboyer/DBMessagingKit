@@ -86,11 +86,6 @@
 
 #pragma mark - Actions
 
-- (void)sendButtonTapped:(id)sender {
-    NSArray *messageParts = self.messageInputToolbar.textView.messageParts;
-    [self sendMessageWithParts:messageParts];
-}
-
 - (void)cameraButtonTapped:(id)sender {
     
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
@@ -99,22 +94,48 @@
     [self presentViewController:imagePickerController animated:true completion:nil];
 }
 
-- (void)sendMessageWithParts:(NSArray *)parts {
-    [super sendMessageWithParts:parts];
+- (void)sendButtonTapped:(id)sender {
     
+    /**
+     *  Get the message parts and send the message however you wish to the socket.
+     *
+     *  Message Part: [NSString : NSObject] -> [mime : value]
+     *  Example:      ["text/plain" : "This is a text message."]
+     *                ["image/jpeg" : <UIImage>]
+     */
+    
+    NSArray *messageParts = self.messageInputToolbar.textView.messageParts;
+    
+    /**
+     *  Sending a message. Your implementation of this method should do *at least* the following:
+     *
+     *  1. Get the message parts from the input text view
+     *  1. Play sound (optional)
+     *  2. Add new model objects to your data source
+     *  3. Call 'finishSendingMessage'
+     */
+    [self sendMessageWithParts:messageParts];
+    
+    [self finishSendingMessage];
+}
+
+- (void)sendMessageWithParts:(NSArray *)parts {
+    
+    /**
+     *  DEMO implementation for sending the message parts.
+     */
     for (NSDictionary *part in parts) {
         NSString *mime = part[@"mime"];
-        NSString *value = part[@"value"];
+        NSObject *value = part[@"value"];
         
         if ([mime isEqualToString:@"text/plain"]) {
-            [_messages addObject:[Message messageWithText:value sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
+            NSString *text = (NSString *)value;
+            [_messages addObject:[Message messageWithText:text sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
         } else if ([mime isEqualToString:@"image/jpeg"]) {
-            UIImage *image = [UIImage decodeBase64StringToImage:value];
+            UIImage *image = (UIImage *)value;
             [_messages addObject:[Message messageWithImage:image sentByUserID:[self senderUserID] sentAt:[NSDate date]]];
         }
     }
-    
-    [self finishSendingMessage];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

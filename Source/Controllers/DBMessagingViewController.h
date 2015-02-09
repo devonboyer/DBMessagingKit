@@ -88,9 +88,6 @@
  */
 @property (nonatomic) BOOL showTypingIndicator;
 
-
-- (void)sendMessageWithParts:(NSArray *)parts;
-
 /**
  *  A convenience method for returning the index path fo the latest message that was sent or recieved.
  *
