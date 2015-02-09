@@ -29,7 +29,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 
 @property (strong, nonatomic) NSCache *messageBubbleCache;
 
-// Temporary: Eventually theses and the attributes associated should be handles by cells with async display kit
+// Temporary: There should be a cleaner way to handle this
 @property (strong, nonatomic) NSCache *messageTopLabelCache;
 @property (strong, nonatomic) NSCache *cellTopLabelCache;
 @property (strong, nonatomic) NSCache *cellBottomLabelCache;
@@ -103,11 +103,15 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     
     _messageTopLabelCache = [[NSCache alloc] init];
     _messageTopLabelCache.name = @"com.DBMessagingKit.messageTopLabelCache";
-    _messageTopLabelCache.countLimit = 200.0;
+    _messageTopLabelCache.countLimit = _messageBubbleCache.countLimit;
     
     _cellTopLabelCache = [[NSCache alloc] init];
     _cellTopLabelCache.name = @"com.DBMessagingKit.cellTopLabelCache";
-    _cellTopLabelCache.countLimit = 200.0;
+    _cellTopLabelCache.countLimit = _messageBubbleCache.countLimit;
+    
+    _cellBottomLabelCache = [[NSCache alloc] init];
+    _cellBottomLabelCache.name = @"com.DBMessagingKit.cellBottomLabelCache";
+    _cellBottomLabelCache.countLimit = _messageBubbleCache.countLimit;
     
     // Attributes that affect cells
     _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f);
@@ -460,6 +464,11 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
 
 - (void)_resetLayout {
     [_messageBubbleCache removeAllObjects];
+    [_cellTopLabelCache removeAllObjects];
+    [_messageTopLabelCache removeAllObjects];
+    [_cellBottomLabelCache removeAllObjects];
+    [_cellTopLabelCache removeAllObjects];
+
     [self _resetDynamicAnimator];
 }
 
@@ -499,6 +508,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     
     // Bottleneck: Recalculating these sizes every time the layout is invalidated, these are not cached in any way.
     // Since both the cells and layout height calculation require these values they need to be cached separately.
+    // Possibly a cleaner way of handling this.
     
     layoutAttributes.cellTopLabelHeight = [self _cellTopLabelHeightForIndexPath:indexPath];
     

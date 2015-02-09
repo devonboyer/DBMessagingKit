@@ -157,17 +157,14 @@
     if (panGesture.state == UIGestureRecognizerStateChanged) {
         CGPoint panLocation = [panGesture locationInView:self.collectionView];
 
-        if (panLocation.x == _panLocation.x) {
-            return;
+        if (_panning && panLocation.x != _panLocation.x) {
+            _panLocation = panLocation;
+            [self invalidateLayout];
         }
-        
-        _panLocation = panLocation;
-        [self invalidateLayout];
     }
     
     if (panGesture.state == UIGestureRecognizerStateEnded ||
-        panGesture.state == UIGestureRecognizerStateCancelled ||
-        panGesture.state == UIGestureRecognizerStateFailed) {
+        panGesture.state == UIGestureRecognizerStateCancelled) {
         
         if (_panning) {
             _panning = false;
