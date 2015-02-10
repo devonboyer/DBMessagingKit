@@ -33,27 +33,27 @@
     _messages = [[NSMutableArray alloc] init];
     
     [_messages addObject:[[Message alloc] initWithValue:@"Welcome to DBMessagingKit. A messaging, UI framework for iOS."
-                                                   mime:@"text/plain"
+                                                   mime:[DBMessagingTextCell mimeType]
                                            sentByUserID:@"Outgoing"
                                                  sentAt:[NSDate date]]];
     
     [_messages addObject:[[Message alloc] initWithValue:@"It is simple to use and very customizable."
-                                                   mime:@"text/plain"
+                                                   mime:[DBMessagingTextCell mimeType]
                                            sentByUserID:@"Incoming"
                                                  sentAt:[NSDate date]]];
     
     [_messages addObject:[[Message alloc] initWithValue:@"You can send text, images, GIFs, movies, or even your location."
-                                                   mime:@"text/plain"
+                                                   mime:[DBMessagingTextCell mimeType]
                                            sentByUserID:@"Outgoing"
                                                  sentAt:[NSDate date]]];
     
     [_messages addObject:[[Message alloc] initWithValue:@"You can add as many buttons to the input toolbar as you want."
-                                                   mime:@"text/plain"
+                                                   mime:[DBMessagingTextCell mimeType]
                                            sentByUserID:@"Outgoing"
                                                  sentAt:[NSDate date]]];
     
     [_messages addObject:[[Message alloc] initWithValue:@"Also supports all data detectors like phone numbers 123-456-7890 and websites https://github.com/DevonBoyer/DBMessagingKit."
-                                                   mime:@"text/plain"
+                                                   mime:[DBMessagingTextCell mimeType]
                                            sentByUserID:@"Incoming"
                                                  sentAt:[NSDate date]]];
     
@@ -73,11 +73,18 @@
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
     
     // Customize the input toolbar and add bar button items
+    UIBarButtonItem *locationBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"location_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(locationButtonTapped:)];
+    locationBarButtonItem.tintColor = [UIColor iMessageBlueColor];
+    
     UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
+    
     UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
     sendBarButtonItem.tintColor = [UIColor iMessageBlueColor];
+
     [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
+    [self.messageInputToolbar addItem:locationBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
     [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
+    
     self.messageInputToolbar.textView.placeholderText = @"Text Message";
     
     // Specify which bar button will be the send button
@@ -104,6 +111,25 @@
 
 #pragma mark - Actions
 
+- (void)locationButtonTapped:(id)sender {
+    
+    [self.locationManager startUpdatingLocation];
+
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
+    // something to map MIMEType -> object type
+    
+//    [_messages addObject:[[Message alloc] initWithValue:self.currentLocation
+//                                                   mime:[DBMessagingLocationMediaCell mimeType]
+//                                           sentByUserID:[self senderUserID]
+//                                                 sentAt:[NSDate date]]];
+//    [self finishSendingMessage];
+    
+    NSLog(@"current Location %@", self.currentLocation);
+}
+
 - (void)cameraButtonTapped:(id)sender {
     
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
@@ -117,7 +143,7 @@
     /**
      *  Get the message parts and send the message however you wish to the socket.
      *
-     *  Message Part: [NSString : NSObject] -> [mime : value]
+     *  Message Part: [NSString : id] -> [mime : value]
      *  Example:      ["text/plain" : "This is a text message."]
      *                ["image/jpeg" : <UIImage>]
      */
@@ -143,8 +169,8 @@
      *  DEMO implementation for sending the message parts.
      */
     for (NSDictionary *part in parts) {
-        NSString *mime = part[@"mime"];
-        id value = part[@"value"];
+        NSString *mime = part[DBMessagePartMIMEKey];
+        id value = part[DBMessagePartValueKey];
         
         [_messages addObject:[[Message alloc] initWithValue:value
                                                        mime:mime

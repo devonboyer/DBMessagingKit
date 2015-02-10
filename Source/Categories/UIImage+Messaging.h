@@ -22,17 +22,7 @@
 
 + (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image;
 
-/**
- *  Creates and returns an image for a frame at a given time of a movie.
- *
- *  @discussion The given movieURL must be a path on disk, not the network.
- *
- *  @param time     The time of the frame in the movie.
- *  @param movieURL The local URL for the movie.
- *
- *  @return An image of a frame at the specified time.
- */
-+ (UIImage *)imageForFrameAtTime:(NSTimeInterval)time movieURL:(NSURL *)movieURL;
++ (UIImage *)imageWithBorder:(CGFloat)borderWidth color:(UIColor *)borderColor fromImage:(UIImage *)source;
 
 /**
  *  Creates and returns a new image overlayed with the specified color.

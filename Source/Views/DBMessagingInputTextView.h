@@ -14,6 +14,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <MapKit/MapKit.h>
+
 @protocol DBMessagingInputTextViewDelegate <UITextViewDelegate>
 
 @optional
@@ -35,10 +37,12 @@
 @property (strong, nonatomic, readonly) NSMutableArray *attatchmentRanges;
 @property (strong, nonatomic, readonly) NSArray *messageParts;
 
+// Attatchments
 - (void)addImageAttatchment:(UIImage *)image;
-- (void)removeImageAttatchmentAtRange:(NSRange)range;
+- (void)addLocationAttatchment:(CLLocation *)location;
+- (void)removeAttatchmentAtRange:(NSRange)range;
 
-- (NSString *)currentlyComposedText;
+- (NSString *)currentlyComposedTextMessagePart;
 - (void)clear;
 
 @end

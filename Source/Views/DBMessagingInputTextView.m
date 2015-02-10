@@ -19,6 +19,11 @@
 #import "NSAttributedString+Messaging.h"
 #import "NSMutableAttributedString+Messaging.h"
 
+#import "DBMessagingTextCell.h"
+#import "DBMessagingImageMediaCell.h"
+#import "DBMessagingVideoMediaCell.h"
+#import "DBMessagingLocationMediaCell.h"
+
 // Manually-selected label offsets to align placeholder label with text entry.
 static CGFloat const kLabelLeftOffset = 10.0f;
 
@@ -125,10 +130,10 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     
     if (!_trailingMessagePartCreated) {
         // Append the last message part
-        NSString *currentlyComposedText = [self currentlyComposedText];
+        NSString *currentlyComposedText = [self currentlyComposedTextMessagePart];
         NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
         if (![currentlyComposedText isEqualToString:@""]) {
-            [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
+            [mutableMessageParts addObject:@{DBMessagePartMIMEKey: [DBMessagingTextCell mimeType], DBMessagePartValueKey : currentlyComposedText}];
         }
         _messageParts = mutableMessageParts;
         _trailingMessagePartCreated = YES;
@@ -192,10 +197,11 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     self.placeholderLabel.textAlignment = textAlignment;
 }
 
-// Todo: override setAttributedText to capture changes
-// in text alignment?
-
 #pragma mark - Actions
+
+- (void)addLocationAttatchment:(CLLocation *)location {
+    
+}
 
 - (void)addImageAttatchment:(UIImage *)image {
 
@@ -228,23 +234,21 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     [self adjustFrame];
     
     // Create the message parts
-    NSString *currentlyComposedText = [self currentlyComposedText];
+    NSString *currentlyComposedText = [self currentlyComposedTextMessagePart];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
-
-        if (![currentlyComposedText isEqualToString:@""]) {
-            [mutableMessageParts addObject:@{@"mime": @"text/plain", @"value" : currentlyComposedText}];
-        }
-        
-        [mutableMessageParts addObject:@{@"mime": @"image/jpeg", @"value" : image}];
-        _messageParts = mutableMessageParts;
-    });
+    NSMutableArray *mutableMessageParts = _messageParts.mutableCopy;
+    
+    if (![currentlyComposedText isEqualToString:@""]) {
+        [mutableMessageParts addObject:@{DBMessagePartMIMEKey: [DBMessagingTextCell mimeType], DBMessagePartValueKey : currentlyComposedText}];
+    }
+    
+    [mutableMessageParts addObject:@{DBMessagePartMIMEKey: [DBMessagingImageMediaCell mimeType], DBMessagePartValueKey : image}];
+    _messageParts = mutableMessageParts;
     
     [_attatchmentRanges addObject:[NSValue valueWithRange:range]];
 }
 
-- (void)removeImageAttatchmentAtRange:(NSRange)range {
+- (void)removeAttatchmentAtRange:(NSRange)range {
     
     NSValue *rangeValue = [NSValue valueWithRange:range];    
     [_attatchmentRanges removeObject:rangeValue];
@@ -254,7 +258,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
     [mutableMessageParts removeLastObject];
     
     NSDictionary *previousPart = [mutableMessageParts lastObject];
-    if ([previousPart[@"mime"] isEqualToString:@"text/plain"]) {
+    if ([previousPart[@"mime"] isEqualToString:[DBMessagingTextCell mimeType]]) {
         [mutableMessageParts removeLastObject];
     }
     
@@ -264,7 +268,7 @@ static CGFloat const kLabelLeftOffset = 10.0f;
 }
 
 // Possibly misleading...?
-- (NSString *)currentlyComposedText {
+- (NSString *)currentlyComposedTextMessagePart {
     
     NSRange rangeOfLastImage = ((NSValue *)_attatchmentRanges.lastObject).rangeValue;
     NSRange targetRange = NSMakeRange(rangeOfLastImage.location, self.attributedText.length - rangeOfLastImage.location);

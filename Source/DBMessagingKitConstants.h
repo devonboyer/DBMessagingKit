@@ -15,6 +15,16 @@
 #import <Foundation/Foundation.h>
 
 /**
+ * The key to access the mime type in a message part.
+ */
+static NSString *const DBMessagePartMIMEKey = @"mime";
+
+/**
+ * The key to access the value in a message part.
+ */
+static NSString *const DBMessagePartValueKey = @"value";
+
+/**
  * Specifys the type of layout in which to display timestamps.
  *
  * @see DBMessagingCollectionViewHiddenTimestampFlowLayout

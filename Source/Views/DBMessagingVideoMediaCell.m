@@ -20,8 +20,22 @@
 
 @implementation DBMessagingVideoMediaCell
 
++ (NSString *)mimeType {
+    return @"video/mp4";
+}
+
 + (NSString *)cellReuseIdentifier {
     return NSStringFromClass([self class]);
 }
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+    }
+    return self;
+}
+
 
 @end

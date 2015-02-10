@@ -23,6 +23,7 @@
 
 @interface DBMessagingTextCell : DBMessagingParentCell
 
+
 @property (weak, nonatomic) id <DBMessagingTextCellDelegate> delegate;
 
 @property (strong, nonatomic, readonly) UITextView *messageTextView;

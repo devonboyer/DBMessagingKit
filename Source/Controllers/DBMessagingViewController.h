@@ -19,6 +19,9 @@
 #import "DBMessagingCollectionViewDelegate.h"
 #import "DBMessagingCollectionViewDelegateFlowLayout.h"
 
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+
 @class DBMessagingCollectionView;
 @class DBInteractiveKeyboardController;
 @class DBMessagingInputToolbar;
@@ -30,6 +33,19 @@
  *  @warning This class is intended to be subclassed. You should not use it directly.
  */
 @interface DBMessagingViewController : UIViewController <DBMessagingCollectionViewDataSource, DBMessagingCollectionViewDelegate, DBMessagingCollectionViewDelegateFlowLayout>
+
+/**
+ *  Returns your device's current location.
+ * 
+ *  @warning You must call [self.locationManager startUpdatingLocation] before trying to access the current location. Note that this 
+ *  will ask the user for the appropriate permission that has been configured in the info.plist.
+ */
+@property (strong, nonatomic, readonly) CLLocation *currentLocation;
+
+/**
+ *  Returns the location manager used to get your device's current location.
+ */
+@property (strong, nonatomic, readonly) CLLocationManager *locationManager;
 
 /**
  *  Returns the collection view object managed by this view controller.

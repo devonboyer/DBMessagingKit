@@ -32,6 +32,10 @@
 
 @implementation DBMessagingTextCell
 
++ (NSString *)mimeType {
+    return @"text/plain";
+}
+
 + (NSString *)cellReuseIdentifier {
     return NSStringFromClass([self class]);
 }

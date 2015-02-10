@@ -102,7 +102,7 @@
  *  @discussion The width value is used to determine the height that will maintain the same aspect ratio.
  *  The height value will be used as the maximum height.
  */
-@property (assign, nonatomic) CGSize incomingImageSize;
+@property (assign, nonatomic) CGSize incomingMediaViewSize;
 
 /**
  *  The size of the photo for outgoing photo messages.
@@ -110,16 +110,6 @@
  *  @discussion The width value is used to determine the height that will maintain the same aspect ratio.
  *  The height value will be used as the maximum height.
  */
-@property (assign, nonatomic) CGSize outgoingImageSize;
-
-/**
- *  The size of the map view for incoming location messages.
- */
-@property (assign, nonatomic) CGSize incomingLocationMapSize;
-
-/**
- *  The size of the map view for outgoing location messages.
- */
-@property (assign, nonatomic) CGSize outgoingLocationMapSize;
+@property (assign, nonatomic) CGSize outgoingMediaViewSize;
 
 @end

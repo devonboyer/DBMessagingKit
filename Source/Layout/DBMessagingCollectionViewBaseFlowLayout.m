@@ -13,11 +13,17 @@
 //
 
 #import "DBMessagingCollectionViewBaseFlowLayout.h"
-#import "DBMessagingKitConstants.h"
+
+#import "NSAttributedString+Messaging.h"
+
 #import "DBMessagingCollectionView.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 #import "DBMessagingCollectionViewFlowLayoutInvalidationContext.h"
-#import "NSAttributedString+Messaging.h"
+
+#import "DBMessagingTextCell.h"
+#import "DBMessagingImageMediaCell.h"
+#import "DBMessagingVideoMediaCell.h"
+#import "DBMessagingLocationMediaCell.h"
 #import "DBMessagingTimestampSupplementaryView.h"
 
 NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit.DBMessagingCollectionElementKindTimestamp";
@@ -120,10 +126,8 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     _messageBubbleLeftRightMargin = 70.0f;
     _incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
     _outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
-    _incomingImageSize = CGSizeMake(220.0, 240.0);
-    _outgoingImageSize = CGSizeMake(220.0, 240.0);
-    _incomingLocationMapSize = CGSizeMake(180.0, 100.0);
-    _outgoingLocationMapSize = CGSizeMake(180.0, 100.0);
+    _incomingMediaViewSize = CGSizeMake(220.0, 240.0);
+    _outgoingMediaViewSize = CGSizeMake(220.0, 240.0);
     _incomingMessageBubbleAvatarSpacing = 5.0;
     _outgoingMessageBubbleAvatarSpacing = 5.0;
     
@@ -403,25 +407,15 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setIncomingImageSize:(CGSize)incomingImageSize
+- (void)setIncomingMediaViewSize:(CGSize)incomingImageSize
 {
-    _incomingImageSize = incomingImageSize;
+    _incomingMediaViewSize = incomingImageSize;
     [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setOutgoingImageSize:(CGSize)outgoingImageSize
+- (void)setOutgoingMediaViewSize:(CGSize)outgoingImageSize
 {
-    _outgoingImageSize = outgoingImageSize;
-    [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
-}
-
-- (void)setIncomingLocationMapSize:(CGSize)incomingLocationMapSize {
-    _incomingLocationMapSize = incomingLocationMapSize;
-    [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
-}
-
-- (void)setOutgoingLocationMapSize:(CGSize)outgoingLocationMapSize {
-    _outgoingLocationMapSize = outgoingLocationMapSize;
+    _outgoingMediaViewSize = outgoingImageSize;
     [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
@@ -492,13 +486,9 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     
     layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
     
-    layoutAttributes.incomingImageSize = self.incomingImageSize;
+    layoutAttributes.incomingMediaViewSize = self.incomingMediaViewSize;
     
-    layoutAttributes.outgoingImageSize = self.outgoingImageSize;
-    
-    layoutAttributes.incomingLocationMapSize = self.incomingLocationMapSize;
-    
-    layoutAttributes.outgoingLocationMapSize = self.outgoingLocationMapSize;
+    layoutAttributes.outgoingMediaViewSize = self.outgoingMediaViewSize;
     
     layoutAttributes.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     
@@ -540,7 +530,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     CGFloat textInsetsTotal = [self _messageBubbleTextContainerInsetsTotal];
     
     CGSize finalSize = CGSizeZero;
-    if ([mime isEqualToString:@"text/plain"]) {
+    if ([mime isEqualToString:[DBMessagingTextCell mimeType]]) {
         NSString *messageText = (NSString *)value;
         CGRect stringRect = [messageText boundingRectWithSize:CGSizeMake(maximumTextWidth - textInsetsTotal, CGFLOAT_MAX)
                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
@@ -549,8 +539,10 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
         finalSize = CGRectIntegral(stringRect).size;
     }
     
-    if ([mime isEqualToString:@"image/jpeg"]) {
-        finalSize = [self _imageSizeForIndexPath:indexPath];
+    if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]] ||
+        [mime isEqualToString:[DBMessagingVideoMediaCell mimeType]] ||
+        [mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
+        finalSize = [self _mediaViewSizeForIndexPath:indexPath];
     }
     
     // Account for the size of avatars, an avatar should never be larger than the size of the smallest message bubble.
@@ -575,21 +567,13 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     return finalSize;
 }
 
-- (CGSize)_locationMapSizeForIndexPath:(NSIndexPath *)indexPath {
-    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
-        return self.outgoingLocationMapSize;
-    }
-    
-    return self.incomingLocationMapSize;
-}
-
-- (CGSize)_imageSizeForIndexPath:(NSIndexPath *)indexPath
+- (CGSize)_mediaViewSizeForIndexPath:(NSIndexPath *)indexPath
 {
     if ([self isOutgoingMessageAtIndexPath:indexPath]) {
-        return self.outgoingImageSize;
+        return _outgoingMediaViewSize;
     }
     
-    return self.incomingImageSize;
+    return _incomingMediaViewSize;
 }
 
 - (CGFloat)_messageBubbleTextContainerInsetsTotal

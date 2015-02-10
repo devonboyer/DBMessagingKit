@@ -25,12 +25,18 @@
 #import "DBMessagingTextCell.h"
 #import "DBMessagingMediaCell.h"
 #import "DBMessagingImageMediaCell.h"
+#import "DBMessagingVideoMediaCell.h"
+#import "DBMessagingLocationMediaCell.h"
 #import "DBMessagingTimestampSupplementaryView.h"
 #import "DBMessagingLoadEarlierMessagesHeaderView.h"
 #import "DBMessagingTypingIndicatorFooterView.h"
 
-@interface DBMessagingViewController () <DBMessagingInputToolbarDelegate, DBInteractiveKeyboardControllerDelegate>
+@interface DBMessagingViewController () <CLLocationManagerDelegate, DBMessagingInputToolbarDelegate, DBInteractiveKeyboardControllerDelegate> {
+    
+    CLLocation *_currentLocation;
+}
 
+@property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) DBMessagingCollectionView *collectionView;
 @property (strong, nonatomic) DBMessagingInputToolbar *messageInputToolbar;
 @property (strong, nonatomic) DBInteractiveKeyboardController *keyboardController;
@@ -111,6 +117,7 @@
     [super viewDidDisappear:animated];
     
     [_keyboardController endListeningForKeyboard];
+    [_locationManager stopUpdatingLocation];
 }
 
 #pragma mark - Rotation
@@ -174,6 +181,20 @@
     }
     
     [_collectionView setCollectionViewLayout:layout];
+}
+
+#pragma mark - Getters
+
+- (CLLocationManager *)locationManager {
+    
+    if (!_locationManager) {
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.distanceFilter = kCLDistanceFilterNone;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+    }
+    
+    return _locationManager;
 }
 
 #pragma mark - Public
@@ -273,12 +294,20 @@
 
     NSString *cellIdentifier;
 
-    if ([mime isEqualToString:@"text/plain"]) {
+    if ([mime isEqualToString:[DBMessagingTextCell mimeType]]) {
         cellIdentifier = [DBMessagingTextCell cellReuseIdentifier];
     }
     
-    if ([mime isEqualToString:@"image/jpeg"]) {
+    if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]]) {
         cellIdentifier = [DBMessagingImageMediaCell cellReuseIdentifier];
+    }
+    
+    if ([mime isEqualToString:[DBMessagingVideoMediaCell mimeType]]) {
+        cellIdentifier = [DBMessagingVideoMediaCell cellReuseIdentifier];
+    }
+    
+    if ([mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
+        cellIdentifier = [DBMessagingLocationMediaCell cellReuseIdentifier];
     }
     
     DBMessagingParentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -479,6 +508,36 @@
     if (self.keyboardController.keyboardIsVisible) {
         [self adjustInputToolbarBottomSpaceByDelta:CGRectGetHeight(self.keyboardController.currentKeyboardFrame)];
     }
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    
+    switch (status) {
+        case kCLAuthorizationStatusAuthorizedAlways: case kCLAuthorizationStatusAuthorizedWhenInUse:
+            [_locationManager startUpdatingLocation];
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            break;
+        case kCLAuthorizationStatusRestricted:
+            break;
+        case kCLAuthorizationStatusDenied:
+            break;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    
+    NSLog(@"new location %@", newLocation);
+    
+    _currentLocation = newLocation;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    
+    NSLog(@"Failed to update location: %@", error.localizedDescription);
+
 }
 
 @end

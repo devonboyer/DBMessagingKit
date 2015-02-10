@@ -27,6 +27,11 @@
 
 @implementation DBMessagingParentCell
 
++ (NSString *)mimeType {
+    NSAssert(false, @"%s must be overridden by subclass", __PRETTY_FUNCTION__);
+    return nil;
+}
+
 + (NSString *)cellReuseIdentifier {
     NSAssert(false, @"%s must be overridden by subclass", __PRETTY_FUNCTION__);
     return nil;

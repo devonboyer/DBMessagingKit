@@ -22,6 +22,10 @@
 
 @implementation DBMessagingImageMediaCell
 
++ (NSString *)mimeType {
+    return @"image/jpeg";
+}
+
 + (NSString *)cellReuseIdentifier {
     return NSStringFromClass([self class]);
 }
@@ -32,13 +36,9 @@
     if (self) {
         _imageView = [[UIImageView alloc] init];
         [_imageView setContentMode:UIViewContentModeScaleAspectFill];
-        [_imageView setClipsToBounds:YES];
         [_imageView setUserInteractionEnabled:YES];
         [_imageView setFrame:self.messageBubbleImageView.frame];
-        [_imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         [_imageView setBackgroundColor:[UIColor clearColor]];
-        [_imageView setImage:nil];
-        [self.messageBubbleImageView addSubview:_imageView];
         
         self.mediaView = _imageView;
     }

@@ -27,6 +27,11 @@
 
 @implementation DBMessagingMediaCell
 
++ (NSString *)mimeType {
+    NSAssert(false, @"%s must be overridden by subclass", __PRETTY_FUNCTION__);
+    return nil;
+}
+
 + (NSString *)cellReuseIdentifier {
     NSAssert(false, @"%s must be overridden by subclass", __PRETTY_FUNCTION__);
     return nil;
@@ -46,8 +51,8 @@
 {
     [super applyLayoutAttributes:layoutAttributes];
     
-    self.incomingImageSize = layoutAttributes.incomingImageSize;
-    self.outgoingImageSize = layoutAttributes.outgoingImageSize;
+    self.incomingImageSize = layoutAttributes.incomingMediaViewSize;
+    self.outgoingImageSize = layoutAttributes.outgoingMediaViewSize;
 }
 
 - (void)layoutSubviews
@@ -85,9 +90,12 @@
 #pragma mark - Setters 
 
 - (void)setMediaView:(UIView *)mediaView {
-    
     _mediaView = mediaView;
+    [_mediaView setFrame:self.messageBubbleImageView.frame];
+    [_mediaView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [_mediaView setClipsToBounds:YES];
     [_mediaView addGestureRecognizer:_mediaTap];
+    [self.messageBubbleImageView addSubview:_mediaView];
 }
 
 #pragma mark - Actions

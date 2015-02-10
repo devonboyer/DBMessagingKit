@@ -13,6 +13,7 @@
 		673528F61A899B1600F66DE1 /* DBMessagingImageMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528F51A899B1600F66DE1 /* DBMessagingImageMediaCell.m */; };
 		673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528F81A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m */; };
 		673528FC1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */; };
+		673528FF1A8A5D7500F66DE1 /* DBMessagingLocationPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528FE1A8A5D7500F66DE1 /* DBMessagingLocationPin.m */; };
 		677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */; };
 		677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C601A855EC3007D2967 /* UIColor+Messaging.m */; };
 		677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */; };
@@ -72,6 +73,8 @@
 		673528F81A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingVideoMediaCell.m; sourceTree = "<group>"; };
 		673528FA1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingLocationMediaCell.h; sourceTree = "<group>"; };
 		673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLocationMediaCell.m; sourceTree = "<group>"; };
+		673528FD1A8A5D7500F66DE1 /* DBMessagingLocationPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingLocationPin.h; sourceTree = "<group>"; };
+		673528FE1A8A5D7500F66DE1 /* DBMessagingLocationPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLocationPin.m; sourceTree = "<group>"; };
 		677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
@@ -197,10 +200,10 @@
 				673528DF1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m */,
 				677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */,
 				677B1C601A855EC3007D2967 /* UIColor+Messaging.m */,
-				677B1C611A855EC3007D2967 /* UIImage+AnimatedGIF.h */,
-				677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */,
 				677B1C631A855EC3007D2967 /* UIImage+Messaging.h */,
 				677B1C641A855EC3007D2967 /* UIImage+Messaging.m */,
+				677B1C611A855EC3007D2967 /* UIImage+AnimatedGIF.h */,
+				677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -294,6 +297,8 @@
 				677B1C8E1A855EC3007D2967 /* DBMessagingMediaCell.h */,
 				677B1C8F1A855EC3007D2967 /* DBMessagingMediaCell.m */,
 				673528EA1A8960B000F66DE1 /* Media Cells */,
+				673528FD1A8A5D7500F66DE1 /* DBMessagingLocationPin.h */,
+				673528FE1A8A5D7500F66DE1 /* DBMessagingLocationPin.m */,
 				677B1C9C1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.h */,
 				677B1C9D1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m */,
 				677B1C921A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.h */,
@@ -485,6 +490,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				677B1CA31A855EC3007D2967 /* UIImage+Messaging.m in Sources */,
+				673528FF1A8A5D7500F66DE1 /* DBMessagingLocationPin.m in Sources */,
 				673528FC1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m in Sources */,
 				677B1CB61A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m in Sources */,
 				673528F61A899B1600F66DE1 /* DBMessagingImageMediaCell.m in Sources */,

@@ -14,6 +14,14 @@
 
 #import "DBMessagingMediaCell.h"
 
+#import <MapKit/MapKit.h>
+
+@class MKMapView;
+
 @interface DBMessagingLocationMediaCell : DBMessagingMediaCell
+
+@property (strong, nonatomic, readonly) MKMapView *mapView;
+
+@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 
 @end

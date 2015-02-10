@@ -28,9 +28,9 @@
     return [[UIImage alloc] initWithData:data];
 }
 
-+ (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image {
++ (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)source {
     
-    CGSize imageSize = image.size;
+    CGSize imageSize = source.size;
     CGRect drawingRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
     
     // Begin a new image that will be the new image with the rounded corners
@@ -39,13 +39,40 @@
     // Add a clip before drawing anything, in the shape of an rounded rect
     [[UIBezierPath bezierPathWithRoundedRect:drawingRect
                                 cornerRadius:cornerRadius] addClip];
-    // Draw your image
-    [image drawInRect:drawingRect];
+    // Draw the image
+    [source drawInRect:drawingRect];
     
-    // Get the image, here setting the UIImageView image
     UIImage *finishedImage = UIGraphicsGetImageFromCurrentImageContext();
     
-    // Lets forget about that we were drawing
+    UIGraphicsEndImageContext();
+    
+    return finishedImage;
+}
+
++ (UIImage *)imageWithBorder:(CGFloat)borderWidth color:(UIColor *)borderColor fromImage:(UIImage *)source;
+{
+    CGSize imageSize = source.size;
+    UIGraphicsBeginImageContextWithOptions(imageSize, NO, [UIScreen mainScreen].scale);
+    
+    CGRect drawingRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    
+    // Add a clip before drawing anything, in the shape of an rounded rect
+    [[UIBezierPath bezierPathWithRoundedRect:drawingRect
+                                cornerRadius:imageSize.height / 2.0] addClip];
+    
+    // Draw the image
+    CGFloat r, g, b, a;
+    [borderColor getRed: &r green:&g blue:&b alpha:&a];
+    
+    [source drawInRect:drawingRect];
+    
+    // Draw the border
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetRGBStrokeColor(context, r, g, b, a);
+    CGContextStrokeRect(context, drawingRect);
+    
+    UIImage *finishedImage =  UIGraphicsGetImageFromCurrentImageContext();
+    
     UIGraphicsEndImageContext();
     
     return finishedImage;

@@ -62,26 +62,16 @@
     _outgoingAvatarViewSize = CGSizeMake(ceil(outgoingAvatarViewSize.width), ceilf(outgoingAvatarViewSize.height));
 }
 
-- (void)setIncomingImageSize:(CGSize)incomingImageSize
+- (void)setIncomingMediaViewSize:(CGSize)incomingImageSize
 {
     NSParameterAssert(incomingImageSize.width >= 0.0f && incomingImageSize.height >= 0.0f);
-    _incomingImageSize = CGSizeMake(ceil(incomingImageSize.width), ceilf(incomingImageSize.height));
+    _incomingMediaViewSize = CGSizeMake(ceil(incomingImageSize.width), ceilf(incomingImageSize.height));
 }
 
-- (void)setOutgoingImageSize:(CGSize)outgoingImageSize
+- (void)setOutgoingMediaViewSize:(CGSize)outgoingImageSize
 {
     NSParameterAssert(outgoingImageSize.width >= 0.0f && outgoingImageSize.height >= 0.0f);
-    _outgoingImageSize = CGSizeMake(ceil(outgoingImageSize.width), ceilf(outgoingImageSize.height));
-}
-
-- (void)setIncomingLocationMapSize:(CGSize)incomingLocationMapSize {
-    NSParameterAssert(incomingLocationMapSize.width >= 0.0f && incomingLocationMapSize.height >= 0.0f);
-    _incomingLocationMapSize = CGSizeMake(ceil(incomingLocationMapSize.width), ceilf(incomingLocationMapSize.height));
-}
-
--(void)setOutgoingLocationMapSize:(CGSize)outgoingLocationMapSize {
-    NSParameterAssert(outgoingLocationMapSize.width >= 0.0f && outgoingLocationMapSize.height >= 0.0f);
-    _outgoingLocationMapSize = CGSizeMake(ceil(outgoingLocationMapSize.width), ceilf(outgoingLocationMapSize.height));
+    _outgoingMediaViewSize = CGSizeMake(ceil(outgoingImageSize.width), ceilf(outgoingImageSize.height));
 }
 
 - (void)setIncomingMessageBubbleAvatarSpacing:(CGFloat)incomingMessageBubbleAvatarSpacing
@@ -114,10 +104,8 @@
     copy.messageBubbleTextViewTextContainerInsets = self.messageBubbleTextViewTextContainerInsets;
     copy.incomingAvatarViewSize = self.incomingAvatarViewSize;
     copy.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
-    copy.incomingImageSize = self.incomingImageSize;
-    copy.outgoingImageSize = self.outgoingImageSize;
-    copy.incomingLocationMapSize = self.incomingLocationMapSize;
-    copy.outgoingLocationMapSize = self.outgoingLocationMapSize;
+    copy.incomingMediaViewSize = self.incomingMediaViewSize;
+    copy.outgoingMediaViewSize = self.outgoingMediaViewSize;
     copy.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     copy.outgoingMessageBubbleAvatarSpacing = self.outgoingMessageBubbleAvatarSpacing;
     

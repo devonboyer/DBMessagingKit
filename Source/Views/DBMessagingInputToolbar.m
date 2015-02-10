@@ -197,7 +197,7 @@
         NSValue *rangeValue = [NSValue valueWithRange:range];
         
         if ([textView.attatchmentRanges containsObject:rangeValue]) {
-            [textView removeImageAttatchmentAtRange:range];
+            [textView removeAttatchmentAtRange:range];
         }
     }
     

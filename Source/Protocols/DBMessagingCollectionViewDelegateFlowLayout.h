@@ -20,6 +20,8 @@
  */
 @protocol DBMessagingCollectionViewDelegateFlowLayout <UICollectionViewDelegateFlowLayout>
 
+@optional
+
 // Asks the delegate for the estimated size for the media view at the specified indexPath
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout estimatedSizeForMediaViewAtIndexPath:(NSIndexPath *)indexPath;
 
