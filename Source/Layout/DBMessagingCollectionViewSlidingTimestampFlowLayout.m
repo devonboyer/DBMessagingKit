@@ -159,7 +159,7 @@
 
         if (_panning && panLocation.x != _panLocation.x) {
             _panLocation = panLocation;
-            [self invalidateLayout];
+            [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
         }
     }
     

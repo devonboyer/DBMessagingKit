@@ -25,6 +25,7 @@ FOUNDATION_EXPORT const unsigned char DBMessagingKitVersionString[];
 
 // Protocols
 #import "DBMessagingCollectionViewDataSource.h"
+#import "DBMessagingCollectionViewDelegate.h"
 #import "DBMessagingCollectionViewDelegateFlowLayout.h"
 
 // Factories
@@ -48,17 +49,19 @@ FOUNDATION_EXPORT const unsigned char DBMessagingKitVersionString[];
 #import "DBMessagingInputToolbar.h"
 #import "DBMessagingCollectionView.h"
 #import "DBMessagingTextCell.h"
-#import "DBMessagingImageCell.h"
-#import "DBMessagingMovieCell.h"
-#import "DBMessagingLocationCell.h"
-#import "DBMessagingGIFCell.h"
+#import "DBMessagingMediaCell.h"
+#import "DBMessagingImageMediaCell.h"
+#import "DBMessagingVideoMediaCell.h"
+#import "DBMessagingLocationMediaCell.h"
 #import "DBMessagingInputTextView.h"
+#import "DBMessagingCellTextView.h"
 #import "DBMessagingTimestampSupplementaryView.h"
 #import "DBMessagingLoadEarlierMessagesHeaderView.h"
 #import "DBMessagingTypingIndicatorFooterView.h"
 
 // Categories
 #import "NSAttributedString+Messaging.h"
+#import "NSMutableAttributedString+Messaging.h"
 #import "UIColor+Messaging.h"
 #import "UIImage+Messaging.h"
 #import "UIImage+AnimatedGIF.h"

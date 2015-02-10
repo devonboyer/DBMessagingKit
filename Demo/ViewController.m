@@ -19,10 +19,9 @@
     NSDictionary *_boldAttributes;
     NSDictionary *_normalAttributes;
     NSDictionary *_timestampAttributes;
+    NSMutableArray *_messages;
+    DBMessageBubbleController *_messageBubbleController;
 }
-
-@property (strong, nonatomic) DBMessageBubbleController *messageBubbleController;
-@property (strong, nonatomic) NSMutableArray *messages;
 
 @end
 
@@ -258,13 +257,32 @@
      */
 }
 
-- (void)collectionView:(UICollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView wantsMediaForMediaCell:(DBMessagingMediaCell *)mediaCell atIndexPath:(NSIndexPath *)indexPath {
     
     /**
-     *  Set the image by retreiving from the network or decoding the message's value.
+     *  Set the media for the cell.
+     *
+     *  Example values:
+     *      - The URL for the remote image or video
+     *      - A base64 endoded string representing an image or video sent from a web socket.
+     *      - A JSON string representing a geolocation.
+     *      - A UIImage retrieved from disk.
      */
-    Message *message = [_messages objectAtIndex:indexPath.row];
-    imageView.image = (UIImage *)message.value;
+    
+    id value = [self collectionView:collectionView valueForMessageAtIndexPath:indexPath];
+    
+    if ([mediaCell isKindOfClass:[DBMessagingImageMediaCell class]]) {
+        UIImage *image = (UIImage *)value;
+        ((DBMessagingImageMediaCell *)mediaCell).imageView.image = image;
+    }
+    
+    if ([mediaCell isKindOfClass:[DBMessagingVideoMediaCell class]]) {
+        
+    }
+    
+    if ([mediaCell isKindOfClass:[DBMessagingLocationMediaCell class]]) {
+        
+    }
 }
 
 #pragma mark - DBMessagingCollectionViewDelegate
@@ -278,25 +296,17 @@
     NSLog(@"Message Tapped");
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didTapImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didTapMediaView:(DBMessagingMediaView *)mediaView atIndexPath:(NSIndexPath *)indexPath {
+    
     Message *message = [_messages objectAtIndex:indexPath.row];
     NSLog(@"%@", message.mime);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer atIndexPath:(NSIndexPath *)indexPath {
-    
-    if (moviePlayer.isPreparedToPlay) {
-        switch (moviePlayer.playbackState) {
-            case MPMoviePlaybackStatePlaying:
-                [moviePlayer pause];
-                break;
-            case MPMoviePlaybackStateStopped: case MPMoviePlaybackStatePaused:
-                [moviePlayer play];
-                break;
-            default:
-                break;
-        }
-    }
+#pragma mark - DBMessagingCollectionViewDelegateFlowLayout
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout estimatedSizeForMediaViewAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeZero;
 }
 
 @end

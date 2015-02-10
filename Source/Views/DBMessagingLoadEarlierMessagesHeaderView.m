@@ -23,6 +23,10 @@
 
 @implementation DBMessagingLoadEarlierMessagesHeaderView
 
++ (NSString *)viewReuseIdentifier {
+    return NSStringFromClass([self class]);
+}
+
 + (CGFloat)heightForHeader
 {
     return 30.0f;

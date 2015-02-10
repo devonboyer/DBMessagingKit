@@ -10,6 +10,9 @@
 		673528DA1A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528D91A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m */; };
 		673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */; };
 		673528E01A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528DF1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m */; };
+		673528F61A899B1600F66DE1 /* DBMessagingImageMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528F51A899B1600F66DE1 /* DBMessagingImageMediaCell.m */; };
+		673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528F81A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m */; };
+		673528FC1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */; };
 		677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */; };
 		677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C601A855EC3007D2967 /* UIColor+Messaging.m */; };
 		677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */; };
@@ -29,12 +32,9 @@
 		677B1CB01A855EC3007D2967 /* DBMessagingInputToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C871A855EC3007D2967 /* DBMessagingInputToolbar.m */; };
 		677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C891A855EC3007D2967 /* DBMessagingCellTextView.m */; };
 		677B1CB21A855EC3007D2967 /* DBMessagingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C8B1A855EC3007D2967 /* DBMessagingCollectionView.m */; };
-		677B1CB31A855EC3007D2967 /* DBMessagingGIFCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C8D1A855EC3007D2967 /* DBMessagingGIFCell.m */; };
-		677B1CB41A855EC3007D2967 /* DBMessagingImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C8F1A855EC3007D2967 /* DBMessagingImageCell.m */; };
+		677B1CB41A855EC3007D2967 /* DBMessagingMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C8F1A855EC3007D2967 /* DBMessagingMediaCell.m */; };
 		677B1CB51A855EC3007D2967 /* DBMessagingInputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C911A855EC3007D2967 /* DBMessagingInputTextView.m */; };
 		677B1CB61A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C931A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m */; };
-		677B1CB71A855EC3007D2967 /* DBMessagingLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C951A855EC3007D2967 /* DBMessagingLocationCell.m */; };
-		677B1CB81A855EC3007D2967 /* DBMessagingMovieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C971A855EC3007D2967 /* DBMessagingMovieCell.m */; };
 		677B1CB91A855EC3007D2967 /* DBMessagingParentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C991A855EC3007D2967 /* DBMessagingParentCell.m */; };
 		677B1CBA1A855EC3007D2967 /* DBMessagingTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C9B1A855EC3007D2967 /* DBMessagingTextCell.m */; };
 		677B1CBB1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C9D1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m */; };
@@ -65,6 +65,13 @@
 		673528DC1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionViewSlidingTimestampFlowLayout.m; sourceTree = "<group>"; };
 		673528DE1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		673528DF1A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Messaging.m"; sourceTree = "<group>"; };
+		673528E91A89589200F66DE1 /* DBMessagingCollectionViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionViewDelegate.h; sourceTree = "<group>"; };
+		673528F41A899B1600F66DE1 /* DBMessagingImageMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingImageMediaCell.h; sourceTree = "<group>"; };
+		673528F51A899B1600F66DE1 /* DBMessagingImageMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingImageMediaCell.m; sourceTree = "<group>"; };
+		673528F71A89A7B800F66DE1 /* DBMessagingVideoMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingVideoMediaCell.h; sourceTree = "<group>"; };
+		673528F81A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingVideoMediaCell.m; sourceTree = "<group>"; };
+		673528FA1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingLocationMediaCell.h; sourceTree = "<group>"; };
+		673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLocationMediaCell.m; sourceTree = "<group>"; };
 		677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
@@ -104,18 +111,12 @@
 		677B1C891A855EC3007D2967 /* DBMessagingCellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCellTextView.m; sourceTree = "<group>"; };
 		677B1C8A1A855EC3007D2967 /* DBMessagingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingCollectionView.h; sourceTree = "<group>"; };
 		677B1C8B1A855EC3007D2967 /* DBMessagingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingCollectionView.m; sourceTree = "<group>"; };
-		677B1C8C1A855EC3007D2967 /* DBMessagingGIFCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingGIFCell.h; sourceTree = "<group>"; };
-		677B1C8D1A855EC3007D2967 /* DBMessagingGIFCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingGIFCell.m; sourceTree = "<group>"; };
-		677B1C8E1A855EC3007D2967 /* DBMessagingImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingImageCell.h; sourceTree = "<group>"; };
-		677B1C8F1A855EC3007D2967 /* DBMessagingImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingImageCell.m; sourceTree = "<group>"; };
+		677B1C8E1A855EC3007D2967 /* DBMessagingMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingMediaCell.h; sourceTree = "<group>"; };
+		677B1C8F1A855EC3007D2967 /* DBMessagingMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingMediaCell.m; sourceTree = "<group>"; };
 		677B1C901A855EC3007D2967 /* DBMessagingInputTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingInputTextView.h; sourceTree = "<group>"; };
 		677B1C911A855EC3007D2967 /* DBMessagingInputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingInputTextView.m; sourceTree = "<group>"; };
 		677B1C921A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingLoadEarlierMessagesHeaderView.h; sourceTree = "<group>"; };
 		677B1C931A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLoadEarlierMessagesHeaderView.m; sourceTree = "<group>"; };
-		677B1C941A855EC3007D2967 /* DBMessagingLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingLocationCell.h; sourceTree = "<group>"; };
-		677B1C951A855EC3007D2967 /* DBMessagingLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLocationCell.m; sourceTree = "<group>"; };
-		677B1C961A855EC3007D2967 /* DBMessagingMovieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingMovieCell.h; sourceTree = "<group>"; };
-		677B1C971A855EC3007D2967 /* DBMessagingMovieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingMovieCell.m; sourceTree = "<group>"; };
 		677B1C981A855EC3007D2967 /* DBMessagingParentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingParentCell.h; sourceTree = "<group>"; };
 		677B1C991A855EC3007D2967 /* DBMessagingParentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingParentCell.m; sourceTree = "<group>"; };
 		677B1C9A1A855EC3007D2967 /* DBMessagingTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingTextCell.h; sourceTree = "<group>"; };
@@ -158,6 +159,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		673528EA1A8960B000F66DE1 /* Media Cells */ = {
+			isa = PBXGroup;
+			children = (
+				673528F41A899B1600F66DE1 /* DBMessagingImageMediaCell.h */,
+				673528F51A899B1600F66DE1 /* DBMessagingImageMediaCell.m */,
+				673528F71A89A7B800F66DE1 /* DBMessagingVideoMediaCell.h */,
+				673528F81A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m */,
+				673528FA1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.h */,
+				673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */,
+			);
+			name = "Media Cells";
+			sourceTree = "<group>";
+		};
 		677B1C5B1A855EC3007D2967 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				677B1C7D1A855EC3007D2967 /* DBMessagingCollectionViewDataSource.h */,
+				673528E91A89589200F66DE1 /* DBMessagingCollectionViewDelegate.h */,
 				677B1C7E1A855EC3007D2967 /* DBMessagingCollectionViewDelegateFlowLayout.h */,
 			);
 			path = Protocols;
@@ -272,22 +287,17 @@
 				677B1C891A855EC3007D2967 /* DBMessagingCellTextView.m */,
 				677B1C8A1A855EC3007D2967 /* DBMessagingCollectionView.h */,
 				677B1C8B1A855EC3007D2967 /* DBMessagingCollectionView.m */,
-				677B1C8C1A855EC3007D2967 /* DBMessagingGIFCell.h */,
-				677B1C8D1A855EC3007D2967 /* DBMessagingGIFCell.m */,
-				677B1C8E1A855EC3007D2967 /* DBMessagingImageCell.h */,
-				677B1C8F1A855EC3007D2967 /* DBMessagingImageCell.m */,
-				677B1C921A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.h */,
-				677B1C931A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m */,
-				677B1C941A855EC3007D2967 /* DBMessagingLocationCell.h */,
-				677B1C951A855EC3007D2967 /* DBMessagingLocationCell.m */,
-				677B1C961A855EC3007D2967 /* DBMessagingMovieCell.h */,
-				677B1C971A855EC3007D2967 /* DBMessagingMovieCell.m */,
 				677B1C981A855EC3007D2967 /* DBMessagingParentCell.h */,
 				677B1C991A855EC3007D2967 /* DBMessagingParentCell.m */,
 				677B1C9A1A855EC3007D2967 /* DBMessagingTextCell.h */,
 				677B1C9B1A855EC3007D2967 /* DBMessagingTextCell.m */,
+				677B1C8E1A855EC3007D2967 /* DBMessagingMediaCell.h */,
+				677B1C8F1A855EC3007D2967 /* DBMessagingMediaCell.m */,
+				673528EA1A8960B000F66DE1 /* Media Cells */,
 				677B1C9C1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.h */,
 				677B1C9D1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m */,
+				677B1C921A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.h */,
+				677B1C931A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m */,
 				677B1C9E1A855EC3007D2967 /* DBMessagingTypingIndicatorFooterView.h */,
 				677B1C9F1A855EC3007D2967 /* DBMessagingTypingIndicatorFooterView.m */,
 			);
@@ -475,26 +485,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				677B1CA31A855EC3007D2967 /* UIImage+Messaging.m in Sources */,
+				673528FC1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m in Sources */,
 				677B1CB61A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m in Sources */,
+				673528F61A899B1600F66DE1 /* DBMessagingImageMediaCell.m in Sources */,
 				677B1CA61A855EC3007D2967 /* DBMessagingViewController.m in Sources */,
 				677B1CA91A855EC3007D2967 /* DBMessagingTimestampFormatter.m in Sources */,
 				677B1CAB1A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m in Sources */,
 				6780482B1A312954001E4DC7 /* AppDelegate.m in Sources */,
 				677B1CB91A855EC3007D2967 /* DBMessagingParentCell.m in Sources */,
-				677B1CB71A855EC3007D2967 /* DBMessagingLocationCell.m in Sources */,
 				677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */,
 				677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */,
 				678049431A313106001E4DC7 /* Message.m in Sources */,
-				677B1CB41A855EC3007D2967 /* DBMessagingImageCell.m in Sources */,
+				677B1CB41A855EC3007D2967 /* DBMessagingMediaCell.m in Sources */,
 				677B1CA41A855EC3007D2967 /* DBInteractiveKeyboardController.m in Sources */,
 				677B1CB01A855EC3007D2967 /* DBMessagingInputToolbar.m in Sources */,
 				677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */,
 				673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */,
 				677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */,
+				673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */,
 				673528DA1A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m in Sources */,
 				677B1CA81A855EC3007D2967 /* DBMessageBubbleFactory.m in Sources */,
 				677B1CB21A855EC3007D2967 /* DBMessagingCollectionView.m in Sources */,
-				677B1CB31A855EC3007D2967 /* DBMessagingGIFCell.m in Sources */,
 				677B1CB51A855EC3007D2967 /* DBMessagingInputTextView.m in Sources */,
 				677B1CAA1A855EC3007D2967 /* DBMessagingCollectionViewBaseFlowLayout.m in Sources */,
 				678049441A313106001E4DC7 /* ViewController.m in Sources */,
@@ -502,7 +513,6 @@
 				677B1CBB1A855EC3007D2967 /* DBMessagingTimestampSupplementaryView.m in Sources */,
 				677B1CA71A855EC3007D2967 /* DBSystemSoundPlayer.m in Sources */,
 				673528E01A87FA9000F66DE1 /* NSMutableAttributedString+Messaging.m in Sources */,
-				677B1CB81A855EC3007D2967 /* DBMessagingMovieCell.m in Sources */,
 				677B1CBA1A855EC3007D2967 /* DBMessagingTextCell.m in Sources */,
 				677B1CBC1A855EC3007D2967 /* DBMessagingTypingIndicatorFooterView.m in Sources */,
 				678048281A312954001E4DC7 /* main.m in Sources */,

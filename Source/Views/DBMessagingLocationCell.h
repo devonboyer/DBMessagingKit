@@ -12,12 +12,12 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingImageCell.h"
+#import "DBMessagingMediaCell.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface DBMessagingLocationCell : DBMessagingImageCell
+@interface DBMessagingLocationCell : DBMessagingMediaCell
 
 @property (strong, nonatomic) CLLocation *location;
 

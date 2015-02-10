@@ -16,6 +16,7 @@
 
 #import "DBMessagingKitConstants.h"
 #import "DBMessagingCollectionViewDataSource.h"
+#import "DBMessagingCollectionViewDelegate.h"
 #import "DBMessagingCollectionViewDelegateFlowLayout.h"
 
 @class DBMessagingCollectionView;
@@ -28,7 +29,7 @@
  *
  *  @warning This class is intended to be subclassed. You should not use it directly.
  */
-@interface DBMessagingViewController : UIViewController <DBMessagingCollectionViewDataSource, DBMessagingCollectionViewDelegateFlowLayout>
+@interface DBMessagingViewController : UIViewController <DBMessagingCollectionViewDataSource, DBMessagingCollectionViewDelegate, DBMessagingCollectionViewDelegateFlowLayout>
 
 /**
  *  Returns the collection view object managed by this view controller.
@@ -37,7 +38,7 @@
 @property (strong, nonatomic, readonly) DBMessagingCollectionView *collectionView;
 
 /**
- *  The keyboard controller object for the 'DBMessagingViewController
+ *  The keyboard controller object for the 'DBMessagingViewController'
  */
 @property (strong, nonatomic, readonly) DBInteractiveKeyboardController *keyboardController;
 

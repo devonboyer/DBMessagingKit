@@ -18,6 +18,8 @@
 
 @interface DBMessagingTimestampSupplementaryView : UICollectionReusableView
 
++ (NSString *)viewReuseIdentifier;
+
 @property (strong, nonatomic, readonly) UILabel *timestampLabel;
 @property (assign, nonatomic) MessageBubbleType type;
 @property (assign, nonatomic) DBMessagingTimestampStyle timestampStyle;

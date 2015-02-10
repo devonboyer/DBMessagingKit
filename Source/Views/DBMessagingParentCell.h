@@ -30,6 +30,8 @@ typedef NS_ENUM(NSInteger, MessageBubbleType) {
 
 @interface DBMessagingParentCell : UICollectionViewCell
 
++ (NSString *)cellReuseIdentifier;
+
 @property (weak, nonatomic) id <DBMessagingParentCellDelegate> delegate;
 @property (weak, nonatomic) UICollectionView *collectionView;
 

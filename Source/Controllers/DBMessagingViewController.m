@@ -23,9 +23,8 @@
 #import "DBMessagingCollectionViewSlidingTimestampFlowLayout.h"
 #import "DBMessagingCollectionViewFlowLayoutInvalidationContext.h"
 #import "DBMessagingTextCell.h"
-#import "DBMessagingImageCell.h"
-#import "DBMessagingLocationCell.h"
-#import "DBMessagingMovieCell.h"
+#import "DBMessagingMediaCell.h"
+#import "DBMessagingImageMediaCell.h"
 #import "DBMessagingTimestampSupplementaryView.h"
 #import "DBMessagingLoadEarlierMessagesHeaderView.h"
 #import "DBMessagingTypingIndicatorFooterView.h"
@@ -36,7 +35,7 @@
 @property (strong, nonatomic) DBMessagingInputToolbar *messageInputToolbar;
 @property (strong, nonatomic) DBInteractiveKeyboardController *keyboardController;
 
-- (void)_finishSendingOrReceivingMessage;
+- (void)finishSendingOrReceivingMessage;
 
 @end
 
@@ -181,13 +180,13 @@
 
 - (void)finishReceivingMessage {
     self.showTypingIndicator = NO;
-    [self _finishSendingOrReceivingMessage];
+    [self finishSendingOrReceivingMessage];
 }
 
 - (void)finishSendingMessage {
     [_messageInputToolbar.textView clear];
     [_messageInputToolbar toggleSendButtonEnabled];
-    [self _finishSendingOrReceivingMessage];
+    [self finishSendingOrReceivingMessage];
 }
 
 - (NSIndexPath *)indexPathForLatestMessage {
@@ -228,19 +227,6 @@
     [self.collectionView scrollToItemAtIndexPath:[self indexPathForLatestMessage]
                                 atScrollPosition:scrollPosition
                                         animated:animated];
-}
-
-#pragma mark - Private
-
-- (void)_finishSendingOrReceivingMessage
-{
-    [_collectionView reloadData];
-    
-    [self updateCollectionViewInsets];
-
-    if (_automaticallyScrollsToMostRecentMessage) {
-        [self scrollToBottomAnimated:YES];
-    }
 }
 
 #pragma mark - DBMessagingCollectionViewDataSource
@@ -288,11 +274,11 @@
     NSString *cellIdentifier;
 
     if ([mime isEqualToString:@"text/plain"]) {
-        cellIdentifier = DBMessagingTextCellIdentifier;
+        cellIdentifier = [DBMessagingTextCell cellReuseIdentifier];
     }
     
     if ([mime isEqualToString:@"image/jpeg"]) {
-        cellIdentifier = DBMessagingImageCellIdentifier;
+        cellIdentifier = [DBMessagingImageMediaCell cellReuseIdentifier];
     }
     
     DBMessagingParentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -338,11 +324,11 @@
     }
     
     if ([mime isEqualToString:@"image/jpeg"]) {
-        DBMessagingImageCell *imageCell = (DBMessagingImageCell *)cell;
-    
-        if ([collectionView.dataSource respondsToSelector:@selector(collectionView:wantsImageForImageView:atIndexPath:)]) {
+        DBMessagingImageMediaCell *mediaCell = (DBMessagingImageMediaCell *)cell;
+        
+        if ([collectionView.dataSource respondsToSelector:@selector(collectionView:wantsMediaForMediaCell:atIndexPath:)]) {
             [collectionView.dataSource collectionView:collectionView
-                               wantsImageForImageView:imageCell.imageView
+                               wantsMediaForMediaCell:mediaCell
                                           atIndexPath:indexPath];
         }
     }
@@ -356,11 +342,11 @@
     
     if (_showTypingIndicator && [kind isEqualToString:UICollectionElementKindSectionFooter]) {
         return [collectionView dequeueTypingIndicatorFooterViewForIndexPath:indexPath];
-    }
-    else if (_showLoadMoreMessages && [kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        return [collectionView dequeueLoadMoreHeaderViewForIndexPath:indexPath];
-    }
-    else if ([kind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
+        
+    } else if (_showLoadMoreMessages && [kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        return [collectionView dequeueLoadEarlierMessagesHeaderViewForIndexPath:indexPath];
+        
+    } else if ([kind isEqualToString:DBMessagingCollectionElementKindTimestamp]) {
         DBMessagingTimestampSupplementaryView *supplementaryView = [collectionView dequeueTimestampSupplementaryViewForIndexPath:indexPath];
         
         NSString *sentByUserID = [self collectionView:collectionView sentByUserIDForMessageAtIndexPath:indexPath];
@@ -433,6 +419,17 @@
 }
 
 #pragma mark - Utility
+
+- (void)finishSendingOrReceivingMessage
+{
+    [_collectionView reloadData];
+    
+    [self updateCollectionViewInsets];
+    
+    if (_automaticallyScrollsToMostRecentMessage) {
+        [self scrollToBottomAnimated:YES];
+    }
+}
 
 - (void)updateCollectionViewInsets {
     [self setCollectionViewInsetsTopValue:[self.topLayoutGuide length]

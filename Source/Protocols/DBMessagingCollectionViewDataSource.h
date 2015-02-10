@@ -12,12 +12,10 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingKitConstants.h"
-
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
+#import <UIKit/UIKit.h>
 
 @class DBMessagingCollectionView;
+@class DBMessagingMediaCell;
 
 /**
  *  An object that conforms to the 'DBMessagingCollectionViewDataSource' protocol is responsible for providing the data
@@ -92,17 +90,6 @@
 @optional
 
 /**
- *  Asks the data source to set the photo to display in the imageView for the the specified
- *  message data item at indexPath in the collectionView.
- *
- *  @param collectionView   The object representing the collection view requesting this information.
- *  @param indexPath        The index path that specifies the location of the item.
- *
- *  @return The location that represents the message.
- */
-- (CLLocation *)collectionView:(UICollectionView *)collectionView locationForMessageAtIndexPath:(NSIndexPath *)indexPath;
-
-/**
  *  Asks the data source for the attributed text to display in the 'messageBubbleTopLabel' for the specified
  *  message data item at indexPath in the collectionView.
  *
@@ -162,29 +149,36 @@
 - (NSAttributedString *)collectionView:(UICollectionView *)collectionView timestampAttributedTextForSupplementaryViewAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  Asks the data source to set the avatar to display in the imageView for the the specified
- *  message data item at indexPath in the collectionView.
+ *  Asks the data source to set the avatar to display in the imageView for the the specified message data item at 
+ *  indexPath in the collectionView. This allows you to perform long-running tasks to retrieve the avatar.
  *
  *  @param collectionView The object representing the collection view requesting this information.
  *  @param imageView      The imageView that the will display the avatar.
  *  @param indexPath      The index path that specifies the location of the item.
- *
- *  @discussion The avatar image can be set using this method after downloading the image from the server. Setting the 
- *  imageView's image to 'nil' will hide the avatar.
  */
 - (void)collectionView:(UICollectionView *)collectionView wantsAvatarForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  Asks the data source to set the photo to display in the imageView for the the specified
- *  message data item at indexPath in the collectionView.
+ *  Asks the data source to provide the media for a given media cell. This allows you to perform long-running tasks to retrieve or 
+ *  decode the data from the 'value' and set the retrieved media data for the appropriate media view.
+ *
+ *  @discussion The dataSource is structured in such a way so as to defer the need to perform long-running tasks for as long as 
+ *  possible while preventing the need for a strict schema for a message. Note that for text messages this method is not required 
+ *  as it is assumes that the value property directly contains the message.
+ *
+ *  The value and mime can be used in conjunction in order to set the appropriate media data. The value returned by the dataSource
+ *  can be any object type. This is where you decide what type of view should be used to display the given value.
+ *
+ *  Example values:
+ *      - The URL for the remote image or video
+ *      - A base64 endoded string representing an image or video sent from a web socket.
+ *      - A JSON string representing a geolocation.
+ *      - A UIImage retrieved from disk.
  *
  *  @param collectionView The object representing the collection view requesting this information.
- *  @param imageView      The imageView that the will display the photo.
+ *  @param mediaCell      The cell that the will display the media data.
  *  @param indexPath      The index path that specifies the location of the item.
- *
- *  @discussion This method will be called if the message data is 'nil' and the MIMEType is MIMETypeImage or MIMETypeVideo in 
- *  order to then download the image or video from the server if required.
  */
-- (void)collectionView:(UICollectionView *)collectionView wantsImageForImageView:(UIImageView *)imageView atIndexPath:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView wantsMediaForMediaCell:(DBMessagingMediaCell *)mediaCell atIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -15,42 +15,28 @@
 #import <UIKit/UIKit.h>
 
 #import "DBMessagingTextCell.h"
-#import "DBMessagingImageCell.h"
-#import "DBMessagingLocationCell.h"
-#import "DBMessagingMovieCell.h"
-#import "DBMessagingGIFCell.h"
-#import "DBMessagingCollectionViewDataSource.h"
-#import "DBMessagingCollectionViewDelegateFlowLayout.h"
+#import "DBMessagingMediaCell.h"
 #import "DBMessagingCollectionViewBaseFlowLayout.h"
 
-@class DBMessagingCollectionViewBaseFlowLayout;
+#import "DBMessagingCollectionViewDelegate.h"
+#import "DBMessagingCollectionViewDataSource.h"
+#import "DBMessagingCollectionViewDelegateFlowLayout.h"
+
 @class DBMessagingLoadEarlierMessagesHeaderView;
 @class DBMessagingTypingIndicatorFooterView;
 @class DBMessagingTimestampSupplementaryView;
 
-// Cells
-extern NSString * const DBMessagingTextCellIdentifier;
-extern NSString * const DBMessagingImageCellIdentifier;
-extern NSString * const DBMessagingLocationCellIdentifier;
-extern NSString * const DBMessagingGIFCellIdentifier;
-extern NSString * const DBMessagingMovieCellIdentifier;
-
-// Supplementary Views
-extern NSString * const DBMessagingTimestampSupplementaryViewIdentifier;
-extern NSString * const DBMessagingTypingIndicatorFooterViewIdentifier;
-extern NSString * const DBMessagingLoadMoreHeaderViewIdentifier;
-
-@interface DBMessagingCollectionView : UICollectionView <DBMessagingImageCellDelegate, DBMessagingTextCellDelegate, DBMessagingMovieCellDelegate>
+@interface DBMessagingCollectionView : UICollectionView <DBMessagingTextCellDelegate, DBMessagingMediaCellDelegate>
 
 @property (weak, nonatomic) id <DBMessagingCollectionViewDataSource> dataSource;
-@property (weak, nonatomic) id <DBMessagingCollectionViewDelegateFlowLayout> delegate;
+@property (weak, nonatomic) id <DBMessagingCollectionViewDelegate, DBMessagingCollectionViewDelegateFlowLayout> delegate;
 @property (strong, nonatomic) DBMessagingCollectionViewBaseFlowLayout *collectionViewLayout;
 
-@property (strong, nonatomic) DBMessagingLoadEarlierMessagesHeaderView *loadMoreHeaderView;
-@property (strong, nonatomic) DBMessagingTypingIndicatorFooterView *typingIndicatorFooterView;
+@property (weak, nonatomic) DBMessagingLoadEarlierMessagesHeaderView *loadMoreHeaderView;
+@property (weak, nonatomic) DBMessagingTypingIndicatorFooterView *typingIndicatorFooterView;
 
-- (UICollectionReusableView *)dequeueTypingIndicatorFooterViewForIndexPath:(NSIndexPath *)indexPath;
-- (UICollectionReusableView *)dequeueLoadMoreHeaderViewForIndexPath:(NSIndexPath *)indexPath;
+- (DBMessagingLoadEarlierMessagesHeaderView *)dequeueLoadEarlierMessagesHeaderViewForIndexPath:(NSIndexPath *)indexPath;
+- (DBMessagingTypingIndicatorFooterView *)dequeueTypingIndicatorFooterViewForIndexPath:(NSIndexPath *)indexPath;
 - (DBMessagingTimestampSupplementaryView *)dequeueTimestampSupplementaryViewForIndexPath:(NSIndexPath *)indexPath;
 
 @end

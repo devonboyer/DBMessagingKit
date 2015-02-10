@@ -29,6 +29,10 @@
 
 @implementation DBMessagingTypingIndicatorFooterView
 
++ (NSString *)viewReuseIdentifier {
+    return NSStringFromClass([self class]);
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

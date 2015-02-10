@@ -12,9 +12,9 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingImageCell.h"
+#import "DBMessagingMediaCell.h"
 
-@interface DBMessagingGIFCell : DBMessagingImageCell
+@interface DBMessagingGIFCell : DBMessagingMediaCell
 
 @property (strong, nonatomic) NSData *animatedGIFData;
 @property (assign, nonatomic) BOOL animating;

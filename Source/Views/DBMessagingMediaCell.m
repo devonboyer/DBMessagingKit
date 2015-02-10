@@ -1,5 +1,5 @@
 //
-//  DBMessagingImageCell.m
+//  DBMessagingMediaCell.m
 //
 //
 //  GitHub
@@ -12,72 +12,32 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingImageCell.h"
+#import "DBMessagingMediaCell.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 #import "UIColor+Messaging.h"
 
-@interface MaskedImageView : UIImageView
+@interface DBMessagingMediaCell () <UIGestureRecognizerDelegate>
 
-@end
-
-@implementation MaskedImageView
-
-- (void)setImage:(UIImage *)image
-{
-    [super setImage:image];
-    [self applyMask];
-}
-
-#pragma mark - Utility
-
-- (void)applyMask
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage *maskImage = ((UIImageView *)self.superview).image;
-        
-        CALayer *mask = [CALayer layer];
-        mask.contents = (id)[maskImage CGImage];
-        mask.frame = self.layer.bounds;
-        mask.contentsScale = [UIScreen mainScreen].scale;
-        mask.contentsCenter = CGRectMake(self.center.x/self.layer.bounds.size.width,
-                                         self.center.y/self.layer.bounds.size.height,
-                                         1.0/self.layer.bounds.size.width,
-                                         1.0/self.layer.bounds.size.height);
-        
-        self.superview.layer.mask = mask;
-    });
-}
-
-@end
-
-@interface DBMessagingImageCell () <UIGestureRecognizerDelegate>
-
-@property (strong, nonatomic) MaskedImageView *imageView;
+@property (strong, nonatomic) UITapGestureRecognizer *mediaTap;
 
 @property (assign, nonatomic) CGSize incomingImageSize;
 @property (assign, nonatomic) CGSize outgoingImageSize;
 
 @end
 
-@implementation DBMessagingImageCell
+@implementation DBMessagingMediaCell
+
++ (NSString *)cellReuseIdentifier {
+    NSAssert(false, @"%s must be overridden by subclass", __PRETTY_FUNCTION__);
+    return nil;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.imageView = [[MaskedImageView alloc] init];
-        [self.imageView setContentMode:UIViewContentModeScaleAspectFill];
-        [self.imageView setClipsToBounds:YES];
-        [self.imageView setUserInteractionEnabled:YES];
-        [self.imageView setFrame:self.messageBubbleImageView.frame];
-        [self.imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        [self.imageView setBackgroundColor:[UIColor clearColor]];
-        [self.imageView setImage:nil];
-        [self.messageBubbleImageView addSubview:self.imageView];
-        
-        UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTap:)];
-        [imageTap setDelegate:self];
-        [self.imageView addGestureRecognizer:imageTap];
+        _mediaTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMediaTap:)];
+        [_mediaTap setDelegate:self];
     }
     return self;
 }
@@ -118,22 +78,52 @@
         default:
             break;
     }
+    
+    [self applyMask];
+}
+
+#pragma mark - Setters 
+
+- (void)setMediaView:(UIView *)mediaView {
+    
+    _mediaView = mediaView;
+    [_mediaView addGestureRecognizer:_mediaTap];
 }
 
 #pragma mark - Actions
 
-- (void)handleImageTap:(UITapGestureRecognizer *)tap
+- (void)handleMediaTap:(UITapGestureRecognizer *)tap
 {
-    if ([self.delegate respondsToSelector:@selector(messageCell:didTapImageView:)]) {
-        [self.delegate messageCell:self didTapImageView:self.imageView];
+    if ([self.delegate respondsToSelector:@selector(messageCell:didTapMediaView:)]) {
+        [self.delegate messageCell:self didTapMediaView:_mediaView];
     }
 }
 
 #pragma mark - UIGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
+}
+
+#pragma mark - Utility
+
+- (void)applyMask {
+    
+    CALayer *maskingLayer = _mediaView.layer;
+    CGPoint center = _mediaView.center;
+    
+    UIImage *maskImage = self.messageBubbleImageView.image;
+    
+    CALayer *mask = [CALayer layer];
+    mask.contents = (id)[maskImage CGImage];
+    mask.frame = maskingLayer.bounds;
+    mask.contentsScale = [UIScreen mainScreen].scale;
+    mask.contentsCenter = CGRectMake(center.x/maskingLayer.bounds.size.width,
+                                     center.y/maskingLayer.bounds.size.height,
+                                     1.0/maskingLayer.bounds.size.width,
+                                     1.0/maskingLayer.bounds.size.height);
+    
+    self.messageBubbleImageView.layer.mask = mask;
 }
 
 @end

@@ -16,6 +16,7 @@
 
 @interface DBMessagingLoadEarlierMessagesHeaderView : UICollectionReusableView
 
++ (NSString *)viewReuseIdentifier;
 + (CGFloat)heightForHeader;
 
 - (void)startAnimating;

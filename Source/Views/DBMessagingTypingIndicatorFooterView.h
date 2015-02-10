@@ -16,5 +16,6 @@
 
 @interface DBMessagingTypingIndicatorFooterView : UICollectionReusableView
 
++ (NSString *)viewReuseIdentifier;
 
 @end

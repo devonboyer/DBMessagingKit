@@ -23,7 +23,7 @@
 
 @interface DBMessagingTextCell () <UIGestureRecognizerDelegate, UITextViewDelegate>
 
-@property (strong, nonatomic) UITextView *messageTextView;
+@property (strong, nonatomic) DBMessagingCellTextView *messageTextView;
 
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
 @property (strong, nonatomic) UITapGestureRecognizer *messageTextViewTap;
@@ -31,6 +31,10 @@
 @end
 
 @implementation DBMessagingTextCell
+
++ (NSString *)cellReuseIdentifier {
+    return NSStringFromClass([self class]);
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

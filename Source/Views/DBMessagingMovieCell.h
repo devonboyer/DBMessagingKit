@@ -12,18 +12,18 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingImageCell.h"
+#import "DBMessagingMediaCell.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 
-@protocol DBMessagingMovieCellDelegate <DBMessagingImageCellDelegate>
+@protocol DBMessagingMovieCellDelegate <DBMessagingMediaCellDelegate>
 
 @optional
 - (void)messageCell:(DBMessagingParentCell *)cell didTapMoviePlayer:(MPMoviePlayerController *)moviePlayer;
 
 @end
 
-@interface DBMessagingMovieCell : DBMessagingImageCell
+@interface DBMessagingMovieCell : DBMessagingMediaCell
 
 @property (weak, nonatomic) id<DBMessagingMovieCellDelegate> delegate;
 @property (strong, nonatomic) NSData *movieData;

@@ -26,7 +26,6 @@
 @property (weak, nonatomic) id <DBMessagingTextCellDelegate> delegate;
 
 @property (strong, nonatomic, readonly) UITextView *messageTextView;
-
 @property (strong, nonatomic) NSString *messageText;
 
 @end

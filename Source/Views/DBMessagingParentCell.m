@@ -27,6 +27,11 @@
 
 @implementation DBMessagingParentCell
 
++ (NSString *)cellReuseIdentifier {
+    NSAssert(false, @"%s must be overridden by subclass", __PRETTY_FUNCTION__);
+    return nil;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
