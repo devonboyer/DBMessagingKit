@@ -20,8 +20,7 @@
 
 @property (strong, nonatomic) UITapGestureRecognizer *mediaTap;
 
-@property (assign, nonatomic) CGSize incomingImageSize;
-@property (assign, nonatomic) CGSize outgoingImageSize;
+@property (assign, nonatomic) CGSize mediaViewSize;
 
 @end
 
@@ -51,18 +50,17 @@
 {
     [super applyLayoutAttributes:layoutAttributes];
     
-    self.incomingImageSize = layoutAttributes.incomingMediaViewSize;
-    self.outgoingImageSize = layoutAttributes.outgoingMediaViewSize;
+    self.mediaViewSize = layoutAttributes.mediaViewSize;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
+    CGFloat imageWidth = self.mediaViewSize.width;
+    
     switch (self.type) {
         case MessageBubbleTypeIncoming: {
-            
-            CGFloat imageWidth = self.incomingImageSize.width;
             
             [self.messageBubbleImageView setFrame:CGRectMake(self.incomingAvatarSize.width + self.incomingMessageBubbleAvatarSpacing,
                                                              CGRectGetMaxY(self.messageTopLabel.frame),
@@ -71,8 +69,6 @@
             break;
         }
         case MessageBubbleTypeOutgoing: {
-            
-            CGFloat imageWidth = self.outgoingImageSize.width;
             
             [self.messageBubbleImageView setFrame:CGRectMake(CGRectGetWidth(self.frame) - imageWidth - self.outgoingAvatarSize.width - self.outgoingMessageBubbleAvatarSpacing,
                                                              CGRectGetMaxY(self.messageTopLabel.frame),

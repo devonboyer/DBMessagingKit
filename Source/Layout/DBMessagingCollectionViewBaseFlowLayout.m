@@ -126,8 +126,7 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     _messageBubbleLeftRightMargin = 70.0f;
     _incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
     _outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
-    _incomingMediaViewSize = CGSizeMake(220.0, 240.0);
-    _outgoingMediaViewSize = CGSizeMake(220.0, 240.0);
+    _mediaViewReferenceSize = CGSizeMake(220.0, 100.0);
     _incomingMessageBubbleAvatarSpacing = 5.0;
     _outgoingMessageBubbleAvatarSpacing = 5.0;
     
@@ -407,15 +406,9 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setIncomingMediaViewSize:(CGSize)incomingImageSize
+- (void)setMediaViewReferenceSize:(CGSize)mediaViewReferenceSize
 {
-    _incomingMediaViewSize = incomingImageSize;
-    [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
-}
-
-- (void)setOutgoingMediaViewSize:(CGSize)outgoingImageSize
-{
-    _outgoingMediaViewSize = outgoingImageSize;
+    _mediaViewReferenceSize = mediaViewReferenceSize;
     [self invalidateLayoutWithContext:[DBMessagingCollectionViewFlowLayoutInvalidationContext context]];
 }
 
@@ -485,10 +478,12 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     layoutAttributes.incomingAvatarViewSize = self.incomingAvatarViewSize;
     
     layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
-    
-    layoutAttributes.incomingMediaViewSize = self.incomingMediaViewSize;
-    
-    layoutAttributes.outgoingMediaViewSize = self.outgoingMediaViewSize;
+        
+    if ([self.collectionView.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForMediaViewAtIndexPath:)]) {
+        layoutAttributes.mediaViewSize = [self.collectionView.delegate collectionView:self.collectionView layout:self referenceSizeForMediaViewAtIndexPath:indexPath];
+    } else {
+        layoutAttributes.mediaViewSize = _mediaViewReferenceSize;
+    }
     
     layoutAttributes.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     
@@ -542,7 +537,12 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]] ||
         [mime isEqualToString:[DBMessagingVideoMediaCell mimeType]] ||
         [mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
-        finalSize = [self _mediaViewSizeForIndexPath:indexPath];
+        
+        if ([self.collectionView.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForMediaViewAtIndexPath:)]) {
+            finalSize = [self.collectionView.delegate collectionView:self.collectionView layout:self referenceSizeForMediaViewAtIndexPath:indexPath];
+        } else {
+            finalSize = _mediaViewReferenceSize;
+        }
     }
     
     // Account for the size of avatars, an avatar should never be larger than the size of the smallest message bubble.
@@ -565,15 +565,6 @@ NSString *const DBMessagingCollectionElementKindTimestamp = @"com.DBMessagingKit
     [_messageBubbleCache setObject:[NSValue valueWithCGSize:finalSize] forKey:@(indexPath.hash)];
     
     return finalSize;
-}
-
-- (CGSize)_mediaViewSizeForIndexPath:(NSIndexPath *)indexPath
-{
-    if ([self isOutgoingMessageAtIndexPath:indexPath]) {
-        return _outgoingMediaViewSize;
-    }
-    
-    return _incomingMediaViewSize;
 }
 
 - (CGFloat)_messageBubbleTextContainerInsetsTotal

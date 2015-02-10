@@ -91,6 +91,8 @@ extern NSString * const DBMessagingCollectionElementKindTimestamp;
  */
 @property (assign, nonatomic) CGFloat inOutMessageBubbleInteritemSpacing;
 
+@property (assign, nonatomic) CGSize mediaViewReferenceSize;
+
 /**
  *  The following attibutes can be set to customize the appearance of the layout.
  *
@@ -103,8 +105,6 @@ extern NSString * const DBMessagingCollectionElementKindTimestamp;
 @property (assign, nonatomic) UIEdgeInsets messageBubbleTextViewTextContainerInsets;
 @property (assign, nonatomic) CGSize incomingAvatarViewSize;
 @property (assign, nonatomic) CGSize outgoingAvatarViewSize;
-@property (assign, nonatomic) CGSize incomingMediaViewSize;
-@property (assign, nonatomic) CGSize outgoingMediaViewSize;
 @property (assign, nonatomic) CGFloat messageBubbleLeftRightMargin;
 @property (assign, nonatomic) CGFloat incomingMessageBubbleAvatarSpacing;
 @property (assign, nonatomic) CGFloat outgoingMessageBubbleAvatarSpacing;

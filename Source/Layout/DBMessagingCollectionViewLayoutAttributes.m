@@ -62,16 +62,10 @@
     _outgoingAvatarViewSize = CGSizeMake(ceil(outgoingAvatarViewSize.width), ceilf(outgoingAvatarViewSize.height));
 }
 
-- (void)setIncomingMediaViewSize:(CGSize)incomingImageSize
+- (void)setMediaViewSize:(CGSize)mediaViewSize
 {
-    NSParameterAssert(incomingImageSize.width >= 0.0f && incomingImageSize.height >= 0.0f);
-    _incomingMediaViewSize = CGSizeMake(ceil(incomingImageSize.width), ceilf(incomingImageSize.height));
-}
-
-- (void)setOutgoingMediaViewSize:(CGSize)outgoingImageSize
-{
-    NSParameterAssert(outgoingImageSize.width >= 0.0f && outgoingImageSize.height >= 0.0f);
-    _outgoingMediaViewSize = CGSizeMake(ceil(outgoingImageSize.width), ceilf(outgoingImageSize.height));
+    NSParameterAssert(mediaViewSize.width >= 0.0f && mediaViewSize.height >= 0.0f);
+    _mediaViewSize = CGSizeMake(ceil(mediaViewSize.width), ceilf(mediaViewSize.height));
 }
 
 - (void)setIncomingMessageBubbleAvatarSpacing:(CGFloat)incomingMessageBubbleAvatarSpacing
@@ -104,8 +98,7 @@
     copy.messageBubbleTextViewTextContainerInsets = self.messageBubbleTextViewTextContainerInsets;
     copy.incomingAvatarViewSize = self.incomingAvatarViewSize;
     copy.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
-    copy.incomingMediaViewSize = self.incomingMediaViewSize;
-    copy.outgoingMediaViewSize = self.outgoingMediaViewSize;
+    copy.mediaViewSize = self.mediaViewSize;
     copy.incomingMessageBubbleAvatarSpacing = self.incomingMessageBubbleAvatarSpacing;
     copy.outgoingMessageBubbleAvatarSpacing = self.outgoingMessageBubbleAvatarSpacing;
     

@@ -14,6 +14,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class DBMessagingCollectionViewBaseFlowLayout;
+
 /**
  *  The 'DBMessagingCollectionViewDelegateFlowLayout' protocol defines methods that allow you to
  *  manage additional layout information for the collection view.
@@ -22,7 +24,6 @@
 
 @optional
 
-// Asks the delegate for the estimated size for the media view at the specified indexPath
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout estimatedSizeForMediaViewAtIndexPath:(NSIndexPath *)indexPath;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(DBMessagingCollectionViewBaseFlowLayout *)collectionViewLayout referenceSizeForMediaViewAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

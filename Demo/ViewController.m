@@ -118,9 +118,7 @@
     if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         [self.locationManager requestWhenInUseAuthorization];
     }
-    
-    // something to map MIMEType -> object type
-    
+        
 //    [_messages addObject:[[Message alloc] initWithValue:self.currentLocation
 //                                                   mime:[DBMessagingLocationMediaCell mimeType]
 //                                           sentByUserID:[self senderUserID]
@@ -330,9 +328,24 @@
 
 #pragma mark - DBMessagingCollectionViewDelegateFlowLayout
 
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout estimatedSizeForMediaViewAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeZero;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(DBMessagingCollectionViewBaseFlowLayout *)collectionViewLayout referenceSizeForMediaViewAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString *mime = [self collectionView:collectionView mimeForMessageAtIndexPath:indexPath];
+    
+    if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]]) {
+        
+        return CGSizeMake(240.0, 220.0);
+    }
+    
+    if ([mime isEqualToString:[DBMessagingVideoMediaCell mimeType]]) {
+        
+    }
+    
+    if ([mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
+        
+    }
+    
+    return collectionViewLayout.mediaViewReferenceSize;
 }
 
 @end
