@@ -63,7 +63,7 @@ FOUNDATION_EXPORT const unsigned char DBMessagingKitVersionString[];
 #import "NSAttributedString+Messaging.h"
 #import "NSMutableAttributedString+Messaging.h"
 #import "UIColor+Messaging.h"
-#import "UIView+Messaging.h"
+#import "UIScrollView+Messaging.h"
 #import "UIImage+Messaging.h"
 #import "UIImage+AnimatedGIF.h"
 

@@ -14,22 +14,31 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
+    DBMessagingPhotoPickerControllerOptionPhotoLibrary,
+    DBMessagingPhotoPickerControllerOptionTakePhoto,
+    DBMessagingPhotoPickerControllerOptionCancel
+};
+
+typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerAction) {
+    DBMessagingPhotoPickerControllerActionSend,
+    DBMessagingPhotoPickerControllerActionComment
+};
+
 @class DBMessagingPhotoPickerController;
 
 @protocol DBMessagingPhotoPickerControllerDelegate <NSObject>
 
 @optional
 
-- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos;
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos action:(DBMessagingPhotoPickerControllerAction)action;
 
-- (void)photoPickerControllerDidCancel:(DBMessagingPhotoPickerController *)picker;
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didDismissWithOption:(DBMessagingPhotoPickerControllerOption)option;
 
 @end
 
 NS_CLASS_AVAILABLE_IOS(8_0) @interface DBMessagingPhotoPickerController : UIViewController
 
 @property (weak, nonatomic) id<DBMessagingPhotoPickerControllerDelegate> delegate;
-
-@property (strong, nonatomic, readonly) NSArray *selectedPhotos;
 
 @end

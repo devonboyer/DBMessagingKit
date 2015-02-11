@@ -59,7 +59,7 @@
                                                  sentAt:[NSDate date]]];
     
     // Configure a message bubble controller with template images
-    _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageGreenColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
+    _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
     [_messageBubbleController setTopTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleTop"]];
     [_messageBubbleController setMiddleTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleMid"]];
     [_messageBubbleController setBottomTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleBottom"]];
@@ -190,10 +190,34 @@
 
 #pragma mark - DBMessagingPhotoPickerControllerDelegate
 
-- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos {
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos action:(DBMessagingPhotoPickerControllerAction)action {
     
-    for (UIImage *photo in photos) {
-        [self.messageInputToolbar.textView addImageAttatchment:photo];
+    switch (action) {
+        case DBMessagingPhotoPickerControllerActionSend:
+            break;
+        case DBMessagingPhotoPickerControllerActionComment:
+            break;
+        default:
+            break;
+    }
+    
+    NSLog(@"%d", (int)photos.count);
+}
+
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didDismissWithOption:(DBMessagingPhotoPickerControllerOption)option {
+    
+    switch (option) {
+        case DBMessagingPhotoPickerControllerOptionPhotoLibrary:
+            NSLog(@"Photo Library");
+            break;
+        case DBMessagingPhotoPickerControllerOptionTakePhoto:
+            NSLog(@"Take Photo");
+            break;
+        case DBMessagingPhotoPickerControllerOptionCancel:
+            NSLog(@"Cancel");
+            break;
+        default:
+            break;
     }
 }
 

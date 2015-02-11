@@ -17,7 +17,7 @@
 		6735290D1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */; };
 		6735290F1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */; };
 		673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m */; };
-		673529161A8ACFC000F66DE1 /* UIView+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529151A8ACFC000F66DE1 /* UIView+Messaging.m */; };
+		6735291C1A8C0C0200F66DE1 /* UIScrollView+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 6735291B1A8C0C0200F66DE1 /* UIScrollView+Messaging.m */; };
 		677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */; };
 		677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C601A855EC3007D2967 /* UIColor+Messaging.m */; };
 		677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */; };
@@ -84,8 +84,8 @@
 		6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBMessagingPhotoPickerController.xib; sourceTree = "<group>"; };
 		673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerPresentationControler.h; sourceTree = "<group>"; };
 		673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerPresentationControler.m; sourceTree = "<group>"; };
-		673529141A8ACFC000F66DE1 /* UIView+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Messaging.h"; sourceTree = "<group>"; };
-		673529151A8ACFC000F66DE1 /* UIView+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Messaging.m"; sourceTree = "<group>"; };
+		6735291A1A8C0C0100F66DE1 /* UIScrollView+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Messaging.h"; sourceTree = "<group>"; };
+		6735291B1A8C0C0200F66DE1 /* UIScrollView+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
@@ -237,8 +237,8 @@
 				677B1C641A855EC3007D2967 /* UIImage+Messaging.m */,
 				677B1C611A855EC3007D2967 /* UIImage+AnimatedGIF.h */,
 				677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */,
-				673529141A8ACFC000F66DE1 /* UIView+Messaging.h */,
-				673529151A8ACFC000F66DE1 /* UIView+Messaging.m */,
+				6735291A1A8C0C0100F66DE1 /* UIScrollView+Messaging.h */,
+				6735291B1A8C0C0200F66DE1 /* UIScrollView+Messaging.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -531,6 +531,7 @@
 				677B1CB61A855EC3007D2967 /* DBMessagingLoadEarlierMessagesHeaderView.m in Sources */,
 				673528F61A899B1600F66DE1 /* DBMessagingImageMediaCell.m in Sources */,
 				677B1CA61A855EC3007D2967 /* DBMessagingViewController.m in Sources */,
+				6735291C1A8C0C0200F66DE1 /* UIScrollView+Messaging.m in Sources */,
 				677B1CA91A855EC3007D2967 /* DBMessagingTimestampFormatter.m in Sources */,
 				677B1CAB1A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m in Sources */,
 				6735290D1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m in Sources */,
@@ -548,7 +549,6 @@
 				677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */,
 				673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */,
 				673528DA1A8785BC00F66DE1 /* DBMessagingCollectionViewHiddenTimestampFlowLayout.m in Sources */,
-				673529161A8ACFC000F66DE1 /* UIView+Messaging.m in Sources */,
 				677B1CA81A855EC3007D2967 /* DBMessageBubbleFactory.m in Sources */,
 				677B1CB21A855EC3007D2967 /* DBMessagingCollectionView.m in Sources */,
 				677B1CB51A855EC3007D2967 /* DBMessagingInputTextView.m in Sources */,

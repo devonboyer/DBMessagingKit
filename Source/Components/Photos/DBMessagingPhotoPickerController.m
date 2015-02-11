@@ -16,7 +16,7 @@
 
 #import "DBMessagingPhotoPickerPresentationControler.h"
 #import "UIColor+Messaging.h"
-#import "UIView+Messaging.h"
+#import "UIScrollView+Messaging.h"
 
 #import <Photos/Photos.h>
 
@@ -74,24 +74,24 @@
 
 @end
 
-@interface DBMessagingPhotoPickerController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPhotoLibraryChangeObserver>
+@interface DBMessagingPhotoPickerController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, PHPhotoLibraryChangeObserver>
+{
+    BOOL _highlighted;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *optionsTableView;
 @property (weak, nonatomic) IBOutlet UICollectionView *photosCollectionView;
 @property (weak, nonatomic) IBOutlet UIImageView *snapshotImageView;
 
-@property (strong, nonatomic) PHFetchResult *collectionsFetchResults;
-@property (strong, nonatomic) PHCachingImageManager *manager;
+@property (strong, nonatomic) PHFetchResult *collectionFetchResult;
+@property (strong, nonatomic) PHFetchResult *collectionFetchResults;
+@property (strong, nonatomic) PHCachingImageManager *imageManager;
+
+@property (strong, nonatomic) NSMutableDictionary *selectedPhotosInfo;
 
 @end
 
 @implementation DBMessagingPhotoPickerController
-
-typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
-    DBMessagingPhotoPickerControllerOptionPhotoLibrary,
-    DBMessagingPhotoPickerControllerOptionTakePhoto,
-    DBMessagingPhotoPickerControllerOptionCancel
-};
 
 + (UINib *)nib
 {
@@ -104,8 +104,6 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
     if (self) {
         self.modalPresentationStyle = UIModalPresentationCustom;
         self.transitioningDelegate = self;
-        
-        _manager = [[PHCachingImageManager alloc] init];
     }
     return self;
 }
@@ -113,6 +111,7 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
+    [self.imageManager stopCachingImagesForAllAssets];
 }
 
 - (void)viewDidLoad {
@@ -120,34 +119,72 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
     
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
+    [_photosCollectionView setAllowsMultipleSelection:YES];
+    _selectedPhotosInfo = [[NSMutableDictionary alloc] init];
+    
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
     
-    self.collectionsFetchResults = [PHAsset fetchAssetsWithOptions:options];
+    // Recently Added (Smart Album)
+    _collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumRecentlyAdded options:nil];
+    PHAssetCollection *collection = _collectionFetchResult.firstObject;
     
-    // [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+    self.collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+    
+    if (self.collectionFetchResults.count == 0) {
+    
+        // Photo Stream (Album)
+        _collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream options:nil];
+        collection = _collectionFetchResult.firstObject;
+        
+        self.collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+    }
+    
+    if (self.collectionFetchResults.count == 0) {
+   
+        // All Photos
+        _collectionFetchResult = nil;
+        
+        self.collectionFetchResults = [PHAsset fetchAssetsWithOptions:options];
+    }
+    
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     
     [_photosCollectionView registerClass:[DBMessagingPhotoPickerPhotoCell class] forCellWithReuseIdentifier:[DBMessagingPhotoPickerPhotoCell cellReuseIdentifier]];
     
     [_optionsTableView registerClass:[DBMessagingPhotoPickerOptionCell class] forCellReuseIdentifier:[DBMessagingPhotoPickerOptionCell cellReuseIdentifier]];
 }
 
+#pragma mark - Getters
+
+- (PHCachingImageManager *)imageManager {
+    
+    if (!_imageManager) {
+        _imageManager = [[PHCachingImageManager alloc] init];
+        
+        NSArray* assets = [self.collectionFetchResults objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.collectionFetchResults.count)]];
+        [_imageManager startCachingImagesForAssets:assets targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:nil];
+    }
+    
+    return _imageManager;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.collectionsFetchResults.count;
+    return self.collectionFetchResults.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     DBMessagingPhotoPickerPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[DBMessagingPhotoPickerPhotoCell cellReuseIdentifier] forIndexPath:indexPath];
     
-    PHAsset *asset = [self.collectionsFetchResults objectAtIndex:indexPath.row];
+    PHAsset *asset = [self.collectionFetchResults objectAtIndex:indexPath.row];
     
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
     
-    [_manager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+    [self.imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:options resultHandler:^(UIImage *result, NSDictionary *info) {
         cell.imageView.image = result;
     }];
     
@@ -158,52 +195,38 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([[collectionView indexPathsForSelectedItems] containsObject:indexPath]) {
-        return YES;
-    }
-    
-    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    
-    UIImage *snapshot = [collectionView snapshotRect:collectionView.bounds];
-    _snapshotImageView.image = snapshot;
-    
-    if (_selectedPhotos.count == 0) {
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect screenBounds = [[UIScreen mainScreen] bounds];
-            
-            CGFloat scaleFactor = (screenBounds.size.height * 0.7 - 150.0) / collectionView.frame.size.height;
-            CGAffineTransform translation = CGAffineTransformMakeTranslation(cell.frame.size.width * scaleFactor, 0.0);
-            _snapshotImageView.transform = CGAffineTransformScale(translation, scaleFactor, 1.0);
-            
-            CGRect frame = self.view.frame;
-            frame.size.height = screenBounds.size.height * 0.7;
-            frame.origin.y = screenBounds.size.height - frame.size.height;
-            self.view.frame = frame;
-            
-            [self.view layoutIfNeeded];
-            [collectionView.collectionViewLayout invalidateLayout];
-            
-        } completion:^(BOOL finished) {
-            if (finished) {
-                
-                [_snapshotImageView removeFromSuperview];
-                
-                [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-            }
-        }];
-    }
-    
-    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    
-    PHAsset *asset = [self.collectionsFetchResults objectAtIndex:indexPath.row];
-    
-    [_manager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+    if (!_highlighted) {
         
-        NSMutableArray *mutableSelectedPhotos = _selectedPhotos.mutableCopy;
-        [mutableSelectedPhotos addObject:result];
-        _selectedPhotos = mutableSelectedPhotos;
-    }];
+        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+        
+        UIImage *snapshot = [collectionView snapshotVisibleRect];
+        _snapshotImageView.image = snapshot;
+        
+        if (_selectedPhotosInfo.count == 0) {
+            [UIView animateWithDuration:0.3 animations:^{
+                CGRect presentingViewBounds = self.presentingViewController.view.bounds;
+                
+                CGFloat scaleFactor = (presentingViewBounds.size.height * 0.7 - _optionsTableView.frame.size.height) / collectionView.frame.size.height;
+                CGAffineTransform translation = CGAffineTransformMakeTranslation(cell.frame.size.width * scaleFactor, 0.0);
+                _snapshotImageView.transform = CGAffineTransformScale(translation, scaleFactor, 1.0);
+                
+                CGRect frame = self.view.frame;
+                frame.size.height = presentingViewBounds.size.height * 0.7;
+                frame.origin.y = presentingViewBounds.size.height - frame.size.height;
+                self.view.frame = frame;
+                
+                [self.view layoutIfNeeded];
+                [collectionView.collectionViewLayout invalidateLayout];
+                
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    [_snapshotImageView removeFromSuperview];
+                    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+                    _highlighted = YES;
+                }
+            }];
+        }
+    }
     
     return YES;
 }
@@ -217,7 +240,29 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  //  [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    
+    PHAsset *asset = [self.collectionFetchResults objectAtIndex:indexPath.row];
+    
+    [self.imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+        
+        _selectedPhotosInfo[indexPath] = result;
+        
+    }];
+    
+    if (_highlighted) {
+        [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    }
+    
+    [_optionsTableView reloadData];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [_selectedPhotosInfo removeObjectForKey:indexPath];
+    
+    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+
+    [_optionsTableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
@@ -228,13 +273,23 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBMessagingPhotoPickerOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:[DBMessagingPhotoPickerOptionCell cellReuseIdentifier] forIndexPath:indexPath];
+
+    BOOL actionState = [_photosCollectionView indexPathsForSelectedItems].count > 0;
+    int photosCount = (int)[_photosCollectionView indexPathsForSelectedItems].count;
     
     switch (indexPath.row) {
-        case DBMessagingPhotoPickerControllerOptionPhotoLibrary:
-            cell.textLabel.text = @"Photo Library";
+        case DBMessagingPhotoPickerControllerOptionPhotoLibrary: {
+            
+            NSString *highlightedString = [NSString stringWithFormat:@"Send %d Photos", photosCount];
+            if (photosCount == 1) {
+                highlightedString = [highlightedString substringToIndex:highlightedString.length - 1];
+            }
+            
+            cell.textLabel.text = (actionState) ? highlightedString : @"Photo Library";
             break;
+        }
         case DBMessagingPhotoPickerControllerOptionTakePhoto:
-            cell.textLabel.text = @"Take Photo";
+            cell.textLabel.text = (actionState) ? @"Add Comment" : @"Take Photo";
             break;
         case DBMessagingPhotoPickerControllerOptionCancel:
             cell.textLabel.text = @"Cancel";
@@ -255,45 +310,47 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UIImagePickerControllerSourceType sourceType;
+    BOOL actionState = [_photosCollectionView indexPathsForSelectedItems].count > 0;
     
     switch (indexPath.row) {
         case DBMessagingPhotoPickerControllerOptionPhotoLibrary:
-            sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
+            if (actionState) {
+                
+                if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:action:)]) {
+                    [self.delegate photoPickerController:self didFinishPickingPhotos:_selectedPhotosInfo.allValues action:DBMessagingPhotoPickerControllerActionSend];
+                }
+                
+            } else {
+                if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
+                    [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionPhotoLibrary];
+                }
+            }
             break;
         case DBMessagingPhotoPickerControllerOptionTakePhoto:
-            sourceType = UIImagePickerControllerSourceTypeCamera;
-
-#if TARGET_IPHONE_SIMULATOR
             
-            NSLog(@"Error: The camera is unavailable on the simulator.");
-            
-            if ([self.delegate respondsToSelector:@selector(photoPickerControllerDidCancel:)]) {
-                [self.delegate photoPickerControllerDidCancel:self];
+            if (actionState) {
+                
+                if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:action:)]) {
+                    [self.delegate photoPickerController:self didFinishPickingPhotos:_selectedPhotosInfo.allValues action:DBMessagingPhotoPickerControllerActionComment];
+                }
+                
+            } else {
+                if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
+                    [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionTakePhoto];
+                }
             }
-            [self dismissViewControllerAnimated:YES completion:nil];
-            return;
-#endif
             break;
         case DBMessagingPhotoPickerControllerOptionCancel:
-            if ([self.delegate respondsToSelector:@selector(photoPickerControllerDidCancel:)]) {
-                [self.delegate photoPickerControllerDidCancel:self];
+            if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
+                [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionCancel];
             }
-            [self dismissViewControllerAnimated:YES completion:nil];
-            return;
+            break;
         default:
             break;
     }
-    
-    [self dismissViewControllerAnimated:YES completion:^{
 
-        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-        imagePickerController.sourceType = sourceType;
-        imagePickerController.delegate = self;
-        [self presentViewController:imagePickerController animated:YES completion:nil];
-        
-        [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:imagePickerController animated:YES completion:nil];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver
@@ -303,35 +360,32 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerOption) {
     // Call might come on any background queue. Re-dispatch to the main queue to handle it.
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        NSMutableArray *updatedCollectionsFetchResults = nil;
+        PHFetchOptions *options = [[PHFetchOptions alloc] init];
+        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
         
-        for (PHFetchResult *collectionsFetchResult in self.collectionsFetchResults) {
-            PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:collectionsFetchResult];
-            if (changeDetails) {
-                if (!updatedCollectionsFetchResults) {
-                    updatedCollectionsFetchResults = [self.collectionsFetchResults mutableCopy];
-                }
-                [updatedCollectionsFetchResults replaceObjectAtIndex:[self.collectionsFetchResults indexOfObject:collectionsFetchResult] withObject:[changeDetails fetchResultAfterChanges]];
-            }
+        if (!_collectionFetchResult) {
+            _collectionFetchResults = [PHAsset fetchAssetsWithOptions:options];
+            [_photosCollectionView reloadData];
         }
         
-        if (updatedCollectionsFetchResults) {
-            self.collectionsFetchResults = updatedCollectionsFetchResults;
+        PHFetchResult *updatedCollectionsFetchResult = nil;
+        
+        PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:_collectionFetchResult];
+        if (changeDetails) {
+            updatedCollectionsFetchResult = [changeDetails fetchResultAfterChanges];
+        }
+        
+        if (updatedCollectionsFetchResult) {
+            _collectionFetchResult = updatedCollectionsFetchResult;
+            
+            PHAssetCollection *collection = _collectionFetchResult.firstObject;
+            
+            _collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
             [_photosCollectionView reloadData];
         }
         
     });
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
- 
-    if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:)]) {
-        [self.delegate photoPickerController:self didFinishPickingPhotos:@[info[UIImagePickerControllerOriginalImage]]];
-    }
-    
-    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIViewControllerTransitioning
