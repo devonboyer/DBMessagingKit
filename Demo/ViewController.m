@@ -15,7 +15,8 @@
 #import "ViewController.h"
 #import "Message.h"
 
-@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, DBMessagingPhotoPickerControllerDelegate> {
+    
     NSDictionary *_boldAttributes;
     NSDictionary *_normalAttributes;
     NSDictionary *_timestampAttributes;
@@ -130,10 +131,20 @@
 
 - (void)cameraButtonTapped:(id)sender {
     
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePickerController.delegate = self;
-    [self presentViewController:imagePickerController animated:true completion:nil];
+    /**
+     *  The 'DBMessagingPhotoPickerController' is only available in iOS8.
+     */
+    if ([DBMessagingPhotoPickerController class]) {
+        DBMessagingPhotoPickerController *photoPickerController = [[DBMessagingPhotoPickerController alloc] init];
+        photoPickerController.delegate = self;
+        [self presentViewController:photoPickerController animated:YES completion:nil];
+        
+    } else {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePickerController.delegate = self;
+        [self presentViewController:imagePickerController animated:true completion:nil];
+    }
 }
 
 - (void)sendButtonTapped:(id)sender {
@@ -174,6 +185,15 @@
                                                        mime:mime
                                                sentByUserID:[self senderUserID]
                                                      sentAt:[NSDate date]]];
+    }
+}
+
+#pragma mark - DBMessagingPhotoPickerControllerDelegate
+
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos {
+    
+    for (UIImage *photo in photos) {
+        [self.messageInputToolbar.textView addImageAttatchment:photo];
     }
 }
 
@@ -334,7 +354,7 @@
     
     if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]]) {
         
-        return CGSizeMake(240.0, 220.0);
+        return CGSizeMake(200.0, 220.0);
     }
     
     if ([mime isEqualToString:[DBMessagingVideoMediaCell mimeType]]) {
@@ -343,6 +363,7 @@
     
     if ([mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
         
+        return CGSizeMake(200.0, 100.0);
     }
     
     return collectionViewLayout.mediaViewReferenceSize;
