@@ -58,7 +58,7 @@ The input toolbar's buttons are totally up to you. It is recommended that you ad
 
 You can choose the 'mime' type that should correspond to each cell. The 'mime' type is used to decide which
 type of view should be used to display the value for a given message. The mime type can be accessed at any 
-time by calling [DBMessagingTextCell mimeType].
+time by calling ```[DBMessagingTextCell mimeType]```.
 
 Examples of possible mime types and associated values (again these are totally up to your app's schema):
 - mime -> 'image/url'       value -> The URL for the remote image or video.
