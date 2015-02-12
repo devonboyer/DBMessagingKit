@@ -52,4 +52,6 @@ A component is built to handle a common task in a messging interface. Components
 
 A 'DBMessagingPhotoPickerController' provides an interface to quickly choose a photo from the user's recent photos. This component was modelled after a similar photo picker found in iMessage.
 
+The 'DBMessagingPhotoPickerController' is only available in iOS8.
+
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/6176598/2ad436ea-b2ce-11e4-9760-8ab1647d174d.png)
