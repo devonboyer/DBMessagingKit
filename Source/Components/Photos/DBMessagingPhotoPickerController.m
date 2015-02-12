@@ -14,7 +14,7 @@
 
 #import "DBMessagingPhotoPickerController.h"
 
-#import "DBMessagingPhotoPickerPresentationControler.h"
+#import "DBMessagingPhotoPickerPresentationController.h"
 
 #import "UIColor+Messaging.h"
 #import "UIImage+Messaging.h"
@@ -127,7 +127,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *optionsTableView;
 @property (weak, nonatomic) IBOutlet UICollectionView *photosCollectionView;
-@property (weak, nonatomic) IBOutlet UIImageView *snapshotImageView;
 
 @property (strong, nonatomic) PHFetchOptions *fetchOptions;
 @property (strong, nonatomic) PHFetchResult *collectionFetchResult;
@@ -231,7 +230,7 @@
 - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
     
     if (presented == self) {
-        return [[DBMessagingPhotoPickerPresentationControler alloc] initWithPresentedViewController:presented presentingViewController:presenting];
+        return [[DBMessagingPhotoPickerPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
     }
     
     return nil;

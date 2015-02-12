@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="optionsTableView" destination="d5E-q6-ro1" id="2sN-Hn-QHD"/>
                 <outlet property="photosCollectionView" destination="aRc-3L-Fd0" id="BZN-zU-WA7"/>
-                <outlet property="snapshotImageView" destination="0qV-0a-1Pp" id="Pay-0o-IMj"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ery-8L-laQ"/>
             </connections>
         </placeholder>
@@ -43,9 +42,6 @@
                         <outlet property="delegate" destination="-1" id="SCL-J1-GUG"/>
                     </connections>
                 </collectionView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0qV-0a-1Pp">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="450"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -54,10 +50,6 @@
                 <constraint firstItem="aRc-3L-Fd0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Dho-bU-zlq"/>
                 <constraint firstItem="d5E-q6-ro1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PsL-ZK-Hch"/>
                 <constraint firstAttribute="trailing" secondItem="aRc-3L-Fd0" secondAttribute="trailing" id="UYr-12-kwG"/>
-                <constraint firstItem="aRc-3L-Fd0" firstAttribute="centerY" secondItem="0qV-0a-1Pp" secondAttribute="centerY" id="XaI-e3-Whg"/>
-                <constraint firstItem="aRc-3L-Fd0" firstAttribute="centerX" secondItem="0qV-0a-1Pp" secondAttribute="centerX" id="Xku-g0-zuL"/>
-                <constraint firstItem="aRc-3L-Fd0" firstAttribute="height" secondItem="0qV-0a-1Pp" secondAttribute="height" id="b6r-Ud-3KK"/>
-                <constraint firstItem="aRc-3L-Fd0" firstAttribute="width" secondItem="0qV-0a-1Pp" secondAttribute="width" id="etT-vL-BfD"/>
                 <constraint firstItem="d5E-q6-ro1" firstAttribute="top" secondItem="aRc-3L-Fd0" secondAttribute="bottom" id="qlb-0O-upM"/>
                 <constraint firstAttribute="bottom" secondItem="d5E-q6-ro1" secondAttribute="bottom" id="ye6-jz-jZn"/>
             </constraints>

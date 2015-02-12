@@ -1,5 +1,5 @@
 //
-//  DBMessagingPhotoPickerPresentationControler.m
+//  DBMessagingPhotoPickerPresentationController.m
 //
 //
 //  GitHub
@@ -12,16 +12,16 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import "DBMessagingPhotoPickerPresentationControler.h"
+#import "DBMessagingPhotoPickerPresentationController.h"
 
-@interface DBMessagingPhotoPickerPresentationControler ()
+@interface DBMessagingPhotoPickerPresentationController ()
 
 @property (strong, nonatomic) UIView *dimmingView;
 @property (strong, nonatomic) UITapGestureRecognizer *dimmingViewTap;
 
 @end
 
-@implementation DBMessagingPhotoPickerPresentationControler
+@implementation DBMessagingPhotoPickerPresentationController
 
 #pragma mark - Getters
 

@@ -16,7 +16,7 @@
 		673528FF1A8A5D7500F66DE1 /* DBMessagingLocationPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528FE1A8A5D7500F66DE1 /* DBMessagingLocationPin.m */; };
 		6735290D1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */; };
 		6735290F1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */; };
-		673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m */; };
+		673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m */; };
 		673529291A8D349A00F66DE1 /* checkmark_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 673529261A8D349A00F66DE1 /* checkmark_icon.png */; };
 		6735292A1A8D349A00F66DE1 /* checkmark_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 673529271A8D349A00F66DE1 /* checkmark_icon@2x.png */; };
 		6735292B1A8D349A00F66DE1 /* checkmark_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 673529281A8D349A00F66DE1 /* checkmark_icon@3x.png */; };
@@ -84,8 +84,8 @@
 		6735290B1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerController.h; sourceTree = "<group>"; };
 		6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerController.m; sourceTree = "<group>"; };
 		6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBMessagingPhotoPickerController.xib; sourceTree = "<group>"; };
-		673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerPresentationControler.h; sourceTree = "<group>"; };
-		673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerPresentationControler.m; sourceTree = "<group>"; };
+		673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerPresentationController.h; sourceTree = "<group>"; };
+		673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerPresentationController.m; sourceTree = "<group>"; };
 		673529261A8D349A00F66DE1 /* checkmark_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark_icon.png; sourceTree = "<group>"; };
 		673529271A8D349A00F66DE1 /* checkmark_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark_icon@2x.png"; sourceTree = "<group>"; };
 		673529281A8D349A00F66DE1 /* checkmark_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark_icon@3x.png"; sourceTree = "<group>"; };
@@ -205,8 +205,8 @@
 				6735290B1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.h */,
 				6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */,
 				6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */,
-				673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.h */,
-				673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m */,
+				673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.h */,
+				673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m */,
 			);
 			path = Photos;
 			sourceTree = "<group>";
@@ -558,7 +558,7 @@
 				677B1CA41A855EC3007D2967 /* DBInteractiveKeyboardController.m in Sources */,
 				677B1CB01A855EC3007D2967 /* DBMessagingInputToolbar.m in Sources */,
 				677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */,
-				673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationControler.m in Sources */,
+				673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m in Sources */,
 				673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */,
 				677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */,
 				673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */,

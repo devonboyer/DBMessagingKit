@@ -1,5 +1,5 @@
 //
-//  DBMessagingPhotoPickerPresentationControler.h
+//  DBMessagingPhotoPickerPresentationController.h
 //
 //
 //  GitHub
@@ -14,6 +14,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DBMessagingPhotoPickerPresentationControler : UIPresentationController
+@interface DBMessagingPhotoPickerPresentationController : UIPresentationController
 
 @end
