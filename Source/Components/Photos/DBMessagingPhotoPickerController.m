@@ -72,17 +72,26 @@
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    _imageView.image = nil;
+}
+
 @end
 
 @interface DBMessagingPhotoPickerController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, PHPhotoLibraryChangeObserver>
 {
-    BOOL _highlighted;
+    CGSize _imageManagerTargetSize;
+    PHImageContentMode _imageManagerContentMode;
+    PHImageRequestOptions *_imageManagerRequestOptions;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *optionsTableView;
 @property (weak, nonatomic) IBOutlet UICollectionView *photosCollectionView;
 @property (weak, nonatomic) IBOutlet UIImageView *snapshotImageView;
 
+@property (strong, nonatomic) PHFetchOptions *fetchOptions;
 @property (strong, nonatomic) PHFetchResult *collectionFetchResult;
 @property (strong, nonatomic) PHFetchResult *collectionFetchResults;
 @property (strong, nonatomic) PHCachingImageManager *imageManager;
@@ -104,6 +113,17 @@
     if (self) {
         self.modalPresentationStyle = UIModalPresentationCustom;
         self.transitioningDelegate = self;
+        
+        _imageManager = [[PHCachingImageManager alloc] init];
+        _imageManager.allowsCachingHighQualityImages = YES;
+        
+        CGFloat estimatedCellHeight = self.view.bounds.size.height - _optionsTableView.frame.size.height;
+        CGSize estimatedCellSize = CGSizeMake(estimatedCellHeight * 1.2, estimatedCellHeight);
+        
+        _imageManagerContentMode = PHImageContentModeAspectFit;
+        _imageManagerTargetSize = estimatedCellSize;
+        _imageManagerRequestOptions = [[PHImageRequestOptions alloc] init];
+        _imageManagerRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
     }
     return self;
 }
@@ -111,7 +131,6 @@
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
-    [self.imageManager stopCachingImagesForAllAssets];
 }
 
 - (void)viewDidLoad {
@@ -122,52 +141,62 @@
     [_photosCollectionView setAllowsMultipleSelection:YES];
     _selectedPhotosInfo = [[NSMutableDictionary alloc] init];
     
-    PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
-    
-    // Recently Added (Smart Album)
+    // 1. Try Recently Added (Smart Album)
     _collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumRecentlyAdded options:nil];
     PHAssetCollection *collection = _collectionFetchResult.firstObject;
     
-    self.collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+    self.collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:self.fetchOptions];
     
     if (self.collectionFetchResults.count == 0) {
     
-        // Photo Stream (Album)
+        // 2. Try Photo Stream (Album)
         _collectionFetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream options:nil];
         collection = _collectionFetchResult.firstObject;
         
-        self.collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:options];
+        self.collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:self.fetchOptions];
     }
     
     if (self.collectionFetchResults.count == 0) {
    
-        // All Photos
+        // 3. Use All Photos
         _collectionFetchResult = nil;
         
-        self.collectionFetchResults = [PHAsset fetchAssetsWithOptions:options];
+        self.collectionFetchResults = [PHAsset fetchAssetsWithOptions:self.fetchOptions];
     }
     
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     
+    [self resetImageManager];
+    
     [_photosCollectionView registerClass:[DBMessagingPhotoPickerPhotoCell class] forCellWithReuseIdentifier:[DBMessagingPhotoPickerPhotoCell cellReuseIdentifier]];
     
     [_optionsTableView registerClass:[DBMessagingPhotoPickerOptionCell class] forCellReuseIdentifier:[DBMessagingPhotoPickerOptionCell cellReuseIdentifier]];
+    
+    [_optionsTableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"Header"];
 }
 
 #pragma mark - Getters
 
-- (PHCachingImageManager *)imageManager {
+- (PHFetchOptions *)fetchOptions {
     
-    if (!_imageManager) {
-        _imageManager = [[PHCachingImageManager alloc] init];
-        
-        NSArray* assets = [self.collectionFetchResults objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.collectionFetchResults.count)]];
-        [_imageManager startCachingImagesForAssets:assets targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:nil];
+    if (!_fetchOptions) {
+        _fetchOptions = [[PHFetchOptions alloc] init];
+        _fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        _fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
     }
     
-    return _imageManager;
+    return _fetchOptions;
+}
+
+#pragma mark - UIViewControllerTransitioning
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
+    
+    if (presented == self) {
+        return [[DBMessagingPhotoPickerPresentationControler alloc] initWithPresentedViewController:presented presentingViewController:presenting];
+    }
+    
+    return nil;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -181,10 +210,7 @@
     
     PHAsset *asset = [self.collectionFetchResults objectAtIndex:indexPath.row];
     
-    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
-    options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    
-    [self.imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:options resultHandler:^(UIImage *result, NSDictionary *info) {
+    [self.imageManager requestImageForAsset:asset targetSize:_imageManagerTargetSize contentMode:_imageManagerContentMode options:_imageManagerRequestOptions resultHandler:^(UIImage *result, NSDictionary *info) {
         cell.imageView.image = result;
     }];
     
@@ -193,65 +219,31 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (!_highlighted) {
-        
-        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-        
-        UIImage *snapshot = [collectionView snapshotVisibleRect];
-        _snapshotImageView.image = snapshot;
-        
-        if (_selectedPhotosInfo.count == 0) {
-            [UIView animateWithDuration:0.3 animations:^{
-                CGRect presentingViewBounds = self.presentingViewController.view.bounds;
-                
-                CGFloat scaleFactor = (presentingViewBounds.size.height * 0.7 - _optionsTableView.frame.size.height) / collectionView.frame.size.height;
-                CGAffineTransform translation = CGAffineTransformMakeTranslation(cell.frame.size.width * scaleFactor, 0.0);
-                _snapshotImageView.transform = CGAffineTransformScale(translation, scaleFactor, 1.0);
-                
-                CGRect frame = self.view.frame;
-                frame.size.height = presentingViewBounds.size.height * 0.7;
-                frame.origin.y = presentingViewBounds.size.height - frame.size.height;
-                self.view.frame = frame;
-                
-                [self.view layoutIfNeeded];
-                [collectionView.collectionViewLayout invalidateLayout];
-                
-            } completion:^(BOOL finished) {
-                if (finished) {
-                    [_snapshotImageView removeFromSuperview];
-                    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-                    _highlighted = YES;
-                }
-            }];
-        }
-    }
-    
-    return YES;
-}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     UIEdgeInsets sectionInset = collectionViewLayout.sectionInset;
     
-    return CGSizeMake(collectionView.bounds.size.height * 0.54,
-                      collectionView.bounds.size.height - sectionInset.top - sectionInset.bottom);
+    PHAsset *asset = [self.collectionFetchResults objectAtIndex:indexPath.row];
+
+    CGFloat itemHeight = collectionView.bounds.size.height - sectionInset.top - sectionInset.bottom;
+    CGFloat ratio = itemHeight / (asset.pixelHeight / 2.0);
+    CGFloat itemWidth = (asset.pixelWidth / 2.0) * ratio;
+    
+    return CGSizeMake(itemWidth, itemHeight);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     PHAsset *asset = [self.collectionFetchResults objectAtIndex:indexPath.row];
     
-    [self.imageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFit options:nil resultHandler:^(UIImage *result, NSDictionary *info) {
+    [self.imageManager requestImageForAsset:asset targetSize:_imageManagerTargetSize contentMode:_imageManagerContentMode options:_imageManagerRequestOptions resultHandler:^(UIImage *result, NSDictionary *info) {
         
         _selectedPhotosInfo[indexPath] = result;
         
     }];
     
-    if (_highlighted) {
-        [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-    }
+    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     
     [_optionsTableView reloadData];
 }
@@ -273,7 +265,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DBMessagingPhotoPickerOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:[DBMessagingPhotoPickerOptionCell cellReuseIdentifier] forIndexPath:indexPath];
-
+    
     BOOL actionState = [_photosCollectionView indexPathsForSelectedItems].count > 0;
     int photosCount = (int)[_photosCollectionView indexPathsForSelectedItems].count;
     
@@ -305,6 +297,16 @@
     return tableView.bounds.size.height / 3;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.5;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
+    [headerView.contentView setBackgroundColor:tableView.separatorColor];
+    return headerView;
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -322,9 +324,11 @@
                 }
                 
             } else {
-                if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
-                    [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionPhotoLibrary];
-                }
+                [self dismissViewControllerAnimated:YES completion:^{
+                    if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
+                        [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionPhotoLibrary];
+                    }
+                }];
             }
             break;
         case DBMessagingPhotoPickerControllerOptionTakePhoto:
@@ -336,21 +340,25 @@
                 }
                 
             } else {
+                [self dismissViewControllerAnimated:YES completion:^{
+                    if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
+                        [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionTakePhoto];
+                    }
+                }];
+            }
+            break;
+        case DBMessagingPhotoPickerControllerOptionCancel: {
+            [self dismissViewControllerAnimated:YES completion:^{
                 if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
-                    [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionTakePhoto];
+                    [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionCancel];
                 }
-            }
+            }];
             break;
-        case DBMessagingPhotoPickerControllerOptionCancel:
-            if ([self.delegate respondsToSelector:@selector(photoPickerController:didDismissWithOption:)]) {
-                [self.delegate photoPickerController:self didDismissWithOption:DBMessagingPhotoPickerControllerOptionCancel];
-            }
-            break;
+        }
         default:
             break;
     }
 
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver
@@ -360,12 +368,11 @@
     // Call might come on any background queue. Re-dispatch to the main queue to handle it.
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        PHFetchOptions *options = [[PHFetchOptions alloc] init];
-        options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-        options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
-        
         if (!_collectionFetchResult) {
-            _collectionFetchResults = [PHAsset fetchAssetsWithOptions:options];
+            _collectionFetchResults = [PHAsset fetchAssetsWithOptions:self.fetchOptions];
+            
+            [self resetImageManager];
+            
             [_photosCollectionView reloadData];
         }
         
@@ -381,23 +388,27 @@
             
             PHAssetCollection *collection = _collectionFetchResult.firstObject;
             
-            _collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+            _collectionFetchResults = [PHAsset fetchAssetsInAssetCollection:collection options:self.fetchOptions];
+            
+            [self resetImageManager];
+            
             [_photosCollectionView reloadData];
         }
         
     });
 }
 
-#pragma mark - UIViewControllerTransitioning
+#pragma mark - Utility
 
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
+- (void)resetImageManager {
     
-    if (presented == self) {
-        return [[DBMessagingPhotoPickerPresentationControler alloc] initWithPresentedViewController:presented presentingViewController:presenting];
-    }
+    [_imageManager stopCachingImagesForAllAssets];
+
+    NSArray* assets = [self.collectionFetchResults objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.collectionFetchResults.count)]];
     
-    return nil;
+    [_imageManager startCachingImagesForAssets:assets targetSize:_imageManagerTargetSize contentMode:_imageManagerContentMode options:_imageManagerRequestOptions];
 }
+
 
 @end
 

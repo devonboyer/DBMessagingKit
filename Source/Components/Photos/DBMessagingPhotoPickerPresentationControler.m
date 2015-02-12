@@ -23,26 +23,36 @@
 
 @implementation DBMessagingPhotoPickerPresentationControler
 
+#pragma mark - Getters
+
+- (UIView *)dimmingView {
+    
+    if (!_dimmingView) {
+        _dimmingView = [[UIView alloc] init];
+        _dimmingView.frame = self.containerView.bounds;
+        _dimmingView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        _dimmingView.alpha = 0.0;
+        
+        _dimmingViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
+        [_dimmingView addGestureRecognizer:_dimmingViewTap];
+    }
+    
+    return _dimmingView;
+}
+
 - (void)presentationTransitionWillBegin {
     [super presentationTransitionWillBegin];
 
     // Add the dimming view and the presented view to the heirarchy
-    _dimmingView = [[UIView alloc] init];
-    _dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    _dimmingView.frame = self.containerView.bounds;
-    _dimmingView.alpha = 0.0;
-    
-    _dimmingViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
-    [_dimmingView addGestureRecognizer:_dimmingViewTap];
-    
-    [self.containerView addSubview:_dimmingView];
+    [self.containerView addSubview:self.dimmingView];
     [self.containerView addSubview:self.presentedView];
     
     // Fade in the dimming view alongside the transition
     id<UIViewControllerTransitionCoordinator> transitionCoordinator = self.presentingViewController.transitionCoordinator;
     
     [transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        _dimmingView.alpha = 1.0;
+        self.dimmingView.alpha = 1.0;
     } completion:nil];
 }
 
@@ -51,7 +61,7 @@
     
     // If the presentation didn't complete, remove the dimming view
     if (!completed) {
-        [_dimmingView removeFromSuperview];
+        [self.dimmingView removeFromSuperview];
     }
 }
 
@@ -62,7 +72,7 @@
     id<UIViewControllerTransitionCoordinator> transitionCoordinator = self.presentingViewController.transitionCoordinator;
     
     [transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        _dimmingView.alpha = 0.0;
+        self.dimmingView.alpha = 0.0;
     } completion:nil];
 }
 
@@ -71,14 +81,16 @@
     
     // If the dismissal completed, remove the dimming view
     if (completed) {
-        [_dimmingView removeFromSuperview];
+        [self.dimmingView removeFromSuperview];
     }
 }
 
 - (CGRect)frameOfPresentedViewInContainerView {
-    CGRect frame = self.containerView.frame;
-    frame.size.height = self.containerView.frame.size.height / 2.0;
-    frame.origin.y = self.containerView.frame.size.height  - frame.size.height;
+    CGRect superFrame = [super frameOfPresentedViewInContainerView];
+    
+    CGRect frame = superFrame;
+    frame.size.height = MAX(290.0, superFrame.size.height * 0.7);
+    frame.origin.y = superFrame.size.height  - frame.size.height;
     return frame;
 }
 

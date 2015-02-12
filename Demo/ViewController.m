@@ -24,12 +24,18 @@
     DBMessageBubbleController *_messageBubbleController;
 }
 
+@property (strong, nonatomic) UIImagePickerController *imagePickerController;
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _imagePickerController = [[UIImagePickerController alloc] init];
+    _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    _imagePickerController.delegate = self;
     
     _messages = [[NSMutableArray alloc] init];
     
@@ -140,10 +146,8 @@
         [self presentViewController:photoPickerController animated:YES completion:nil];
         
     } else {
-        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePickerController.delegate = self;
-        [self presentViewController:imagePickerController animated:true completion:nil];
+
+        [self presentViewController:_imagePickerController animated:true completion:nil];
     }
 }
 
@@ -201,20 +205,21 @@
             break;
     }
     
-    NSLog(@"%d", (int)photos.count);
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didDismissWithOption:(DBMessagingPhotoPickerControllerOption)option {
     
     switch (option) {
         case DBMessagingPhotoPickerControllerOptionPhotoLibrary:
-            NSLog(@"Photo Library");
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController:_imagePickerController animated:true completion:nil];
             break;
         case DBMessagingPhotoPickerControllerOptionTakePhoto:
-            NSLog(@"Take Photo");
+            _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:_imagePickerController animated:true completion:nil];
             break;
         case DBMessagingPhotoPickerControllerOptionCancel:
-            NSLog(@"Cancel");
             break;
         default:
             break;
