@@ -1,6 +1,6 @@
 #DBMessagingKit
 
-######TimestampStyleHidden                             TimestampStyleSliding######
+######DBMessagingTimestampStyleHidden                       DBMessagingTimestampStyleSliding######
 
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/5310054/ceb41222-7bfa-11e4-858e-2c6a7fe4c055.gif)
         
