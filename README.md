@@ -1,10 +1,12 @@
 #DBMessagingKit
 
-######DBMessagingTimestampStyleHidden              DBMessagingTimestampStyleSliding######
-
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/5310054/ceb41222-7bfa-11e4-858e-2c6a7fe4c055.gif)
                  
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/6097248/707975a4-af84-11e4-989e-a19cb0ca4708.gif)
+
+*DBMessagingTimestampStyleHidden                  DBMessagingTimestampStyleSliding*
+
+
 ####What is this repository for?####
 
 An open-source Messaging UI Kit for iOS, built with simplicity and customization in mind. The kit provides the tools to create a messaging interface while allowing it to work with your app's schema.
