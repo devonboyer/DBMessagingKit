@@ -44,8 +44,11 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
 
-####What's Next?####
+####Components####
 
-- Springy bubbles
-- Support for 'DBMessagingInputToolbarItemPositionTop' and 'DBMessagingInputToolbarItemPositionBottom'
-- CocoaPods installation
+A component is built to handle a common task in a messging interface. Components are completly optional.
+
+#####DBMessagingPhotoPickerController#####
+
+A 'DBMessagingPhotoPickerController' provides an interface to quickly choose a photo from the user's recent photos. This component was modelled after a similar photo picker found in iMessage.
+
