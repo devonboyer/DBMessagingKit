@@ -9,7 +9,7 @@
 
 ####What is this repository for?####
 
-An open-source Messaging UI Kit for iOS, built with simplicity and customization in mind. The kit provides the tools to create a messaging interface while allowing it to work with your app's schema.
+An open-source Messaging UI Kit for iOS, built with simplicity and customization in mind. The kit provides the tools to create a messaging interface while allowing it to work with your app's schema. This library was built to provide the tools you need to build a messaging UI without the need to force your data into any model object or protocol.
 
 ####Supports####
  Supports the following MIME types (Internet Media Type):
