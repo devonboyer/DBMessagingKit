@@ -73,6 +73,15 @@ Examples of possible mime types and associated values (again these are totally u
     [DBMessagingLocationMediaCell setMimeType:@"geo"];
 ```
 
+The mime type you for each type of cell corresponds to the type of view that will be chosen to display your data. For example, if a message at a given index path contains text, you should return the same mime type you assigned to ```DBMessagingTextCell```.
+
+```objectiveC
+- (NSString *)collectionView:(UICollectionView *)collectionView mimeForMessageAtIndexPath:(NSIndexPath *)indexPath {
+    Message *message = [_messages objectAtIndex:indexPath.row];
+    return message.mime;
+}
+```
+
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
 
