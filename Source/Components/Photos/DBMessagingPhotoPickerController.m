@@ -16,7 +16,6 @@
 
 #import "DBMessagingPhotoPickerPresentationControler.h"
 #import "UIColor+Messaging.h"
-#import "UIScrollView+Messaging.h"
 
 #import <Photos/Photos.h>
 
