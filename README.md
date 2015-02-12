@@ -51,7 +51,7 @@ The input toolbar's buttons are totally up to you. It is recommended that you ad
     UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
     
     [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
-    [self.messageInputToolbar addItem:locationBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
+    [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
 ```
 
 #####Mime Types#####
