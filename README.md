@@ -53,6 +53,14 @@ The input toolbar's buttons are totally up to you. It is recommended that you ad
     [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
     [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
 ```
+At any time you can ask the input toolbar for the current 'Message Parts'. A message part is a dictionary that contains a mime type and a value.
+
+```objectiveC
+NSString *mime = part[DBMessagePartMIMEKey];
+id value = part[DBMessagePartValueKey];
+```
+
+For example, when composing a message comprised simply of text, the input toolbar will contain a single message part with a mime of ```[DBMessagingTextCell mimeType]``` and value of type ```NSString```.
 
 #####Mime Types#####
 
