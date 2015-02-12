@@ -39,8 +39,7 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 
 #####Message Bubbles#####
 - For complex message bubble layouts (such as Facebook Messenger) you can use a ```DBMessageBubbleController``` to figure out for you which message bubble should be displayed for a given message.
-- Message bubbles can be created by passing "template" images to an instance of ```DBMessageBubbleController```.
-- Message bubbles will revert to the "default" message bubble if a top, middle, or bottom message bubble has not been specified. A "default" message bubble must be specified.
+- Message bubbles can be created by passing 'template' images to an instance of ```DBMessageBubbleController```.
 - You can optionally return a message bubble (UIImageView) in the appropriate dataSource method of your choice or use the convience method ```messageBubbleForItemAtIndexPath:``` of a ```DBMessageBubbleController```.
 
 #####Input Toolbar#####
