@@ -36,8 +36,8 @@
     
     UIImage *bubble = bubbleTemplate;
     
-    UIImage *normalBubble = [bubble imageWithColor:color];
-    UIImage *highlightedBubble = [bubble imageWithColor:[color colorByDarkeningColorWithValue:0.08f]];
+    UIImage *normalBubble = [bubble imageOverlayedWithColor:color];
+    UIImage *highlightedBubble = [bubble imageOverlayedWithColor:[color colorByDarkeningColorWithValue:0.08f]];
     
     if (flippedForIncoming) {
         normalBubble = [DBMessageBubbleFactory horizontallyFlippedImageFromImage:normalBubble];

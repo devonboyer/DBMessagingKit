@@ -15,7 +15,9 @@
 #import "DBMessagingPhotoPickerController.h"
 
 #import "DBMessagingPhotoPickerPresentationControler.h"
+
 #import "UIColor+Messaging.h"
+#import "UIImage+Messaging.h"
 
 #import <Photos/Photos.h>
 
@@ -46,8 +48,11 @@
 @interface DBMessagingPhotoPickerPhotoCell: UICollectionViewCell
 
 @property (strong, nonatomic) UIImageView *imageView;
+@property (strong, nonatomic) UIButton *selectionIndicatorButton;
 
 + (NSString *)cellReuseIdentifier;
+
+- (void)setPercentVisible:(CGFloat)percent;
 
 @end
 
@@ -67,6 +72,22 @@
         [_imageView setBackgroundColor:[UIColor clearColor]];
         [_imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         [self.contentView addSubview:_imageView];
+        
+        _selectionIndicatorButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+        [_selectionIndicatorButton setImage:[UIImage imageNamed:@"checkmark_icon"] forState:UIControlStateSelected];
+        [_selectionIndicatorButton setImage:nil forState:UIControlStateNormal];
+        [_selectionIndicatorButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
+        [_selectionIndicatorButton setUserInteractionEnabled:NO];
+        [_selectionIndicatorButton setClipsToBounds:YES];
+        [_selectionIndicatorButton.layer setMasksToBounds:NO];
+        [_selectionIndicatorButton.layer setCornerRadius:_selectionIndicatorButton.frame.size.height / 2.0];
+        [_selectionIndicatorButton.layer setBorderWidth:1.0];
+        [_selectionIndicatorButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [_selectionIndicatorButton.layer setShadowColor:[UIColor blackColor].CGColor];
+        [_selectionIndicatorButton.layer setShadowOpacity:0.4];
+        [_selectionIndicatorButton.layer setShadowOffset:CGSizeMake(0, 0)];
+        [_selectionIndicatorButton.layer setShadowRadius:3];
+        [self.contentView addSubview:_selectionIndicatorButton];
     }
     return self;
 }
@@ -75,6 +96,24 @@
     [super prepareForReuse];
     
     _imageView.image = nil;
+}
+
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
+    
+    _selectionIndicatorButton.selected = selected;
+}
+
+- (void)setPercentVisible:(CGFloat)percent {
+    
+    UIEdgeInsets inset = UIEdgeInsetsMake(0, 4, 4, 4);
+    CGFloat buttonWidth = _selectionIndicatorButton.frame.size.width;
+    CGSize size = self.contentView.frame.size;
+    CGPoint finalCenter = CGPointMake(size.width - buttonWidth / 2.0 - inset.right, size.height - buttonWidth / 2.0 - inset.bottom);
+    CGPoint initialCenter = CGPointMake(inset.left + buttonWidth / 2.0, finalCenter.y);
+    
+    CGPoint newCenter = CGPointMake(MAX((size.width * percent) - buttonWidth / 2.0 - inset.right, initialCenter.x), finalCenter.y);
+    _selectionIndicatorButton.center = newCenter;
 }
 
 @end
@@ -212,6 +251,17 @@
     [self.imageManager requestImageForAsset:asset targetSize:_imageManagerTargetSize contentMode:_imageManagerContentMode options:_imageManagerRequestOptions resultHandler:^(UIImage *result, NSDictionary *info) {
         cell.imageView.image = result;
     }];
+    
+    
+    // Adjust percent visible
+    CGRect cellRect = [collectionView convertRect:cell.frame toView:self.view];
+    CGFloat percentVisible = MAX((CGRectGetMaxX(collectionView.frame) - cellRect.origin.x) / cellRect.size.width, 0.0);
+    
+    if (percentVisible >= 1) {
+        percentVisible = 1;
+    }
+    
+    [cell setPercentVisible:percentVisible];
     
     return cell;
 }
@@ -358,6 +408,25 @@
             break;
     }
 
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    if (scrollView == _photosCollectionView) {
+        
+        for (DBMessagingPhotoPickerPhotoCell *cell in _photosCollectionView.visibleCells) {
+            CGRect cellRect = [scrollView convertRect:cell.frame toView:self.view];
+            CGFloat percentVisible = MAX((CGRectGetMaxX(scrollView.frame) - cellRect.origin.x) / cellRect.size.width, 0.0);
+            
+            if (percentVisible >= 1) {
+                percentVisible = 1;
+            }
+            
+            [cell setPercentVisible:percentVisible];
+        }
+    }
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver

@@ -19,6 +19,8 @@
 
 @implementation UIImage (Messaging)
 
+#pragma mark - Base64
+
 - (NSString *)encodeToBase64String {
     return [UIImageJPEGRepresentation(self, 0.5) base64EncodedStringWithOptions:0];
 }
@@ -27,6 +29,8 @@
     NSData *data = [[NSData alloc] initWithBase64EncodedString:encodedString options:NSDataBase64DecodingIgnoreUnknownCharacters];
     return [[UIImage alloc] initWithData:data];
 }
+
+#pragma mark - Image Manipulation
 
 + (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)source {
     
@@ -49,52 +53,22 @@
     return finishedImage;
 }
 
-+ (UIImage *)imageWithBorder:(CGFloat)borderWidth color:(UIColor *)borderColor fromImage:(UIImage *)source;
++ (UIImage *)imageWithColor:(UIColor *)color
 {
-    CGSize imageSize = source.size;
-    UIGraphicsBeginImageContextWithOptions(imageSize, NO, [UIScreen mainScreen].scale);
-    
-    CGRect drawingRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
-    
-    // Add a clip before drawing anything, in the shape of an rounded rect
-    [[UIBezierPath bezierPathWithRoundedRect:drawingRect
-                                cornerRadius:imageSize.height / 2.0] addClip];
-    
-    // Draw the image
-    CGFloat r, g, b, a;
-    [borderColor getRed: &r green:&g blue:&b alpha:&a];
-    
-    [source drawInRect:drawingRect];
-    
-    // Draw the border
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetRGBStrokeColor(context, r, g, b, a);
-    CGContextStrokeRect(context, drawingRect);
     
-    UIImage *finishedImage =  UIGraphicsGetImageFromCurrentImageContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
     
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return finishedImage;
+    return image;
 }
 
-+ (UIImage *)imageForFrameAtTime:(NSTimeInterval)time movieURL:(NSURL *)movieURL {
-    
-    __block UIImage *frameImage = nil;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AVURLAsset *asset1 = [[AVURLAsset alloc] initWithURL:movieURL options:nil];
-        AVAssetImageGenerator *generate1 = [[AVAssetImageGenerator alloc] initWithAsset:asset1];
-        generate1.appliesPreferredTrackTransform = YES;
-        NSError *error = nil;
-        CGImageRef frameRef = [generate1 copyCGImageAtTime:CMTimeMake(time, 1) actualTime:NULL error:&error];
-        frameImage = [[UIImage alloc] initWithCGImage:frameRef];
-    });
-    
-    return frameImage;
-}
-
-- (UIImage *)imageWithColor:(UIColor *)color
+- (UIImage *)imageOverlayedWithColor:(UIColor *)color
 {
     CGRect imageRect = CGRectMake(0.0f, 0.0f, self.size.width, self.size.height);
     

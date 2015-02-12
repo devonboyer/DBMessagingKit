@@ -31,7 +31,7 @@
         _dimmingView = [[UIView alloc] init];
         _dimmingView.frame = self.containerView.bounds;
         _dimmingView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        _dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+        _dimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4];
         _dimmingView.alpha = 0.0;
         
         _dimmingViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];

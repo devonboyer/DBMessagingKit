@@ -16,13 +16,19 @@
 
 @interface UIImage (Messaging)
 
+// Base64 Encoding/Decoding
+
 - (NSString *)encodeToBase64String;
 
 + (UIImage *)decodeBase64StringToImage:(NSString *)encodedString;
 
+
+// Image Manipulation
+
++ (UIImage *)imageWithColor:(UIColor *)color;
+
 + (UIImage *)imageByRoundingCorners:(CGFloat)cornerRadius ofImage:(UIImage *)image;
 
-+ (UIImage *)imageWithBorder:(CGFloat)borderWidth color:(UIColor *)borderColor fromImage:(UIImage *)source;
 
 /**
  *  Creates and returns a new image overlayed with the specified color.
@@ -31,6 +37,6 @@
  *
  *  @return A new image overlayed with the specified color.
  */
-- (UIImage *)imageWithColor:(UIColor *)color;
+- (UIImage *)imageOverlayedWithColor:(UIColor *)color;
 
 @end
