@@ -47,11 +47,11 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 The input toolbar's buttons are totally up to you. It is recommended that you add a 'send' button and set it as the toolbar's send button property. You are in charge of handling each button's 'action'.
 
 ```objectiveC
-    UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
-    UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
+UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
+UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
     
-    [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
-    [self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
+[self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
+[self.messageInputToolbar addItem:sendBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
 ```
 At any time you can ask the input toolbar for the current 'Message Parts'. A message part is a dictionary that contains a mime type and a value.
 
@@ -75,10 +75,10 @@ Examples of possible mime types and associated values (again these are totally u
 - mime -> 'image/jpeg',   value -> An image retrieved from disk.
 
 ```objectiveC
-    [DBMessagingTextCell setMimeType:@"text/plain"];
-    [DBMessagingImageMediaCell setMimeType:@"image/jpeg"];
-    [DBMessagingVideoMediaCell setMimeType:@"video/mp4"];
-    [DBMessagingLocationMediaCell setMimeType:@"geo"];
+[DBMessagingTextCell setMimeType:@"text/plain"];
+[DBMessagingImageMediaCell setMimeType:@"image/jpeg"];
+[DBMessagingVideoMediaCell setMimeType:@"video/mp4"];
+[DBMessagingLocationMediaCell setMimeType:@"geo"];
 ```
 
 The mime type you for each type of cell corresponds to the type of view that will be chosen to display your data. For example, if a message at a given index path contains text, you should return the same mime type you assigned to ```DBMessagingTextCell```.
