@@ -21,6 +21,8 @@
 #import "DBMessagingCollectionViewHiddenTimestampFlowLayout.h"
 #import "DBMessagingCollectionViewLayoutAttributes.h"
 
+static NSString *kDBMessagingTextCellMimeType = @"text/plain";
+
 @interface DBMessagingTextCell () <UIGestureRecognizerDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) DBMessagingCellTextView *messageTextView;
@@ -33,7 +35,12 @@
 @implementation DBMessagingTextCell
 
 + (NSString *)mimeType {
-    return @"text/plain";
+    return kDBMessagingTextCellMimeType;
+}
+
++ (void)setMimeType:(NSString *)mimeType {
+    NSAssert(![mimeType isEqualToString:@""] || mimeType != nil, @"Mime type for class %@ cannot be nil.", [self class]);
+    kDBMessagingTextCellMimeType = mimeType;
 }
 
 + (NSString *)cellReuseIdentifier {

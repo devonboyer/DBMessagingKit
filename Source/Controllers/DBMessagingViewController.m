@@ -296,18 +296,18 @@
 
     if ([mime isEqualToString:[DBMessagingTextCell mimeType]]) {
         cellIdentifier = [DBMessagingTextCell cellReuseIdentifier];
-    }
-    
-    if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]]) {
+        
+    } else if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]]) {
         cellIdentifier = [DBMessagingImageMediaCell cellReuseIdentifier];
-    }
-    
-    if ([mime isEqualToString:[DBMessagingVideoMediaCell mimeType]]) {
+        
+    } else if ([mime isEqualToString:[DBMessagingVideoMediaCell mimeType]]) {
         cellIdentifier = [DBMessagingVideoMediaCell cellReuseIdentifier];
-    }
-    
-    if ([mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
+        
+    } else if ([mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
         cellIdentifier = [DBMessagingLocationMediaCell cellReuseIdentifier];
+        
+    } else {
+        NSAssert(false, @"%s Error: Invalid mime type.", __PRETTY_FUNCTION__);
     }
     
     DBMessagingParentCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -346,13 +346,16 @@
                                       atIndexPath:indexPath];
     }
     
-    if ([mime isEqualToString:@"text/plain"]) {
+    if ([mime isEqualToString:[DBMessagingTextCell mimeType]]) {
         DBMessagingTextCell *textCell = (DBMessagingTextCell *)cell;
         textCell.messageText = (NSString *)value;
         textCell.messageTextView.dataDetectorTypes = UIDataDetectorTypeAll;
     }
     
-    if ([mime isEqualToString:@"image/jpeg"]) {
+    if ([mime isEqualToString:[DBMessagingImageMediaCell mimeType]] ||
+        [mime isEqualToString:[DBMessagingVideoMediaCell mimeType]] ||
+        [mime isEqualToString:[DBMessagingLocationMediaCell mimeType]]) {
+        
         DBMessagingImageMediaCell *mediaCell = (DBMessagingImageMediaCell *)cell;
         
         if ([collectionView.dataSource respondsToSelector:@selector(collectionView:wantsMediaForMediaCell:atIndexPath:)]) {

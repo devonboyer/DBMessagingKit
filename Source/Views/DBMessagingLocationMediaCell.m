@@ -18,6 +18,9 @@
 
 #define METERS_PER_MILE 1609.344
 
+static NSString *kDBMessagingLocationMediaCellMimeType = @"geo";
+
+
 @interface DBMessagingLocationMediaCell () <MKMapViewDelegate>
 
 @property (strong, nonatomic) MKMapView *mapView;
@@ -27,7 +30,12 @@
 @implementation DBMessagingLocationMediaCell
 
 + (NSString *)mimeType {
-    return @"geo";
+    return kDBMessagingLocationMediaCellMimeType;
+}
+
++ (void)setMimeType:(NSString *)mimeType {
+    NSAssert(![mimeType isEqualToString:@""] || mimeType != nil, @"Mime type for class %@ cannot be nil.", [self class]);
+    kDBMessagingLocationMediaCellMimeType = mimeType;
 }
 
 + (NSString *)cellReuseIdentifier {

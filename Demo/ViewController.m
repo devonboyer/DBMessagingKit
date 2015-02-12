@@ -33,6 +33,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    /*
+     * DEMO
+     */
     _imagePickerController = [[UIImagePickerController alloc] init];
     _imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     _imagePickerController.delegate = self;
@@ -64,22 +67,47 @@
                                            sentByUserID:@"Incoming"
                                                  sentAt:[NSDate date]]];
     
-    // Configure a message bubble controller with template images
+    _boldAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0],
+                        NSForegroundColorAttributeName:[UIColor lightGrayColor]};
+    
+    _normalAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:14.0],
+                          NSForegroundColorAttributeName:[UIColor lightGrayColor]};
+    
+    _timestampAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12.0],
+                             NSForegroundColorAttributeName:[UIColor lightGrayColor]};
+    
+    [[DBMessagingTimestampFormatter sharedFormatter] setDateTextAttributes:_boldAttributes];
+    [[DBMessagingTimestampFormatter sharedFormatter] setTimeTextAttributes:_normalAttributes];
+    
+    
+    /*
+     * Message Bubbles (Optional, Recommended)
+     */
     _messageBubbleController = [[DBMessageBubbleController alloc] initWithCollectionView:self.collectionView outgoingBubbleColor:[UIColor iMessageBlueColor] incomingBubbleColor:[UIColor iMessageGrayColor]];
     [_messageBubbleController setTopTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleTop"]];
     [_messageBubbleController setMiddleTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleMid"]];
     [_messageBubbleController setBottomTemplateForConsecutiveGroup:[UIImage imageNamed:@"MessageBubbleBottom"]];
     [_messageBubbleController setDefaultTemplate:[UIImage imageNamed:@"MessageBubbleDefault"]];
     
-    // Set the timestamp style
+    
+    /*
+     * Layout Attributes (Optional)
+     *
+     * @warning The 'timestampStyle' must be set before customizing layout attributes.
+     */
+    
     self.timestampStyle = DBMessagingTimestampStyleSliding;
     
-    // Customize layout attributes
     self.collectionView.collectionViewLayout.messageBubbleFont = [UIFont systemFontOfSize:18.0];
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeMake(34.0, 34.0);
     self.collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSizeMake(0.0, 0.0);
     
-    // Customize the input toolbar and add bar button items
+    /*
+     * Input Toolbar (Optional)
+     *
+     * @warning The input toolbar's buttons are totally up to you. It is recommended that you add a 'send' button and 
+     * set it as the toolbar's send button property. You are in charge of handling each button's 'action'.
+     */
     UIBarButtonItem *locationBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"location_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(locationButtonTapped:)];
     locationBarButtonItem.tintColor = [UIColor iMessageBlueColor];
     
@@ -97,18 +125,35 @@
     // Specify which bar button will be the send button
     self.messageInputToolbar.sendBarButtonItem = sendBarButtonItem;
     
-    // Setup atrributes for labels
-    _boldAttributes = @{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0],
-                            NSForegroundColorAttributeName:[UIColor lightGrayColor]};
-    
-    _normalAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:14.0],
-                        NSForegroundColorAttributeName:[UIColor lightGrayColor]};
-    
-    _timestampAttributes = @{NSFontAttributeName:[UIFont systemFontOfSize:12.0],
-                             NSForegroundColorAttributeName:[UIColor lightGrayColor]};
-    
-    [[DBMessagingTimestampFormatter sharedFormatter] setDateTextAttributes:_boldAttributes];
-    [[DBMessagingTimestampFormatter sharedFormatter] setTimeTextAttributes:_normalAttributes];
+    /*
+     * Mime Types (Optional)
+     *
+     * You can choose the 'mime' type that should correspond to each cell. The 'mime' type is used to decide which
+     * type of view should be used to display the value for a given message. The mime type can be accessed at any 
+     * time by calling [DBMessagingTextCell mimeType].
+     *
+     * The default 'mime' types are as follows:
+     *      DBMessagingTextCell - 'text/plain'
+     *      DBMessagingImageMediaCell - 'image/jpeg'
+     *      DBMessagingVideoMediaCell - 'video/mp4'
+     *      DBMessagingLocationMediaCell - 'geo'
+     *
+     * Examples of possible mime types and associated values (again these are totally up to your app's schema):
+     *     mime -> 'image/url'    value -> The URL for the remote image or video.
+     *     mime -> 'image/plain'  value -> A base64 encoded string representing an image or video sent from a web socket.
+     *     mime -> 'geo/json'     value -> A JSON string representing a geolocation.
+     *     mime -> 'image/jpeg',  value -> An image retrieved from disk.
+     *
+     * You are given the chance to perform any long-running tasks that may be required in your implementation of 
+     * 'collectionView:wantsMediaForMediaCell:atIndexPath:'
+     *
+     * Note: This approach may seem fairly cumbersome but this allows for the library to work with your app's schema
+     * instead of the other way around.
+     */
+    [DBMessagingTextCell setMimeType:@"text/plain"];
+    [DBMessagingImageMediaCell setMimeType:@"image/jpeg"];
+    [DBMessagingVideoMediaCell setMimeType:@"video/mp4"];
+    [DBMessagingLocationMediaCell setMimeType:@"geo"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -173,7 +218,6 @@
      */
     [self sendMessageWithParts:messageParts];
     
-    [self finishSendingMessage];
 }
 
 - (void)sendMessageWithParts:(NSArray *)parts {
@@ -190,6 +234,7 @@
                                                sentByUserID:[self senderUserID]
                                                      sentAt:[NSDate date]]];
     }
+    [self finishSendingMessage];
 }
 
 #pragma mark - DBMessagingPhotoPickerControllerDelegate
@@ -197,9 +242,19 @@
 - (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos action:(DBMessagingPhotoPickerControllerAction)action {
     
     switch (action) {
-        case DBMessagingPhotoPickerControllerActionSend:
+        case DBMessagingPhotoPickerControllerActionSend: {
+            NSMutableArray *parts = [[NSMutableArray alloc] init];
+            for (UIImage *photo in photos) {
+                [parts addObject:@{DBMessagePartMIMEKey : [DBMessagingImageMediaCell mimeType],
+                                   DBMessagePartValueKey : photo}];
+            }
+            [self sendMessageWithParts:parts];
             break;
+        }
         case DBMessagingPhotoPickerControllerActionComment:
+            for (UIImage *photo in photos) {
+                [self.messageInputToolbar.textView addImageAttatchment:photo];
+            }
             break;
         default:
             break;
@@ -337,7 +392,7 @@
      *
      *  Example values:
      *      - The URL for the remote image or video
-     *      - A base64 endoded string representing an image or video sent from a web socket.
+     *      - A base64 encoded string representing an image or video sent from a web socket.
      *      - A JSON string representing a geolocation.
      *      - A UIImage retrieved from disk.
      */

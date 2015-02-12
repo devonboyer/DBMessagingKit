@@ -14,6 +14,8 @@
 
 #import "DBMessagingVideoMediaCell.h"
 
+static NSString *kDBMessagingVideoMediaCellMimeType = @"video/mp4";
+
 @interface DBMessagingVideoMediaCell ()
 
 @end
@@ -21,7 +23,12 @@
 @implementation DBMessagingVideoMediaCell
 
 + (NSString *)mimeType {
-    return @"video/mp4";
+    return kDBMessagingVideoMediaCellMimeType;
+}
+
++ (void)setMimeType:(NSString *)mimeType {
+    NSAssert(![mimeType isEqualToString:@""] || mimeType != nil, @"Mime type for class %@ cannot be nil.", [self class]);
+    kDBMessagingVideoMediaCellMimeType = mimeType;
 }
 
 + (NSString *)cellReuseIdentifier {

@@ -14,6 +14,8 @@
 
 #import "DBMessagingImageMediaCell.h"
 
+static NSString *kDBMessagingImageMediaCellMimeType = @"image/jpeg";
+
 @interface DBMessagingImageMediaCell ()
 
 @property (strong, nonatomic) UIImageView *imageView;
@@ -23,7 +25,12 @@
 @implementation DBMessagingImageMediaCell
 
 + (NSString *)mimeType {
-    return @"image/jpeg";
+    return kDBMessagingImageMediaCellMimeType;
+}
+
++ (void)setMimeType:(NSString *)mimeType {
+    NSAssert(![mimeType isEqualToString:@""] || mimeType != nil, @"Mime type for class %@ cannot be nil.", [self class]);
+    kDBMessagingImageMediaCellMimeType = mimeType;
 }
 
 + (NSString *)cellReuseIdentifier {

@@ -32,6 +32,8 @@ typedef NS_ENUM(NSInteger, MessageBubbleType) {
 
 + (NSString *)mimeType;
 
++ (void)setMimeType:(NSString *)mimeType;
+
 + (NSString *)cellReuseIdentifier;
 
 @property (weak, nonatomic) id <DBMessagingParentCellDelegate> delegate;
