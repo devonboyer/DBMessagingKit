@@ -41,6 +41,37 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Message bubbles will revert to the "default" message bubble if a top, middle, or bottom message bubble has not been specified. A "default" message bubble must be specified.
 - You can optionally return a message bubble (UIImageView) in the appropriate dataSource method of your choice or use the convience method messageBubbleForItemAtIndexPath: of a DBMessageBubbleController.
 
+#####Input Toolbar#####
+
+The input toolbar's buttons are totally up to you. It is recommended that you add a 'send' button and set it as the toolbar's send button property. You are in charge of handling each button's 'action'.
+
+```objectiveC
+    UIBarButtonItem *cameraBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"camera_button"] style:UIBarButtonItemStylePlain target:self action:@selector(cameraButtonTapped:)];
+    UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleDone target:self action:@selector(sendButtonTapped:)];
+    
+    [self.messageInputToolbar addItem:cameraBarButtonItem position:DBMessagingInputToolbarItemPositionLeft animated:false];
+    [self.messageInputToolbar addItem:locationBarButtonItem position:DBMessagingInputToolbarItemPositionRight animated:false];
+```
+
+#####Mime Types#####
+
+You can choose the 'mime' type that should correspond to each cell. The 'mime' type is used to decide which
+type of view should be used to display the value for a given message. The mime type can be accessed at any 
+time by calling [DBMessagingTextCell mimeType].
+
+Examples of possible mime types and associated values (again these are totally up to your app's schema):
+- mime -> 'image/url'       value -> The URL for the remote image or video.
+- mime -> 'image/plain'   value -> A base64 encoded string representing an image or video from a socket.
+- mime -> 'geo/json'        value -> A JSON string representing a geolocation.
+- mime -> 'image/jpeg',   value -> An image retrieved from disk.
+
+```objectiveC
+    [DBMessagingTextCell setMimeType:@"text/plain"];
+    [DBMessagingImageMediaCell setMimeType:@"image/jpeg"];
+    [DBMessagingVideoMediaCell setMimeType:@"video/mp4"];
+    [DBMessagingLocationMediaCell setMimeType:@"geo"];
+```
+
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
 
