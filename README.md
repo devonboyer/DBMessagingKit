@@ -1,7 +1,10 @@
 #DBMessagingKit
 
-![alt tag](https://cloud.githubusercontent.com/assets/5367914/5310054/ceb41222-7bfa-11e4-858e-2c6a7fe4c055.gif)
+######TimestampStyleHidden                             TimestampStyleSliding######
 
+![alt tag](https://cloud.githubusercontent.com/assets/5367914/5310054/ceb41222-7bfa-11e4-858e-2c6a7fe4c055.gif)
+        
+![alt tag](https://cloud.githubusercontent.com/assets/5367914/6097248/707975a4-af84-11e4-989e-a19cb0ca4708.gif)
 ####What is this repository for?####
 
 An open-source messaging UI framework for iOS, built with simplicity and customization in mind.
@@ -12,20 +15,27 @@ An open-source messaging UI framework for iOS, built with simplicity and customi
  - Image
  - Movie
  - GIF
- - Location (still experimental)
-
-####Features####
-- Individual Message Timestamps
-- Interactive Keyboard Dismiss
-- Springy Bubbles (still experimental)
+ - Location (In development)
 
 Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
+
+####Features####
+- Multiple timestamp styles
+- Interactive Keyboard Dismiss
+- Customize cell labels
+- Customize toolbar buttons
+- Arbitrary message sizes
+- Data detectors
+- Dynamic input text view resizing
+- Timestamp formatting
+- Images, Movies, GIFs, Location messages
 
 ####How do I get set up?####
 #####View Controller#####
 - Subclass DBMessagingViewController.
 - Implement the required and optional methods in the DBMessagingCollectionViewDataSource protocol.
 - Implement the optional methods in the DBMessagingCollectionViewDelegateFlowLayout protocol.
+- Set the 'timestampStyle' of your view controller subclass to DBMessagingTimestampStyleNone, DBMessagingTimestampStyleHidden, or DBMessagingTimestampStyleSliding.
 
 #####Message Bubbles#####
 - For complex message bubble layouts (such as Facebook Messenger) you can use a DBMessageBubbleController to figure out for you which message bubble should be displayed for a given message.
@@ -35,3 +45,9 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 
 #####Customization#####
 - The library is well-commented. This should help you configure your view however you like.
+
+####What's Next?####
+
+- Springy bubbles
+- Support for 'DBMessagingInputToolbarItemPositionTop' and 'DBMessagingInputToolbarItemPositionBottom'
+- CocoaPods installation
