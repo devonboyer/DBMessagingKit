@@ -7,14 +7,13 @@
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/6097248/707975a4-af84-11e4-989e-a19cb0ca4708.gif)
 ####What is this repository for?####
 
-An open-source messaging UI framework for iOS, built with simplicity and customization in mind.
+An open-source Messaging UI Kit for iOS, built with simplicity and customization in mind. The kit provides the tools to create a messaging interface while allowing it to work with your app's schema.
 
 ####Supports####
  Supports the following MIME types (Internet Media Type):
  - Text
  - Image
- - Movie
- - GIF
+ - Video (In development)
  - Location (In development)
 
 Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
@@ -28,7 +27,6 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Data detectors
 - Dynamic input text view resizing
 - Timestamp formatting
-- Images, Movies, GIFs, Location messages
 
 ####How do I get set up?####
 #####View Controller#####
