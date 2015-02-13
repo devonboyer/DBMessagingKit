@@ -239,7 +239,7 @@
 
 #pragma mark - DBMessagingPhotoPickerControllerDelegate
 
-- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos action:(DBMessagingPhotoPickerControllerAction)action {
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos withAction:(DBMessagingPhotoPickerControllerAction)action {
     
     switch (action) {
         case DBMessagingPhotoPickerControllerActionSend: {

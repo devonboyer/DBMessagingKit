@@ -14,12 +14,15 @@
 		673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528F81A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m */; };
 		673528FC1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */; };
 		673528FF1A8A5D7500F66DE1 /* DBMessagingLocationPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 673528FE1A8A5D7500F66DE1 /* DBMessagingLocationPin.m */; };
-		6735290D1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */; };
-		6735290F1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */; };
-		673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m */; };
 		673529291A8D349A00F66DE1 /* checkmark_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 673529261A8D349A00F66DE1 /* checkmark_icon.png */; };
 		6735292A1A8D349A00F66DE1 /* checkmark_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 673529271A8D349A00F66DE1 /* checkmark_icon@2x.png */; };
 		6735292B1A8D349A00F66DE1 /* checkmark_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 673529281A8D349A00F66DE1 /* checkmark_icon@3x.png */; };
+		6735293A1A8D729100F66DE1 /* DBMessagingPhotoBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529331A8D729100F66DE1 /* DBMessagingPhotoBrowserController.m */; };
+		6735293B1A8D729100F66DE1 /* DBMessagingPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529361A8D729100F66DE1 /* DBMessagingPhotoPickerController.m */; };
+		6735293C1A8D729100F66DE1 /* DBMessagingPhotoPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 673529371A8D729100F66DE1 /* DBMessagingPhotoPickerController.xib */; };
+		6735293D1A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 673529391A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.m */; };
+		673529401A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6735293F1A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.m */; };
+		673529421A8D731C00F66DE1 /* DBMessagingPhotoBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 673529411A8D731C00F66DE1 /* DBMessagingPhotoBrowserController.xib */; };
 		677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */; };
 		677B1CA11A855EC3007D2967 /* UIColor+Messaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C601A855EC3007D2967 /* UIColor+Messaging.m */; };
 		677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 677B1C621A855EC3007D2967 /* UIImage+AnimatedGIF.m */; };
@@ -81,14 +84,19 @@
 		673528FB1A89A7C700F66DE1 /* DBMessagingLocationMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLocationMediaCell.m; sourceTree = "<group>"; };
 		673528FD1A8A5D7500F66DE1 /* DBMessagingLocationPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingLocationPin.h; sourceTree = "<group>"; };
 		673528FE1A8A5D7500F66DE1 /* DBMessagingLocationPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingLocationPin.m; sourceTree = "<group>"; };
-		6735290B1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerController.h; sourceTree = "<group>"; };
-		6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerController.m; sourceTree = "<group>"; };
-		6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBMessagingPhotoPickerController.xib; sourceTree = "<group>"; };
-		673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerPresentationController.h; sourceTree = "<group>"; };
-		673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerPresentationController.m; sourceTree = "<group>"; };
 		673529261A8D349A00F66DE1 /* checkmark_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark_icon.png; sourceTree = "<group>"; };
 		673529271A8D349A00F66DE1 /* checkmark_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark_icon@2x.png"; sourceTree = "<group>"; };
 		673529281A8D349A00F66DE1 /* checkmark_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark_icon@3x.png"; sourceTree = "<group>"; };
+		673529321A8D729100F66DE1 /* DBMessagingPhotoBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoBrowserController.h; sourceTree = "<group>"; };
+		673529331A8D729100F66DE1 /* DBMessagingPhotoBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoBrowserController.m; sourceTree = "<group>"; };
+		673529351A8D729100F66DE1 /* DBMessagingPhotoPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerController.h; sourceTree = "<group>"; };
+		673529361A8D729100F66DE1 /* DBMessagingPhotoPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerController.m; sourceTree = "<group>"; };
+		673529371A8D729100F66DE1 /* DBMessagingPhotoPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBMessagingPhotoPickerController.xib; sourceTree = "<group>"; };
+		673529381A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoPickerPresentationController.h; sourceTree = "<group>"; };
+		673529391A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoPickerPresentationController.m; sourceTree = "<group>"; };
+		6735293E1A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBMessagingPhotoBrowserTransitionAnimator.h; sourceTree = "<group>"; };
+		6735293F1A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBMessagingPhotoBrowserTransitionAnimator.m; sourceTree = "<group>"; };
+		673529411A8D731C00F66DE1 /* DBMessagingPhotoBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DBMessagingPhotoBrowserController.xib; sourceTree = "<group>"; };
 		677B1C5D1A855EC3007D2967 /* NSAttributedString+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Messaging.h"; sourceTree = "<group>"; };
 		677B1C5E1A855EC3007D2967 /* NSAttributedString+Messaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Messaging.m"; sourceTree = "<group>"; };
 		677B1C5F1A855EC3007D2967 /* UIColor+Messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Messaging.h"; sourceTree = "<group>"; };
@@ -202,11 +210,8 @@
 			isa = PBXGroup;
 			children = (
 				673529251A8D349A00F66DE1 /* Assets */,
-				6735290B1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.h */,
-				6735290C1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m */,
-				6735290E1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib */,
-				673529101A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.h */,
-				673529111A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m */,
+				673529311A8D729100F66DE1 /* Browser */,
+				673529341A8D729100F66DE1 /* Picker */,
 			);
 			path = Photos;
 			sourceTree = "<group>";
@@ -219,6 +224,30 @@
 				673529281A8D349A00F66DE1 /* checkmark_icon@3x.png */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		673529311A8D729100F66DE1 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				673529321A8D729100F66DE1 /* DBMessagingPhotoBrowserController.h */,
+				673529331A8D729100F66DE1 /* DBMessagingPhotoBrowserController.m */,
+				673529411A8D731C00F66DE1 /* DBMessagingPhotoBrowserController.xib */,
+				6735293E1A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.h */,
+				6735293F1A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.m */,
+			);
+			path = Browser;
+			sourceTree = "<group>";
+		};
+		673529341A8D729100F66DE1 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				673529351A8D729100F66DE1 /* DBMessagingPhotoPickerController.h */,
+				673529361A8D729100F66DE1 /* DBMessagingPhotoPickerController.m */,
+				673529371A8D729100F66DE1 /* DBMessagingPhotoPickerController.xib */,
+				673529381A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.h */,
+				673529391A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.m */,
+			);
+			path = Picker;
 			sourceTree = "<group>";
 		};
 		677B1C5B1A855EC3007D2967 /* Source */ = {
@@ -514,13 +543,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6735293C1A8D729100F66DE1 /* DBMessagingPhotoPickerController.xib in Resources */,
 				678048361A312954001E4DC7 /* LaunchScreen.xib in Resources */,
+				673529421A8D731C00F66DE1 /* DBMessagingPhotoBrowserController.xib in Resources */,
 				677B1CAF1A855EC3007D2967 /* camera_button@3x.png in Resources */,
 				673529291A8D349A00F66DE1 /* checkmark_icon.png in Resources */,
 				6735292B1A8D349A00F66DE1 /* checkmark_icon@3x.png in Resources */,
 				6735292A1A8D349A00F66DE1 /* checkmark_icon@2x.png in Resources */,
 				678048331A312954001E4DC7 /* Images.xcassets in Resources */,
-				6735290F1A8A9E1C00F66DE1 /* DBMessagingPhotoPickerController.xib in Resources */,
 				677B1CAE1A855EC3007D2967 /* camera_button@2x.png in Resources */,
 				677B1CAD1A855EC3007D2967 /* camera_button.png in Resources */,
 			);
@@ -548,17 +578,18 @@
 				677B1CA61A855EC3007D2967 /* DBMessagingViewController.m in Sources */,
 				677B1CA91A855EC3007D2967 /* DBMessagingTimestampFormatter.m in Sources */,
 				677B1CAB1A855EC3007D2967 /* DBMessagingCollectionViewFlowLayoutInvalidationContext.m in Sources */,
-				6735290D1A8A9D9000F66DE1 /* DBMessagingPhotoPickerController.m in Sources */,
 				6780482B1A312954001E4DC7 /* AppDelegate.m in Sources */,
+				6735293B1A8D729100F66DE1 /* DBMessagingPhotoPickerController.m in Sources */,
 				677B1CB91A855EC3007D2967 /* DBMessagingParentCell.m in Sources */,
 				677B1CA01A855EC3007D2967 /* NSAttributedString+Messaging.m in Sources */,
 				677B1CA21A855EC3007D2967 /* UIImage+AnimatedGIF.m in Sources */,
 				678049431A313106001E4DC7 /* Message.m in Sources */,
 				677B1CB41A855EC3007D2967 /* DBMessagingMediaCell.m in Sources */,
+				6735293D1A8D729100F66DE1 /* DBMessagingPhotoPickerPresentationController.m in Sources */,
+				6735293A1A8D729100F66DE1 /* DBMessagingPhotoBrowserController.m in Sources */,
 				677B1CA41A855EC3007D2967 /* DBInteractiveKeyboardController.m in Sources */,
 				677B1CB01A855EC3007D2967 /* DBMessagingInputToolbar.m in Sources */,
 				677B1CB11A855EC3007D2967 /* DBMessagingCellTextView.m in Sources */,
-				673529121A8AA2C700F66DE1 /* DBMessagingPhotoPickerPresentationController.m in Sources */,
 				673528DD1A8785D000F66DE1 /* DBMessagingCollectionViewSlidingTimestampFlowLayout.m in Sources */,
 				677B1CAC1A855EC3007D2967 /* DBMessagingCollectionViewLayoutAttributes.m in Sources */,
 				673528F91A89A7B800F66DE1 /* DBMessagingVideoMediaCell.m in Sources */,
@@ -575,6 +606,7 @@
 				677B1CBA1A855EC3007D2967 /* DBMessagingTextCell.m in Sources */,
 				677B1CBC1A855EC3007D2967 /* DBMessagingTypingIndicatorFooterView.m in Sources */,
 				678048281A312954001E4DC7 /* main.m in Sources */,
+				673529401A8D72F100F66DE1 /* DBMessagingPhotoBrowserTransitionAnimator.m in Sources */,
 				677B1CA51A855EC3007D2967 /* DBMessageBubbleController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

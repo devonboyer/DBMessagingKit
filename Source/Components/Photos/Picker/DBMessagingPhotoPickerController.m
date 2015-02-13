@@ -367,8 +367,8 @@
             
             if (actionState) {
                 
-                if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:action:)]) {
-                    [self.delegate photoPickerController:self didFinishPickingPhotos:_selectedPhotosInfo.allValues action:DBMessagingPhotoPickerControllerActionSend];
+                if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:withAction:)]) {
+                    [self.delegate photoPickerController:self didFinishPickingPhotos:_selectedPhotosInfo.allValues withAction:DBMessagingPhotoPickerControllerActionSend];
                 }
                 
             } else {
@@ -383,8 +383,8 @@
             
             if (actionState) {
                 
-                if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:action:)]) {
-                    [self.delegate photoPickerController:self didFinishPickingPhotos:_selectedPhotosInfo.allValues action:DBMessagingPhotoPickerControllerActionComment];
+                if ([self.delegate respondsToSelector:@selector(photoPickerController:didFinishPickingPhotos:withAction:)]) {
+                    [self.delegate photoPickerController:self didFinishPickingPhotos:_selectedPhotosInfo.allValues withAction:DBMessagingPhotoPickerControllerActionComment];
                 }
                 
             } else {

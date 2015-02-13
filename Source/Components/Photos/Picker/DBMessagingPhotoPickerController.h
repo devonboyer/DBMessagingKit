@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, DBMessagingPhotoPickerControllerAction) {
 
 @optional
 
-- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos action:(DBMessagingPhotoPickerControllerAction)action;
+- (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didFinishPickingPhotos:(NSArray *)photos withAction:(DBMessagingPhotoPickerControllerAction)action;
 
 - (void)photoPickerController:(DBMessagingPhotoPickerController *)picker didDismissWithOption:(DBMessagingPhotoPickerControllerOption)option;
 

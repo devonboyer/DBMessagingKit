@@ -68,5 +68,6 @@ FOUNDATION_EXPORT const unsigned char DBMessagingKitVersionString[];
 
 // Components
 #import "DBMessagingPhotoPickerController.h"
+#import "DBMessagingPhotoBrowserController.h"
 
 #endif

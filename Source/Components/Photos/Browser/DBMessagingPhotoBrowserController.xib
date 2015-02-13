@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DBMessagingPhotoBrowserController">
+            <connections>
+                <outlet property="actionsToolbar" destination="xa2-TC-nOb" id="Bnp-kd-Km6"/>
+                <outlet property="navigationBar" destination="SFO-FS-6e3" id="ieu-me-IP6"/>
+                <outlet property="photosCollectionView" destination="TlS-cB-Yk3" id="VfL-Pt-FbF"/>
+                <outlet property="view" destination="iN0-l3-epB" id="aVd-tO-I7g"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="TlS-cB-Yk3">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="O82-2d-xAb">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="lQa-GP-NXO"/>
+                        <outlet property="delegate" destination="-1" id="OdQ-Ng-xQl"/>
+                    </connections>
+                </collectionView>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFO-FS-6e3">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <items>
+                        <navigationItem title="Title" id="Cup-jc-Kyw"/>
+                    </items>
+                </navigationBar>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xa2-TC-nOb">
+                    <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                    <items>
+                        <barButtonItem title="Item" id="M69-er-Pis"/>
+                    </items>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="TlS-cB-Yk3" secondAttribute="bottom" id="26I-HY-xES"/>
+                <constraint firstAttribute="trailing" secondItem="SFO-FS-6e3" secondAttribute="trailing" id="BLq-Fd-pZj"/>
+                <constraint firstItem="TlS-cB-Yk3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Gu2-pK-ONI"/>
+                <constraint firstAttribute="trailing" secondItem="xa2-TC-nOb" secondAttribute="trailing" id="KgU-71-z0a"/>
+                <constraint firstItem="xa2-TC-nOb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VMl-FB-kFe"/>
+                <constraint firstItem="SFO-FS-6e3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gHp-vw-eqa"/>
+                <constraint firstAttribute="trailing" secondItem="TlS-cB-Yk3" secondAttribute="trailing" id="hgi-56-No0"/>
+                <constraint firstAttribute="bottom" secondItem="xa2-TC-nOb" secondAttribute="bottom" id="jH3-Sc-enc"/>
+                <constraint firstItem="SFO-FS-6e3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="mIp-ky-YSl"/>
+                <constraint firstItem="TlS-cB-Yk3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="qmu-4i-vsA"/>
+            </constraints>
+            <point key="canvasLocation" x="572" y="469"/>
+        </view>
+    </objects>
+</document>
