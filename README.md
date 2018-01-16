@@ -1,4 +1,4 @@
-#DBMessagingKit
+# DBMessagingKit
 
 ![alt tag](https://cloud.githubusercontent.com/assets/5367914/5310054/ceb41222-7bfa-11e4-858e-2c6a7fe4c055.gif)
                  
@@ -7,11 +7,11 @@
 *DBMessagingTimestampStyleHidden                  DBMessagingTimestampStyleSliding*
 
 
-####What is this repository for?####
+#### What is this repository for?
 
 An open-source Messaging UI Kit for iOS, built with simplicity and customization in mind. The kit provides the tools to create a messaging interface while allowing it to work with your app's schema. This library was built to provide the tools you need to build a messaging UI without the need to force your data into any model object or protocol.
 
-####Supports####
+#### Supports
  Supports the following MIME types (Internet Media Type):
  - Text
  - Image
@@ -30,19 +30,19 @@ Supports iOS 7.0+, Portrait/Landscape iPhone/iPad
 - Dynamic input text view resizing
 - Timestamp formatting
 
-####How do I get set up?####
-#####View Controller#####
+#### How do I get set up?
+##### View Controller
 - Subclass ```DBMessagingViewController```
 - Implement the required and optional methods in ```DBMessagingCollectionViewDataSource```
 - Implement the optional methods in ```DBMessagingCollectionViewDelegateFlowLayout```
 - Set the 'timestampStyle' of your view controller subclass to ```DBMessagingTimestampStyleNone```, ```DBMessagingTimestampStyleHidden```, or ```DBMessagingTimestampStyleSliding```.
 
-#####Message Bubbles#####
+##### Message Bubbles
 - For complex message bubble layouts (such as Facebook Messenger) you can use a ```DBMessageBubbleController``` to figure out for you which message bubble should be displayed for a given message.
 - Message bubbles can be created by passing 'template' images to an instance of ```DBMessageBubbleController```.
 - You can optionally return a message bubble (UIImageView) in the appropriate dataSource method of your choice or use the convience method ```messageBubbleForItemAtIndexPath:``` of a ```DBMessageBubbleController```.
 
-#####Input Toolbar#####
+##### Input Toolbar
 
 The input toolbar's buttons are totally up to you. It is recommended that you add a 'send' button and set it as the toolbar's send button property. You are in charge of handling each button's 'action'.
 
@@ -55,14 +55,14 @@ UIBarButtonItem *sendBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Se
 ```
 At any time you can ask the input toolbar for the current 'Message Parts'. A message part is a dictionary that contains a mime type and a value.
 
-```objectiveC
+```objective-C
 NSString *mime = part[DBMessagePartMIMEKey];
 id value = part[DBMessagePartValueKey];
 ```
 
 For example, when composing a message comprised simply of text, the input toolbar will contain a single message part with a mime of ```[DBMessagingTextCell mimeType]``` and value of type ```NSString```.
 
-#####Mime Types#####
+##### Mime Types
 
 You can choose the 'mime' type that should correspond to each cell. The 'mime' type is used to decide which
 type of view should be used to display the value for a given message. The mime type can be accessed at any 
