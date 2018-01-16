@@ -90,14 +90,14 @@ The mime type you for each type of cell corresponds to the type of view that wil
 }
 ```
 
-#####Customization#####
+##### Customization
 - The library is well-commented. This should help you configure your view however you like.
 
-####Components####
+#### Components
 
 A component is built to handle a common task in a messging interface. Components are completly optional.
 
-#####DBMessagingPhotoPickerController#####
+##### DBMessagingPhotoPickerController
 
 A 'DBMessagingPhotoPickerController' provides an interface to quickly choose a photo from the user's recent photos. This component was modelled after a similar photo picker found in iMessage.
 
